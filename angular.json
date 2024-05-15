@@ -25,7 +25,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/app/landing-page/landing_page/css/styles.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",
