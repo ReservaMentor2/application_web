@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  
+  webServer:
+    image: ihc:tag
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: 'always'
+    ports:
+      - '4201:4200'
+    volumes: 
+      - ./src:/webApplication/src
