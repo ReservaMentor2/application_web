@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesion</title>
+</head>
+
+<div class = "screen">
+    <header>
+        <div class = "notloggedin">
+            <app-header-not-logged-in></app-header-not-logged-in>
+        </div>
+        <div class = "ad">
+            <app-header-ad></app-header-ad>
+        </div>
+    </header>
+    
+    <body>
+        <div class="credentialBox">
+        
+            <form class="formBox">
+                <label>Iniciar Sesion en ReservaMentor</label> <br>
+                <input class="textInput" type="email"    placeholder="Correo Electronico"/> <br>
+                <input class="textInput" type="password" placeholder="Contraseña" /> <br>
+                <button class="login" onclick="location.href='../register'">Registrate</button> <br>
+                <label class = "ForgotPassword">He olvidado la contraseña</label> <br>
+                <label class = "Register">¿No tienes cuenta en ReservaMentor? </label> 
+                <label class = "RegsiterLink">Registrate</label>
+            </form>
+        
+        </div>
+    </body>
+    
+   
+</div>
+<footer>
+    <app-footer></app-footer>
+</footer>
+</html>
