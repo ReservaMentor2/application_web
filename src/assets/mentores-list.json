@@ -1,0 +1,94 @@
+[{
+        "id": 1,
+        "nombre": "Juan Pérez",
+        "fotoPerfil": "https://example.com/juan-perez.jpg",
+        "descripcion": "Soy un apasionado por la programación competitiva y me encanta compartir mis conocimientos. He participado en varios concursos regionales e internacionales.",
+        "calificacion": 4.8,
+        "tarifaPorHora": 25,
+        "categorias": ["Programación", "Programación Competitiva"],
+        "horariosDisponibles": ["mañana", "tarde"],
+        "tiposSesiones": ["individual", "grupal"],
+        "resenias": [{
+                "estudiante": {
+                    "id": 101,
+                    "nombre": "María García",
+                    "fotoPerfil": "https://example.com/maria-garcia.jpg",
+                    "calificacion": 4.5
+                },
+                "calificacion": 5,
+                "comentario": "Juan es un excelente mentor. Sus explicaciones son claras y me ayudó a mejorar mucho mi habilidad en programación competitiva.",
+                "fecha": "2023-04-15"
+            },
+            {
+                "estudiante": {
+                    "id": 102,
+                    "nombre": "Carlos Rodríguez",
+                    "fotoPerfil": "https://example.com/carlos-rodriguez.jpg",
+                    "calificacion": 4.2
+                },
+                "calificacion": 4,
+                "comentario": "Buen mentor, aunque a veces las sesiones se extendían más de lo esperado.",
+                "fecha": "2023-03-20"
+            }
+        ],
+        "desactivado": false
+    },
+    {
+        "id": 2,
+        "nombre": "Ana Martínez",
+        "fotoPerfil": "https://example.com/ana-martinez.jpg",
+        "descripcion": "Soy una entusiasta del aprendizaje de idiomas y me apasiona enseñar inglés. Tengo experiencia trabajando con estudiantes de todas las edades.",
+        "calificacion": 4.6,
+        "tarifaPorHora": 30,
+        "categorias": ["Inglés"],
+        "horariosDisponibles": ["tarde", "noche"],
+        "tiposSesiones": ["individual"],
+        "resenias": [{
+            "estudiante": {
+                "id": 103,
+                "nombre": "Pedro Gómez",
+                "fotoPerfil": "https://example.com/pedro-gomez.jpg",
+                "calificacion": 4.7
+            },
+            "calificacion": 5,
+            "comentario": "Ana es una excelente profesora de inglés. Sus clases son dinámicas y divertidas, lo que hace que el aprendizaje sea más entretenido.",
+            "fecha": "2023-05-01"
+        }],
+        "desactivado": false
+    },
+    {
+        "id": 3,
+        "nombre": "Sofía Ramírez",
+        "fotoPerfil": "https://example.com/sofia-ramirez.jpg",
+        "descripcion": "Soy una apasionada del desarrollo web y las tecnologías frontend. Me encanta enseñar y ayudar a otros a iniciar su carrera en este emocionante campo.",
+        "calificacion": 4.9,
+        "tarifaPorHora": 40,
+        "categorias": ["Frontend", "JavaScript", "React"],
+        "horariosDisponibles": ["mañana", "tarde", "noche"],
+        "tiposSesiones": ["individual", "grupal"],
+        "resenias": [{
+                "estudiante": {
+                    "id": 104,
+                    "nombre": "Laura Torres",
+                    "fotoPerfil": "https://example.com/laura-torres.jpg",
+                    "calificacion": 4.3
+                },
+                "calificacion": 4,
+                "comentario": "Sofía es una excelente mentora de Frontend. Sus explicaciones son claras y siempre está dispuesta a resolver dudas.",
+                "fecha": "2023-04-10"
+            },
+            {
+                "estudiante": {
+                    "id": 105,
+                    "nombre": "Diego Hernández",
+                    "fotoPerfil": "https://example.com/diego-hernandez.jpg",
+                    "calificacion": 4.8
+                },
+                "calificacion": 5,
+                "comentario": "Gracias a Sofía, pude aprender React de manera sólida y ahora me siento preparado para enfrentar proyectos más complejos.",
+                "fecha": "2023-03-25"
+            }
+        ],
+        "desactivado": false
+    }
+]
