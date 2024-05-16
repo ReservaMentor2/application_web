@@ -23,7 +23,7 @@
 }
 
 
-/* Logo de Sirio */
+/* Logo de Reserva Mentor */
 
 .navbar-brand {
     display: flex;
@@ -101,6 +101,22 @@
     cursor: pointer;
 }
 
+#EncuentraExpertoRecuadro .titulo {
+    background-color: var(--verdeoscuro);
+    font-family: 'Playfair Display';
+    color: whitesmoke;
+    padding: 1.5% 11%;
+    font-weight: 600;
+}
+
+#EncuentraExpertoRecuadro p {
+    background-color: var(--verdeoscuro);
+    font-family: 'Playfair Display';
+    color: whitesmoke;
+    padding: 0% 11% 1.5% 11%;
+    font-weight: 500;
+}
+
 @media (max-width: 2860px) {
     /* Boton Toggler (para abrir el menu en movil) */
     .navbar-toggler {
@@ -116,7 +132,6 @@
     .navbar-nav .nav-item {
         margin-left: 32px;
     }
-    /* Imagen del Logo de Sirio */
     .navbar-brand img {
         width: 72px;
         height: max-content;
@@ -156,7 +171,7 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 660px) {
     .navbar-toggler img {
         height: 25px;
         justify-self: center;
@@ -176,7 +191,7 @@
 
 /* aqui abajo se cambia el aspecto del menu al boton toggler*/
 
-@media (min-width: 425px) {
+@media (min-width: 655px) {
     .navbar-expand-lg .navbar-toggler {
         display: none;
     }
@@ -197,10 +212,13 @@
     }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 655px) {
     .navbar-collapse {
         grid-column: span 12;
-        margin: auto;
+        margin: 0;
+    }
+    .navbar {
+        justify-content: center;
     }
     .navbar>.container-fluid {
         font-size: 14px;
