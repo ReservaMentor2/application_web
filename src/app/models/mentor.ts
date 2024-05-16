@@ -6,6 +6,7 @@ export class Mentor {
   descripcion: string;
   calificacion: number;
   tarifaPorHora: number;
+  estudiantesAyudados: number;
   categorias: string[]; // Puede ser programacion, RPA, ingles, programacion competitiva, Frontend, Backend, etc
   horariosDisponibles: string[]; // Puede ser 'mañana', 'tarde' o 'noche'
   tiposSesiones: string[]; // Puede ser 'grupal' o 'individual'
@@ -19,6 +20,7 @@ export class Mentor {
     descripcion: string,
     calificacion: number,
     tarifaPorHora: number,
+    estudiantesAyudados: number,
     categorias: string[],
     horariosDisponibles: string[],
     tiposSesiones: string[],
@@ -31,6 +33,7 @@ export class Mentor {
     this.descripcion = descripcion;
     this.calificacion = calificacion;
     this.tarifaPorHora = tarifaPorHora;
+    this.estudiantesAyudados = estudiantesAyudados;
     this.categorias = categorias;
     this.horariosDisponibles = horariosDisponibles;
     this.tiposSesiones = tiposSesiones;
