@@ -7,5 +7,5 @@ import { NavBarComponent } from './components/navbar/navbar.component';
 export const routes: Routes = [
     { path: 'landing-page', component: LandingPageComponent, title: 'ReservaMentor'},
     { path: 'navbar', component: NavBarComponent},
-    { path: '**', redirectTo: '/navbar', pathMatch: 'full'}
+    { path: '**', redirectTo: '/busquedaMentores', pathMatch: 'full'}
 ];

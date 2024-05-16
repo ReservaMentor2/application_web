@@ -96,6 +96,11 @@
     -o-border-radius: 12px;
 }
 
+.navbar-nav .nav-link:hover {
+    background-color: green;
+    cursor: pointer;
+}
+
 @media (max-width: 2860px) {
     /* Boton Toggler (para abrir el menu en movil) */
     .navbar-toggler {
@@ -152,6 +157,12 @@
 }
 
 @media (max-width: 600px) {
+    .navbar-toggler img {
+        height: 25px;
+        justify-self: center;
+        align-self: center;
+        margin-bottom: 5px;
+    }
     .navbar>.container-fluid {
         font-size: 10px;
         padding: 15px 3%;
@@ -179,6 +190,10 @@
     }
     .navbar-nav .nav-item {
         margin-left: 12px;
+        margin-top: 12px;
+    }
+    .nav-item .nav-link a {
+        margin-bottom: 12px;
     }
 }
 
@@ -187,9 +202,6 @@
         grid-column: span 12;
         margin: auto;
     }
-    .navbar-nav .nav-link {
-        padding-bottom: 6.25px;
-    }
     .navbar>.container-fluid {
         font-size: 14px;
         padding: 6px 12px;
@@ -197,14 +209,14 @@
         justify-content: center;
         align-items: center;
     }
+    .nav-link {
+        margin-bottom: 12px;
+    }
 }
 
 @media (max-width: 375px) {
     .navbar>.container-fluid {
         max-width: 375px;
-    }
-    .navbar-brand {
-        padding-bottom: 2px;
     }
 }
 
