@@ -107,6 +107,7 @@
     color: whitesmoke;
     padding: 1.5% 11%;
     font-weight: 600;
+    word-spacing: 5px;
 }
 
 #EncuentraExpertoRecuadro p {
@@ -115,6 +116,7 @@
     color: whitesmoke;
     padding: 0% 11% 1.5% 11%;
     font-weight: 500;
+    word-spacing: 2px;
 }
 
 @media (max-width: 2860px) {
