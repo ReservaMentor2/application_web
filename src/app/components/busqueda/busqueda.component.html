@@ -1,1 +1,31 @@
 <app-navbar></app-navbar>
+<!-- busqueda.component.html -->
+<div *ngIf="mentores">
+  <h2>Datos de los Mentores:</h2>
+  <div class="mentor-list">
+    <div *ngFor="let mentor of mentores" class="mentor-card">
+      <img [src]="mentor.fotoPerfil" alt="{{ mentor.nombre }}" class="mentor-photo">
+      <div class="mentor-info">
+        <h3>{{ mentor.nombre }}</h3>
+        <p><strong>Descripción:</strong> {{ mentor.descripcion }}</p>
+        <p><strong>Calificación:</strong> {{ mentor.calificacion }}</p>
+        <p><strong>Precio por Hora:</strong> {{ mentor.tarifaPorHora }} USD</p>
+        <p><strong>Categorías:</strong> {{ mentor.categorias.join(', ') }}</p>
+        <p><strong>Horarios Disponibles:</strong> {{ mentor.horariosDisponibles.join(', ') }}</p>
+        <p><strong>Tipos de Sesiones:</strong> {{ mentor.tiposSesiones.join(', ') }}</p>
+        <!-- <div *ngIf="mentor.resenias">
+          <h4>Reseñas:</h4>
+          <div *ngFor="let resenia of mentor.resenias" class="resenia">
+            <p><strong>{{ resenia.estudiante.nombre }}</strong> - {{ resenia.calificacion }}</p>
+            <p>{{ resenia.comentario }}</p>
+            <p><em>{{ resenia.fecha }}</em></p>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!mentores || mentores.length === 0">
+  <p>No se encontraron mentores.</p>
+</div>
