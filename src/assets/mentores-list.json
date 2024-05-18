@@ -3,7 +3,7 @@
         "nombre": "Juan Pérez",
         "fotoPerfil": "https://example.com/juan-perez.jpg",
         "descripcion": "Soy un apasionado por la programación competitiva y me encanta compartir mis conocimientos. He participado en varios concursos regionales e internacionales.",
-        "calificacion": 4.8,
+        "calificacion": 4.4,
         "tarifaPorHora": 25,
         "estudiantesAyudados": 300,
         "categorias": ["Programación", "Programación Competitiva"],
