@@ -1,31 +1,79 @@
 <app-navbar></app-navbar>
-<!-- busqueda.component.html -->
-<div *ngIf="mentores">
-  <h2>Datos de los Mentores:</h2>
-  <div class="mentor-list">
-    <div *ngFor="let mentor of mentores" class="mentor-card">
-      <img [src]="mentor.fotoPerfil" alt="{{ mentor.nombre }}" class="mentor-photo">
-      <div class="mentor-info">
-        <h3>{{ mentor.nombre }}</h3>
-        <p><strong>Descripción:</strong> {{ mentor.descripcion }}</p>
-        <p><strong>Calificación:</strong> {{ mentor.calificacion }}</p>
-        <p><strong>Precio por Hora:</strong> {{ mentor.tarifaPorHora }} USD</p>
-        <p><strong>Categorías:</strong> {{ mentor.categorias.join(', ') }}</p>
-        <p><strong>Horarios Disponibles:</strong> {{ mentor.horariosDisponibles.join(', ') }}</p>
-        <p><strong>Tipos de Sesiones:</strong> {{ mentor.tiposSesiones.join(', ') }}</p>
-        <!-- <div *ngIf="mentor.resenias">
-          <h4>Reseñas:</h4>
-          <div *ngFor="let resenia of mentor.resenias" class="resenia">
-            <p><strong>{{ resenia.estudiante.nombre }}</strong> - {{ resenia.calificacion }}</p>
-            <p>{{ resenia.comentario }}</p>
-            <p><em>{{ resenia.fecha }}</em></p>
-          </div>
-        </div> -->
+
+<div class="container">
+  <header>
+    <input type="text" placeholder="Buscar tópico (ej. RPA)" [(ngModel)]="searchTopic" class="search-bar">
+    <input type="date" [(ngModel)]="searchDate" class="date-picker">
+    <button (click)="onSearch()" class="search-button">Buscar</button>
+  </header>
+
+  <aside class="filters">
+    <h2>Filtrar por:</h2>
+    <div class="filter-section">
+      <h3>Categoría</h3>
+      <div *ngFor="let category of categories">
+        <label>
+          <input type="checkbox" (change)="toggleCategory(category)"> {{ category }}
+        </label>
       </div>
     </div>
-  </div>
+    <div class="filter-section">
+      <h3>Calificación</h3>
+      <div *ngFor="let rating of [5, 4, 3, 2, 1]">
+        <label>
+          <input type="checkbox" (change)="toggleRating(rating)"> {{ '★'.repeat(rating) }}
+        </label>
+      </div>
+    </div>
+    <div class="filter-section">
+      <h3>Precio Máximo</h3>
+      <input type="number" [(ngModel)]="maxPrice" (change)="onMaxPriceChange($event)" placeholder="Máximo precio">
+    </div>
+
+    <div class="filter-section">
+      <h3>Horario</h3>
+      <label><input type="checkbox" (change)="toggleHorario('mañana')"> Mañana</label><br>
+      <label><input type="checkbox" (change)="toggleHorario('tarde')"> Tarde</label><br>
+      <label><input type="checkbox" (change)="toggleHorario('noche')"> Noche</label>
+    </div>
+    <div class="filter-section">
+      <h3>Tipo de Sesión</h3>
+      <label><input type="checkbox" (change)="toggleSessionType('individual')"> Individual</label><br>
+      <label><input type="checkbox" (change)="toggleSessionType('grupal')"> Grupal</label>
+    </div>
+  </aside>
+
+  <main>
+    <div class="expert-header">
+      <h1>{{ filteredMentores.length }} Expertos Encontrados</h1>
+      <div class="sort-container">
+        <select (change)="onSortChange($event)" class="sort-select">
+          <option value="">Ordenar por</option>
+          <option value="rating-asc">Calificación Ascendente</option>
+          <option value="rating-desc">Calificación Descendente</option>
+          <option value="students-asc">Estudiantes Ayudados Ascendente</option>
+          <option value="students-desc">Estudiantes Ayudados Descendente</option>
+          <option value="price-asc">Precio Ascendente</option>
+          <option value="price-desc">Precio Descendente</option>
+        </select>
+      </div>
+    </div>
+    <div class="expert-list">
+      <div *ngFor="let mentor of filteredMentores" class="expert-card">
+        <img [src]="mentor.fotoPerfil" [alt]="mentor.nombre">
+        <div class="expert-details">
+          <h2>{{ mentor.nombre }}</h2>
+          <p>{{ mentor.descripcion }}</p>
+          <p><strong>Calificación:</strong> {{ mentor.calificacion }}</p>
+          <p><strong>Precio por Hora:</strong> S/. {{ mentor.tarifaPorHora }}</p>
+          <p><strong>Categorías:</strong> {{ mentor.categorias.join(', ') }}</p>
+          <p><strong>Horarios:</strong> {{ mentor.horariosDisponibles.join(', ') }}</p>
+          <p><strong>Tipo de Sesiones:</strong> {{ mentor.tiposSesiones.join(', ') }}</p>
+          <button class="view-more-button">Ver Más</button>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
 
-<div *ngIf="!mentores || mentores.length === 0">
-  <p>No se encontraron mentores.</p>
-</div>
+<app-footer></app-footer>
