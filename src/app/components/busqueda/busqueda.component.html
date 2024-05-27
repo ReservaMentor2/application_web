@@ -3,7 +3,10 @@
 <div class="container">
   <header>
     <input type="text" placeholder="Buscar tópico (ej. RPA)" [(ngModel)]="searchTopic" class="search-bar">
-    <input type="date" [(ngModel)]="searchDate" class="date-picker">
+    <input type="date" [(ngModel)]="startDate" class="date-picker">
+    <input type="date" [(ngModel)]="endDate" class="date-picker">
+    <input type="time" [(ngModel)]="startTime" class="time-picker">
+    <input type="time" [(ngModel)]="endTime" class="time-picker">
     <button (click)="onSearch()" class="search-button">Buscar</button>
   </header>
 
@@ -30,12 +33,6 @@
       <input type="number" [(ngModel)]="maxPrice" (change)="onMaxPriceChange($event)" placeholder="Máximo precio">
     </div>
 
-    <div class="filter-section">
-      <h3>Horario</h3>
-      <label><input type="checkbox" (change)="toggleHorario('mañana')"> Mañana</label><br>
-      <label><input type="checkbox" (change)="toggleHorario('tarde')"> Tarde</label><br>
-      <label><input type="checkbox" (change)="toggleHorario('noche')"> Noche</label>
-    </div>
     <div class="filter-section">
       <h3>Tipo de Sesión</h3>
       <label><input type="checkbox" (change)="toggleSessionType('individual')"> Individual</label><br>
@@ -67,7 +64,11 @@
           <p><strong>Calificación:</strong> {{ mentor.calificacion }}</p>
           <p><strong>Precio por Hora:</strong> S/. {{ mentor.tarifaPorHora }}</p>
           <p><strong>Categorías:</strong> {{ mentor.categorias.join(', ') }}</p>
-          <p><strong>Horarios:</strong> {{ mentor.horariosDisponibles.join(', ') }}</p>
+          <p><strong>Horarios:</strong>
+            <span *ngFor="let horario of mentor.horariosDisponibles">
+              {{ horario.fecha }} de {{ horario.inicio }} a {{ horario.fin }}
+            </span>
+          </p>
           <p><strong>Tipo de Sesiones:</strong> {{ mentor.tiposSesiones.join(', ') }}</p>
           <button class="view-more-button">Ver Más</button>
         </div>
