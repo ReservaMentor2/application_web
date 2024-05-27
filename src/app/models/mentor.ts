@@ -1,3 +1,4 @@
+// models/mentor.ts
 export interface Mentor {
   id: number;
   nombre: string;
@@ -7,10 +8,16 @@ export interface Mentor {
   tarifaPorHora: number;
   estudiantesAyudados: number;
   categorias: string[];
-  horariosDisponibles: string[];
+  horariosDisponibles: HorarioDisponible[];
   tiposSesiones: string[];
   resenias: Resenia[];
   desactivado: boolean;
+}
+
+export interface HorarioDisponible {
+  fecha: string; // formato: "YYYY-MM-DD"
+  inicio: string; // formato: "HH:mm"
+  fin: string; // formato: "HH:mm"
 }
 
 export interface Resenia {
