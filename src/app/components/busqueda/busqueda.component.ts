@@ -19,7 +19,9 @@ import { FooterComponent } from '../footer/footer.component';
 export class BusquedaComponent implements OnInit {
   mentores: Mentor[] = [];
   filteredMentores: Mentor[] = [];
+  filteredMentoresSlice: Mentor[] = [];
   categories: string[] = [];
+  ratings: number[] = [5, 4, 3, 2, 1];
   selectedCategories: string[] = [];
   sortOption: string = '';
   searchTopic: string = '';
@@ -31,9 +33,16 @@ export class BusquedaComponent implements OnInit {
   selectedRatings: number[] = [];
   maxPrice: number = 0;
 
+  // Estado para la paginación
+  currentPage: number = 1;
+  pageSize: number = 5;
+  totalPages: number = 0;
+
   constructor(private mentorService: MentorService, private http: HttpClient) {
     this.mentorService = new MentorService(http);
     this.obtenerMentores();
+    this.filterMentores();
+    this.paginateMentores();
   }
 
   ngOnInit(): void {}
@@ -53,7 +62,9 @@ export class BusquedaComponent implements OnInit {
     );
   }
   onSearch(): void {
+    this.currentPage = 1;
     this.filterMentores();
+    this.paginateMentores();
   }
 
   filterMentores(): void {
@@ -63,8 +74,19 @@ export class BusquedaComponent implements OnInit {
         this.selectedCategories.some((category) =>
           mentor.categorias.includes(category)
         );
+      const normalizeString = (str: string): string => {
+        return str
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase();
+      };
+
+      // Filtro por Tópico (Buscar tópico)
       const matchesTopic =
-        !this.searchTopic || mentor.categorias.includes(this.searchTopic);
+        !this.searchTopic ||
+        mentor.categorias.some((category) =>
+          normalizeString(category).includes(normalizeString(this.searchTopic))
+        );
       const matchesDate = this.isWithinSelectedDateTimeRange(
         mentor.horariosDisponibles
       );
@@ -75,7 +97,9 @@ export class BusquedaComponent implements OnInit {
         );
       const matchesRating =
         this.selectedRatings.length === 0 ||
-        this.selectedRatings.includes(Math.round(mentor.calificacion));
+        this.selectedRatings.some(
+          (rating) => Math.round(mentor.calificacion) === rating
+        );
       const matchesPrice =
         this.maxPrice === 0 || mentor.tarifaPorHora <= this.maxPrice;
 
@@ -90,6 +114,32 @@ export class BusquedaComponent implements OnInit {
     });
 
     this.sortMentores();
+  }
+
+  paginateMentores(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = Math.min(
+      startIndex + this.pageSize,
+      this.filteredMentores.length
+    );
+
+    if (this.filteredMentores.length > 0) {
+      this.filteredMentoresSlice = this.filteredMentores.slice(
+        startIndex,
+        endIndex
+      );
+      this.totalPages = Math.ceil(this.filteredMentores.length / this.pageSize);
+    } else {
+      this.totalPages = 0;
+    }
+  }
+
+  changePage(page: number): void {
+    if (page < 1 || page > this.totalPages) {
+      return;
+    }
+    this.currentPage = page;
+    this.paginateMentores();
   }
 
   isWithinSelectedDateTimeRange(
@@ -136,12 +186,14 @@ export class BusquedaComponent implements OnInit {
       this.selectedCategories.push(category);
     }
     this.filterMentores();
+    this.changePage(1);
   }
 
   onMaxPriceChange(event: any): void {
     // Si el campo de entrada está vacío, establece maxPrice en 0, de lo contrario, usa el valor ingresado
     this.maxPrice = event.target.value ? parseFloat(event.target.value) : 0;
     this.filterMentores();
+    this.changePage(1);
   }
 
   toggleSessionType(sessionType: string): void {
@@ -153,6 +205,7 @@ export class BusquedaComponent implements OnInit {
       this.selectedSessionTypes.push(sessionType);
     }
     this.filterMentores();
+    this.changePage(1);
   }
 
   toggleRating(rating: number): void {
@@ -162,6 +215,7 @@ export class BusquedaComponent implements OnInit {
       this.selectedRatings.push(rating);
     }
     this.filterMentores();
+    this.changePage(1);
   }
 
   sortMentores(): void {
@@ -196,5 +250,6 @@ export class BusquedaComponent implements OnInit {
   onSortChange(event: any): void {
     this.sortOption = event.target.value;
     this.sortMentores();
+    this.paginateMentores();
   }
 }

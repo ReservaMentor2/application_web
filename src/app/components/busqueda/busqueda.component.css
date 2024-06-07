@@ -1,5 +1,5 @@
 body {
-    font-family: 'Playfair Display';
+    font-family: "Playfair Display";
     margin: 0;
     padding: 0;
     display: flex;
@@ -78,7 +78,7 @@ main {
 }
 
 .sort-button {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     border: none;
     padding: 10px;
@@ -119,10 +119,21 @@ main {
 }
 
 .view-more-button {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     border: none;
     padding: 10px;
     cursor: pointer;
     align-self: flex-start;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    margin: 0 5px;
+    padding: 5px 10px;
 }
