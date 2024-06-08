@@ -14,10 +14,23 @@
     <h2>Filtrar por:</h2>
     <div class="filter-section">
       <h3>Categoría</h3>
-      <div *ngFor="let category of categories">
-        <label>
-          <input type="checkbox" (change)="toggleCategory(category)"> {{ category }}
-        </label>
+      <input type="text" placeholder="Buscar categorías" [(ngModel)]="searchCategory" (input)="filterCategories()">
+      <ul *ngIf="searchCategory">
+        <li *ngFor="let category of filteredCategories">
+          <label>
+            <input type="checkbox" (change)="toggleCategory(category)"
+              [checked]="selectedCategories.includes(category)">
+            {{ category }}
+          </label>
+        </li>
+      </ul>
+      <div *ngIf="selectedCategories.length > 0">
+        <h4>Categorías seleccionadas:</h4>
+        <ul>
+          <li *ngFor="let category of selectedCategories">
+            {{ category }} <button (click)="removeCategory(category)">x</button>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -57,6 +70,7 @@
         </select>
       </div>
     </div>
+
     <div class="expert-list" *ngIf="filteredMentores.length > 0">
       <div *ngFor="let mentor of filteredMentoresSlice" class="expert-card">
         <img [src]="mentor.fotoPerfil" [alt]="mentor.nombre">

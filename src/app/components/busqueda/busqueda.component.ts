@@ -21,8 +21,11 @@ export class BusquedaComponent implements OnInit {
   filteredMentores: Mentor[] = [];
   filteredMentoresSlice: Mentor[] = [];
   categories: string[] = [];
-  ratings: number[] = [5, 4, 3, 2, 1];
+  filteredCategories: string[] = [];
   selectedCategories: string[] = [];
+  searchCategory: string = '';
+  ratings: number[] = [5, 4, 3, 2, 1];
+  selectedRatings: number[] = [];
   sortOption: string = '';
   searchTopic: string = '';
   startDate: string = '';
@@ -30,7 +33,6 @@ export class BusquedaComponent implements OnInit {
   startTime: string = '';
   endTime: string = '';
   selectedSessionTypes: string[] = [];
-  selectedRatings: number[] = [];
   maxPrice: number = 0;
 
   // Estado para la paginación
@@ -45,7 +47,10 @@ export class BusquedaComponent implements OnInit {
     this.paginateMentores();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.filterMentores();
+    this.paginateMentores();
+  }
 
   obtenerMentores(): void {
     this.mentorService.getData().subscribe(
@@ -74,6 +79,7 @@ export class BusquedaComponent implements OnInit {
         this.selectedCategories.some((category) =>
           mentor.categorias.includes(category)
         );
+
       const normalizeString = (str: string): string => {
         return str
           .normalize('NFD')
@@ -87,19 +93,23 @@ export class BusquedaComponent implements OnInit {
         mentor.categorias.some((category) =>
           normalizeString(category).includes(normalizeString(this.searchTopic))
         );
+
       const matchesDate = this.isWithinSelectedDateTimeRange(
         mentor.horariosDisponibles
       );
+
       const matchesSessionType =
         this.selectedSessionTypes.length === 0 ||
         this.selectedSessionTypes.some((type) =>
           mentor.tiposSesiones.includes(type)
         );
+
       const matchesRating =
         this.selectedRatings.length === 0 ||
         this.selectedRatings.some(
           (rating) => Math.round(mentor.calificacion) === rating
         );
+
       const matchesPrice =
         this.maxPrice === 0 || mentor.tarifaPorHora <= this.maxPrice;
 
@@ -189,11 +199,34 @@ export class BusquedaComponent implements OnInit {
     this.changePage(1);
   }
 
+  removeCategory(category: string): void {
+    this.selectedCategories = this.selectedCategories.filter(
+      (cat) => cat !== category
+    );
+    this.filterMentores();
+    this.paginateMentores();
+  }
+
+  filterCategories(): void {
+    const normalizeString = (str: string): string =>
+      str
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
+    this.filteredCategories = this.categories.filter((category) =>
+      normalizeString(category).includes(normalizeString(this.searchCategory))
+    );
+    this.filterMentores();
+    this.paginateMentores();
+  }
+
   onMaxPriceChange(event: any): void {
     // Si el campo de entrada está vacío, establece maxPrice en 0, de lo contrario, usa el valor ingresado
     this.maxPrice = event.target.value ? parseFloat(event.target.value) : 0;
     this.filterMentores();
     this.changePage(1);
+    this.paginateMentores();
   }
 
   toggleSessionType(sessionType: string): void {
@@ -206,6 +239,7 @@ export class BusquedaComponent implements OnInit {
     }
     this.filterMentores();
     this.changePage(1);
+    this.paginateMentores();
   }
 
   toggleRating(rating: number): void {
@@ -216,6 +250,7 @@ export class BusquedaComponent implements OnInit {
     }
     this.filterMentores();
     this.changePage(1);
+    this.paginateMentores();
   }
 
   sortMentores(): void {
