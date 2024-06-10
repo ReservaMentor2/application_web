@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { NavBarComponent } from '../navbar/navbar.component';
 import { MentorService } from '../../services/mentor.service';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
-
+import * as mathjs from 'mathjs';
 @Component({
   selector: 'app-busqueda',
   standalone: true,
   imports: [NavBarComponent, FooterComponent, NgIf, NgForOf, FormsModule],
-  providers: [HttpClientModule, CommonModule, BrowserModule],
+  providers: [CommonModule, BrowserModule],
   templateUrl: './busqueda.component.html',
   styleUrls: ['./busqueda.component.css'],
 })
@@ -125,7 +125,22 @@ export class BusquedaComponent implements OnInit {
 
     this.sortMentores();
   }
-
+  roundCalificacion(calificacion: number): number {
+    return mathjs.round(calificacion);
+  }
+  formatHorario(horario: {
+    fecha: string;
+    inicio: string;
+    fin: string;
+  }): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    const fecha = new Date(horario.fecha).toLocaleDateString('es-ES', options);
+    return `${fecha}, ${horario.inicio} - ${horario.fin}`;
+  }
   paginateMentores(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = Math.min(
