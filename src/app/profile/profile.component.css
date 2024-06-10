@@ -1,7 +1,6 @@
 .user-prof {
   display: flex;
   flex-direction: column;
-  width: 15%;
   max-width: fit-content;
 }
 
@@ -29,8 +28,9 @@ button {
   background-color: #00540d;
   border-radius: 5px;
   color: white;
+  font-family: "Playfair Display", serif;
   cursor: pointer;
-  font-size: 30px;
+  font-size: 25px;
 }
 
 .buttons {
