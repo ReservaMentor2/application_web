@@ -7,7 +7,8 @@ import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
-import * as mathjs from 'mathjs';
+import * as math from 'mathjs';
+import { create, all } from 'mathjs';
 @Component({
   selector: 'app-busqueda',
   standalone: true,
@@ -34,6 +35,7 @@ export class BusquedaComponent implements OnInit {
   endTime: string = '';
   selectedSessionTypes: string[] = [];
   maxPrice: number = 0;
+  private math = create(all);
 
   // Estado para la paginación
   currentPage: number = 1;
@@ -66,32 +68,117 @@ export class BusquedaComponent implements OnInit {
       }
     );
   }
+
   onSearch(): void {
     this.currentPage = 1;
     this.filterMentores();
     this.paginateMentores();
   }
 
+  normalizeString = (str: string): string => {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  };
+
+  // Crea el vector del query normalizando y tokenizando
+  createQueryVector(query: string): number[] {
+    const allTerms = this.getAllTerms();
+    return allTerms.map(
+      (term) =>
+        this.termFrequency(term, query) * this.inverseDocumentFrequency(term)
+    );
+  }
+
+  // Obtiene todos los términos únicos de los nombres y descripciones de los mentores
+  getAllTerms(): string[] {
+    const terms = new Set<string>();
+    this.mentores.forEach((mentor) => {
+      this.tokenize(mentor.nombre).forEach((term) => terms.add(term));
+      this.tokenize(mentor.descripcion).forEach((term) => terms.add(term));
+    });
+    return Array.from(terms);
+  }
+
+  // Tokeniza el texto en un arreglo de palabras normalizadas
+  tokenize(text: string): string[] {
+    return this.normalizeString(text)
+      .split(/\W+/)
+      .filter((term) => term.length > 0);
+  }
+
+  // Calcula la frecuencia de un término en un texto
+  termFrequency(term: string, text: string): number {
+    const tokens = this.tokenize(text);
+    const count = tokens.filter((t) => t === term).length;
+    return count / tokens.length;
+  }
+
+  // Calcula la frecuencia inversa de documentos
+  inverseDocumentFrequency(term: string): number {
+    const numDocumentsWithTerm = this.mentores.filter((mentor) =>
+      this.tokenize(mentor.nombre + ' ' + mentor.descripcion).includes(term)
+    ).length;
+    return 1 + Math.log(this.mentores.length / (numDocumentsWithTerm + 1));
+  }
+
+  // Calcula la similitud del coseno entre el query y el mentor
+  calculateCosineSimilarity(queryVector: number[], mentor: Mentor): number {
+    const docVector = this.createDocumentVector(mentor);
+    const dotProduct = queryVector.reduce(
+      (sum, qVal, i) => sum + qVal * docVector[i],
+      0
+    );
+    const normQuery = Math.sqrt(
+      queryVector.reduce((sum, qVal) => sum + qVal * qVal, 0)
+    );
+    const normDoc = Math.sqrt(
+      docVector.reduce((sum, dVal) => sum + dVal * dVal, 0)
+    );
+    return dotProduct / (normQuery * normDoc);
+  }
+
+  // Crea el vector del mentor normalizando y tokenizando
+  createDocumentVector(mentor: Mentor): number[] {
+    const allTerms = this.getAllTerms();
+    const combinedText = mentor.nombre + ' ' + mentor.descripcion;
+    return allTerms.map(
+      (term) =>
+        this.termFrequency(term, combinedText) *
+        this.inverseDocumentFrequency(term)
+    );
+  }
+
   filterMentores(): void {
-    this.filteredMentores = this.mentores.filter((mentor) => {
+    const query = this.normalizeString(this.searchTopic).trim();
+    const queryVector = this.createQueryVector(query);
+    console.log('Query Vector:', queryVector);
+
+    this.filteredMentores = this.mentores
+      .map((mentor) => {
+        const similarity = this.calculateCosineSimilarity(queryVector, mentor);
+        console.log(`Similitud con ${mentor.nombre}: ${similarity}`);
+        return {
+          mentor,
+          similarity,
+        };
+      })
+      .filter(({ similarity }) => similarity >= 0.1)
+      .sort((a, b) => b.similarity - a.similarity)
+      .map(({ mentor }) => mentor);
+
+    this.filterByAdditionalCriteria();
+    this.sortMentores();
+    this.paginateMentores();
+  }
+
+  filterByAdditionalCriteria(): void {
+    this.filteredMentores = this.filteredMentores.filter((mentor) => {
       const matchesCategory =
         this.selectedCategories.length === 0 ||
         this.selectedCategories.some((category) =>
           mentor.categorias.includes(category)
-        );
-
-      const normalizeString = (str: string): string => {
-        return str
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase();
-      };
-
-      // Filtro por Tópico (Buscar tópico)
-      const matchesTopic =
-        !this.searchTopic ||
-        mentor.categorias.some((category) =>
-          normalizeString(category).includes(normalizeString(this.searchTopic))
         );
 
       const matchesDate = this.isWithinSelectedDateTimeRange(
@@ -115,7 +202,6 @@ export class BusquedaComponent implements OnInit {
 
       return (
         matchesCategory &&
-        matchesTopic &&
         matchesDate &&
         matchesSessionType &&
         matchesRating &&
@@ -125,9 +211,11 @@ export class BusquedaComponent implements OnInit {
 
     this.sortMentores();
   }
+
   roundCalificacion(calificacion: number): number {
-    return mathjs.round(calificacion);
+    return Math.round(calificacion);
   }
+
   formatHorario(horario: {
     fecha: string;
     inicio: string;
