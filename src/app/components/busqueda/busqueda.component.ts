@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavBarComponent } from '../navbar/navbar.component';
 import { MentorService } from '../../services/mentor.service';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
@@ -8,6 +9,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
 import * as mathjs from 'mathjs';
+
 @Component({
   selector: 'app-busqueda',
   standalone: true,
@@ -40,11 +42,19 @@ export class BusquedaComponent implements OnInit {
   pageSize: number = 5;
   totalPages: number = 0;
 
-  constructor(private mentorService: MentorService, private http: HttpClient) {
+  constructor(
+    private mentorService: MentorService,
+    private http: HttpClient,
+    private router: Router
+  ) {
     this.mentorService = new MentorService(http);
     this.obtenerMentores();
     this.filterMentores();
     this.paginateMentores();
+  }
+
+  navigateToRoute() {
+    this.router.navigate(['/realizar-reserva', 2]);
   }
 
   ngOnInit(): void {

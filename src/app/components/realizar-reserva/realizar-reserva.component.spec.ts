@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MentoriaPaginaComponent } from './mentoria-pagina.component';
+import { RealizarReservaComponent } from './realizar-reserva.component';
 
-describe('MentoriaPaginaComponent', () => {
-  let component: MentoriaPaginaComponent;
-  let fixture: ComponentFixture<MentoriaPaginaComponent>;
+describe('RealizarReservaComponent', () => {
+  let component: RealizarReservaComponent;
+  let fixture: ComponentFixture<RealizarReservaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MentoriaPaginaComponent]
+      imports: [RealizarReservaComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MentoriaPaginaComponent);
+    fixture = TestBed.createComponent(RealizarReservaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
