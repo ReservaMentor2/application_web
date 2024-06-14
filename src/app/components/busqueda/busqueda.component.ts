@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavBarComponent } from '../../shared/navbar/navbar.component';
+import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { MentorService } from '../../services/mentor.service';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +11,7 @@ import * as mathjs from 'mathjs';
 @Component({
   selector: 'app-busqueda',
   standalone: true,
-  imports: [NavBarComponent, FooterComponent, NgIf, NgForOf, FormsModule],
+  imports: [NavbarComponent, FooterComponent, NgIf, NgForOf, FormsModule],
   providers: [CommonModule, BrowserModule],
   templateUrl: './busqueda.component.html',
   styleUrls: ['./busqueda.component.css'],

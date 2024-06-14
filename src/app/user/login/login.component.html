@@ -1,22 +1,41 @@
-<app-navbar></app-navbar>
-
 <body>
     <div class="credentialBox">
     
-        <form class="formBox">
+        <form class="login" autocomplete="off" #form="ngForm" (ngSubmit)="login(form)">
             <label>Iniciar Sesion en ReservaMentor</label> <br>
-            <input class="textInput" type="email"    placeholder="Correo Electronico"/> <br>
-            <input class="textInput" type="password" placeholder="Contraseña" /> <br>
-            <button class="login" onclick="location.href='../register'">Registrate</button> <br>
-            <label class = "ForgotPassword">He olvidado la contraseña</label> <br>
-            <label class = "Register">¿No tienes cuenta en ReservaMentor? </label> 
-            <label class = "RegsiterLink">Registrate</label>
+
+            <mat-form-field>
+                <mat-label>Correo Electronico</mat-label>
+                <input matInput type="email" placeholder="Correo Electronico" name="email" [(ngModel)]="authRequest.email"
+                required=""
+                pattern="^(.+)@(.+)$"
+                #email="ngModel"/> 
+                
+                <mat-error>
+                    <ng-container *ngIf="email.hasError('required')"> Este campo es obligatorio</ng-container>
+                    <ng-container *ngIf="email.hasError('pattern')"> Ingrese un email valido</ng-container>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password" placeholder="Contraseña" name="password" [(ngModel)]="authRequest.password"
+                required=""
+                pattern="^(.+)@(.+)$"
+                #password="ngModel"/> 
+                
+                <mat-error>
+                    <ng-container *ngIf="password.hasError('required')"> Este campo es obligatorio</ng-container>
+                </mat-error>
+            </mat-form-field>
+
+
+            <button class="login">Ingresar</button> <br>
         </form>
+        <button class="register" onclick="location.href='../register'">Registrate</button> <br>
+        <label class = "ForgotPassword">He olvidado la contraseña</label> <br>
+        <label class = "Register">¿No tienes cuenta en ReservaMentor? </label> 
+        <label class = "RegsiterLink" routerLink="/register" >Registrate</label>
     
     </div>
 </body>
-    
-   
-<footer>
-    <app-footer></app-footer>
-</footer>

@@ -3,13 +3,9 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms'
 
 import { AuthRequest } from '../interfaces/auth.interface'
-import { NavBarComponent } from '../../shared/navbar/navbar.component';
-import { FooterComponent } from '../../shared/footer/footer.component';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [NavBarComponent, FooterComponent],
+  selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })

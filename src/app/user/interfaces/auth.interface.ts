@@ -16,7 +16,7 @@ export interface Profile {
     role: 'USER' | 'ADMIN';
 }
 
-export interface SignupRequest {
+export interface RegisterRequest {
     firstName: string;
     lastName: string;
     email: string;

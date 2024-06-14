@@ -3,13 +3,9 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms'
 
 import { AuthRequest } from './../interfaces/auth.interface'
-import { NavBarComponent } from '../../shared/navbar/navbar.component';
-import { FooterComponent } from '../../shared/footer/footer.component';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [NavBarComponent, FooterComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -17,7 +13,7 @@ import { FooterComponent } from '../../shared/footer/footer.component';
 export class LoginComponent {
   authRequest: AuthRequest = {};
 
-  private email: string = "hmendo81@gmail.com";
+  private email: string = "test@gmail.com";
 
   constructor(
     private router: Router
