@@ -12,3 +12,5 @@ services:
       - '4201:4200'
     volumes: 
       - ./src:/webApplication/src
+      - ./package.json:/webApplication/package.json
+      - ./package-lock.json:/webApplication/package-lock.json
