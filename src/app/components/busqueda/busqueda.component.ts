@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavBarComponent } from '../navbar/navbar.component';
+import { NavBarComponent } from '../../shared/navbar/navbar.component';
 import { MentorService } from '../../services/mentor.service';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent } from '../footer/footer.component';
+import { FooterComponent } from '../../shared/footer/footer.component';
 import * as mathjs from 'mathjs';
 @Component({
   selector: 'app-busqueda',
