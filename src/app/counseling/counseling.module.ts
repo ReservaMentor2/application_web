@@ -9,8 +9,8 @@ import { CounselingRoutingModule } from './counseling-routing.module';
   imports: [
     CommonModule,
     CounselingRoutingModule,
-    FormsModule, // Import FormsModule for template-driven forms
-    ReactiveFormsModule, // Import ReactiveFormsModule for reactive forms (optional)
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class CounselingModule {}
