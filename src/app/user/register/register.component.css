@@ -1,0 +1,65 @@
+.screen {
+    display: flex;
+    flex-direction: column;
+}
+
+.notloggedin {
+    height: 10%;
+}
+
+.ad {
+    height: 200px;
+}
+
+form {
+    border: 5px solid red;
+}
+
+input {
+    width: 460px;
+    height: 40px;
+}
+
+header {
+    flex-grow: 0;
+}   
+
+ul {
+    flex-grow: 4;
+}
+
+
+
+.formBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.Register{
+
+}
+
+.RegisterLink {
+}
+
+.login {
+    margin: 15px;
+    height: 40px;
+    width: 180px;
+    background-color: #487c00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+}
+.textInput {
+
+}
+
+.credentialBox{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
