@@ -7,7 +7,7 @@
         <div class="credentialBox">
         <div class="body">
         <div class="container">
-            <form>
+            <form autocomplete="off" #form = "ngForm" (ngSubmit)="login(form)"> 
                 <div class="head">
                     <span>Ingresar sesion</span>
                 </div>
@@ -28,7 +28,6 @@
                     <mat-label>Contraseña</mat-label>
                     <input matInput type="password" placeholder="Contraseña" name="password" [(ngModel)]="authRequest.password"
                     required=""
-                    pattern="^(.+)@(.+)$"
                     #password="ngModel"/> 
                     <mat-error>
                         <ng-container *ngIf="password.hasError('required')"> Este campo es obligatorio</ng-container>

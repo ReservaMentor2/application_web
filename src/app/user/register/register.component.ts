@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 
 import { AuthRequest } from '../interfaces/auth.interface'
 
@@ -11,22 +11,32 @@ import { AuthRequest } from '../interfaces/auth.interface'
 })
 
 export class RegisterComponent {
-  authRequest: AuthRequest = {};
-
-  private email: string = "hmendo81@gmail.com";
 
   constructor(
+    private fb: FormBuilder,
     private router: Router
   ) { }
 
-  login(form: NgForm) {
-    if (form.invalid) {
+
+  form: FormGroup = this.fb.group({
+    firstName: [, [Validators.required]],
+    lastName: [, [Validators.required]],
+    email: [, [Validators.required, Validators.email]],
+    password: [, [Validators.required, Validators.minLength(4)]],
+  });
+  passwordVisible = false;
+
+  controlHasError(control: string, error: string) {
+    return this.form.controls[control].hasError(error);
+  }
+
+  signup() {
+    if (this.form.invalid) {
       return;
     }
-    console.log(this.authRequest);
-
-    if (form.value.email == this.email && form.value.password == "123456") {
-      this.router.navigate(['busqueda']);
-    }
+    const formValue = this.form.value;
+    console.log(formValue);
+    this.router.navigate(['']);
   }
+
 }
