@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import {Router} from '@angular/router'
+import {MatToolbarModule} from '@angular/material/toolbar'
 
 @Component({
   selector: 'app-navbar',
@@ -7,6 +8,7 @@ import {Router} from '@angular/router'
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
+
 export class NavbarComponent {
 
   private router = inject(Router);
