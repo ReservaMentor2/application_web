@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 export class RealizarReservaComponent {
   @Input() index!: number;
   mentores: Mentor[] = [];
+  horarioSeleccionado: HorarioDisponible | null = null;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -24,5 +25,12 @@ export class RealizarReservaComponent {
     this.mentores = (mentorData as any).default;
     this.index = Number(this.route.snapshot.paramMap.get('index'));
     console.dir(this.mentores);
+  }
+
+  onHorarioChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const [fecha, inicio, fin] = target.value.split(' ');
+    this.horarioSeleccionado = { fecha, inicio, fin };
+    console.log(this.horarioSeleccionado); 
   }
 }
