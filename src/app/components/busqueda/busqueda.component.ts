@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 import { MentorService } from '../../services/mentor.service';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule, NgForOf, NgIf } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { FooterComponent } from '../../shared/footer/footer.component';
+
 import * as mathjs from 'mathjs';
 @Component({
   selector: 'app-busqueda',
-  standalone: true,
-  imports: [NavbarComponent, FooterComponent, NgIf, NgForOf, FormsModule],
-  providers: [CommonModule, BrowserModule],
   templateUrl: './busqueda.component.html',
   styleUrls: ['./busqueda.component.css'],
 })
@@ -42,13 +37,10 @@ export class BusquedaComponent implements OnInit {
 
   constructor(private mentorService: MentorService, private http: HttpClient) {
     this.mentorService = new MentorService(http);
-    this.obtenerMentores();
-    this.filterMentores();
-    this.paginateMentores();
   }
 
   ngOnInit(): void {
-    this.filterMentores();
+    this.obtenerMentores();
     this.paginateMentores();
   }
 
@@ -60,6 +52,7 @@ export class BusquedaComponent implements OnInit {
         this.categories = Array.from(
           new Set(data.flatMap((mentor) => mentor.categorias))
         );
+        console.log(this.mentores);
       },
       (error) => {
         console.error('Error al obtener mentores:', error);
