@@ -45,12 +45,12 @@ export class BusquedaComponent implements OnInit {
   constructor(private mentorService: MentorService, private http: HttpClient) {
     this.mentorService = new MentorService(http);
     this.obtenerMentores();
-    this.filterMentores();
+    this.filterMentores1();
     this.paginateMentores();
   }
 
   ngOnInit(): void {
-    this.filterMentores();
+    this.filterMentores1();
     this.paginateMentores();
   }
 
@@ -71,7 +71,7 @@ export class BusquedaComponent implements OnInit {
 
   onSearch(): void {
     this.currentPage = 1;
-    this.filterMentores();
+    this.filterMentores1();
     this.paginateMentores();
   }
 
@@ -150,7 +150,7 @@ export class BusquedaComponent implements OnInit {
     );
   }
 
-  filterMentores(): void {
+  filterMentores1(): void {
     const query = this.normalizeString(this.searchTopic).trim();
     const queryVector = this.createQueryVector(query);
     console.log('Query Vector:', queryVector);
@@ -298,7 +298,7 @@ export class BusquedaComponent implements OnInit {
     } else {
       this.selectedCategories.push(category);
     }
-    this.filterMentores();
+    this.filterMentores1();
     this.changePage(1);
   }
 
@@ -306,7 +306,7 @@ export class BusquedaComponent implements OnInit {
     this.selectedCategories = this.selectedCategories.filter(
       (cat) => cat !== category
     );
-    this.filterMentores();
+    this.filterMentores1();
     this.paginateMentores();
   }
 
@@ -320,14 +320,14 @@ export class BusquedaComponent implements OnInit {
     this.filteredCategories = this.categories.filter((category) =>
       normalizeString(category).includes(normalizeString(this.searchCategory))
     );
-    this.filterMentores();
+    this.filterMentores1();
     this.paginateMentores();
   }
 
   onMaxPriceChange(event: any): void {
     // Si el campo de entrada está vacío, establece maxPrice en 0, de lo contrario, usa el valor ingresado
     this.maxPrice = event.target.value ? parseFloat(event.target.value) : 0;
-    this.filterMentores();
+    this.filterMentores1();
     this.changePage(1);
     this.paginateMentores();
   }
@@ -340,7 +340,7 @@ export class BusquedaComponent implements OnInit {
     } else {
       this.selectedSessionTypes.push(sessionType);
     }
-    this.filterMentores();
+    this.filterMentores1();
     this.changePage(1);
     this.paginateMentores();
   }
@@ -351,7 +351,7 @@ export class BusquedaComponent implements OnInit {
     } else {
       this.selectedRatings.push(rating);
     }
-    this.filterMentores();
+    this.filterMentores1();
     this.changePage(1);
     this.paginateMentores();
   }
