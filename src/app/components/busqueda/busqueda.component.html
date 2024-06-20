@@ -143,7 +143,9 @@
             {{ mentor.tiposSesiones.join(", ") }}
           </p>
           <p class="mentor-precio">S/. {{ mentor.tarifaPorHora }} por Hora</p>
-          <button class="view-more-button">Ver Más</button>
+          <button class="view-more-button" (click)="navigateToRoute(mentor.id)">
+            Realizar reserva
+          </button>
         </div>
       </div>
     </div>
@@ -164,7 +166,5 @@
     </div>
   </main>
 </div>
-
-<button (click)="navigateToRoute()">Ir a la ruta</button>
 
 <app-footer></app-footer>

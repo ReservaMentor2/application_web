@@ -1,28 +1,33 @@
-<div class="mentor-list">
-  <img
-    [src]="mentores[index]?.fotoPerfil"
-    alt="{{ mentores[index]?.nombre }}"
-    class="mentor-foto"
-  />
-  <h3>{{ mentores[index]?.nombre }}</h3>
-  <p>{{ mentores[index]?.descripcion }}</p>
-  <p>Calificación: {{ mentores[index]?.calificacion }}</p>
-  <p>Estudiantes ayudados: {{ mentores[index]?.estudiantesAyudados }}</p>
-  <h4>Horarios disponibles:</h4>
-  <select (change)="onHorarioChange($event)">
-    <option
-      *ngFor="let horario of mentores[index]?.horariosDisponibles"
-      [value]="horario.fecha + ' ' + horario.inicio + ' ' + horario.fin"
-    >
-      {{ horario.fecha }}: {{ horario.inicio }} - {{ horario.fin }}
-    </option>
-  </select>
+<app-navbar></app-navbar>
+<div class="getMentoriaBox">
+  <div class="mentorInfo">
+    <img
+      [src]="mentores[index].fotoPerfil"
+      alt="{{ mentores[index].nombre }}"
+      class="mentor-foto"
+    />
+    <h3>{{ mentores[index].nombre }}</h3>
+    <p>{{ mentores[index].descripcion }}</p>
+    <p>Calificación: {{ mentores[index].calificacion }}</p>
+    <p>Estudiantes ayudados: {{ mentores[index].estudiantesAyudados }}</p>
+    <h4>Horarios disponibles:</h4>
+    <select (change)="onHorarioChange($event)">
+      <option
+        *ngFor="let horario of mentores[index].horariosDisponibles"
+        [value]="horario.fecha + ' ' + horario.inicio + ' ' + horario.fin"
+      >
+        {{ horario.fecha }}: {{ horario.inicio }} - {{ horario.fin }}
+      </option>
+    </select>
 
-  <div *ngIf="horarioSeleccionado">
-    <h5>Horario seleccionado:</h5>
-    <p>
-      {{ horarioSeleccionado.fecha }}: {{ horarioSeleccionado.inicio }} -
-      {{ horarioSeleccionado.fin }}
-    </p>
+    <div *ngIf="horarioSeleccionado">
+      <h5>Horario seleccionado:</h5>
+      <p>
+        {{ horarioSeleccionado.fecha }}: {{ horarioSeleccionado.inicio }} -
+        {{ horarioSeleccionado.fin }}
+      </p>
+    </div>
+    <button>Reservar Mentoria</button>
   </div>
 </div>
+<app-footer></app-footer>

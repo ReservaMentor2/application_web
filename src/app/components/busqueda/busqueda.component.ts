@@ -53,8 +53,9 @@ export class BusquedaComponent implements OnInit {
     this.paginateMentores();
   }
 
-  navigateToRoute() {
-    this.router.navigate(['/realizar-reserva', 2]);
+  navigateToRoute(indexMentor: number) {
+    this.router.navigate(['/realizar-reserva', indexMentor - 1]);
+    console.log(indexMentor);
   }
 
   ngOnInit(): void {
