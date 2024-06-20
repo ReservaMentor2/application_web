@@ -1,23 +1,19 @@
 import { Component } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../user/services/auth.service';
-
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
-
 export class NavbarComponent {
-
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['']);
+    this.router.navigate(['busqueda']);
   }
-
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();

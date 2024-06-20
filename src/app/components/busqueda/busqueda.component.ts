@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { MentorService } from '../../services/mentor.service';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, withFetch } from '@angular/common/http';
 
 import * as mathjs from 'mathjs';
+import { BrowserPlatformLocation } from '@angular/common';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 @Component({
   selector: 'app-busqueda',
+  providers: [BrowserPlatformLocation, FormsModule],
   templateUrl: './busqueda.component.html',
   styleUrls: ['./busqueda.component.css'],
 })
@@ -30,18 +32,36 @@ export class BusquedaComponent implements OnInit {
   selectedSessionTypes: string[] = [];
   maxPrice: number = 0;
 
-  // Estado para la paginación
+  // Estado para la paginacion
   currentPage: number = 1;
   pageSize: number = 5;
   totalPages: number = 0;
 
-  constructor(private mentorService: MentorService, private http: HttpClient) {
+  // Formulario Reactivo
+  searchForm: FormGroup;
+
+  constructor(
+    private mentorService: MentorService,
+    private http: HttpClient,
+    private fb: FormBuilder
+  ) {
     this.mentorService = new MentorService(http);
+    this.searchForm = this.fb.group({
+      searchTopic: [''],
+      startDate: [''],
+      endDate: [''],
+      startTime: [''],
+      endTime: [''],
+      searchCategory: [''],
+      maxPrice: [0],
+      sortOption: [''],
+    });
   }
 
   ngOnInit(): void {
     this.obtenerMentores();
     this.paginateMentores();
+    this.searchForm.valueChanges.subscribe(() => this.onSearch());
   }
 
   obtenerMentores(): void {
@@ -66,6 +86,7 @@ export class BusquedaComponent implements OnInit {
   }
 
   filterMentores(): void {
+    const formValues = this.searchForm.value;
     this.filteredMentores = this.mentores.filter((mentor) => {
       const matchesCategory =
         this.selectedCategories.length === 0 ||
@@ -81,14 +102,21 @@ export class BusquedaComponent implements OnInit {
       };
 
       // Filtro por Tópico (Buscar tópico)
+      console.log(normalizeString(formValues.searchTopic));
       const matchesTopic =
-        !this.searchTopic ||
+        !formValues.searchTopic ||
         mentor.categorias.some((category) =>
-          normalizeString(category).includes(normalizeString(this.searchTopic))
+          normalizeString(category).includes(
+            normalizeString(formValues.searchTopic)
+          )
         );
 
       const matchesDate = this.isWithinSelectedDateTimeRange(
-        mentor.horariosDisponibles
+        mentor.horariosDisponibles,
+        formValues.startDate,
+        formValues.endDate,
+        formValues.startTime,
+        formValues.endTime
       );
 
       const matchesSessionType =
@@ -104,7 +132,7 @@ export class BusquedaComponent implements OnInit {
         );
 
       const matchesPrice =
-        this.maxPrice === 0 || mentor.tarifaPorHora <= this.maxPrice;
+        !formValues.maxPrice || mentor.tarifaPorHora <= formValues.maxPrice;
 
       return (
         matchesCategory &&
@@ -116,7 +144,7 @@ export class BusquedaComponent implements OnInit {
       );
     });
 
-    this.sortMentores();
+    this.sortMentores(formValues.sortOption);
   }
   roundCalificacion(calificacion: number): number {
     return mathjs.round(calificacion);
@@ -161,14 +189,18 @@ export class BusquedaComponent implements OnInit {
   }
 
   isWithinSelectedDateTimeRange(
-    horariosDisponibles: HorarioDisponible[]
+    horariosDisponibles: HorarioDisponible[],
+    startDate: string,
+    endDate: string,
+    startTime: string,
+    endTime: string
   ): boolean {
-    if (!this.startDate || !this.endDate || !this.startTime || !this.endTime) {
+    if (!startDate || !endDate || !startTime || !endTime) {
       return true;
     }
 
-    const startDateTime = new Date(`${this.startDate}T${this.startTime}`);
-    const endDateTime = new Date(`${this.endDate}T${this.endTime}`);
+    const startDateTime = new Date(`${startDate}T${startTime}`);
+    const endDateTime = new Date(`${endDate}T${endTime}`);
 
     return horariosDisponibles.some((horario) => {
       const horarioStart = new Date(`${horario.fecha}T${horario.inicio}`);
@@ -223,13 +255,16 @@ export class BusquedaComponent implements OnInit {
         .toLowerCase();
 
     this.filteredCategories = this.categories.filter((category) =>
-      normalizeString(category).includes(normalizeString(this.searchCategory))
+      normalizeString(category).includes(
+        normalizeString(this.searchForm.value.searchCategory)
+      )
     );
     this.filterMentores();
     this.paginateMentores();
   }
 
   onMaxPriceChange(event: any): void {
+    // event: any parameter
     // Si el campo de entrada está vacío, establece maxPrice en 0, de lo contrario, usa el valor ingresado
     this.maxPrice = event.target.value ? parseFloat(event.target.value) : 0;
     this.filterMentores();
@@ -261,8 +296,20 @@ export class BusquedaComponent implements OnInit {
     this.paginateMentores();
   }
 
-  sortMentores(): void {
-    switch (this.sortOption) {
+  isSelectedCategory(category: string): boolean {
+    return this.selectedCategories.includes(category);
+  }
+
+  isSelectedSessionType(sessionType: string): boolean {
+    return this.selectedSessionTypes.includes(sessionType);
+  }
+
+  isSelectedRating(rating: number): boolean {
+    return this.selectedRatings.includes(rating);
+  }
+
+  sortMentores(sortOption: string): void {
+    switch (sortOption) {
       case 'rating-asc':
         this.filteredMentores.sort((a, b) => a.calificacion - b.calificacion);
         break;
@@ -292,7 +339,7 @@ export class BusquedaComponent implements OnInit {
 
   onSortChange(event: any): void {
     this.sortOption = event.target.value;
-    this.sortMentores();
+    this.sortMentores(this.sortOption);
     this.paginateMentores();
   }
 }

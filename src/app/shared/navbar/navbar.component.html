@@ -17,7 +17,7 @@
     <!-- Menu del navbar -->
     <div class="collapse navbar-collapse" id="navbarNav">
 
-      <ul class="navbar-nav">
+      <ul class="navbar-nav" *ngIf="!isLoggedIn()">
 
         <!-- El elemento del menu -->
         <li class="nav-item">
@@ -28,6 +28,17 @@
           <a class="nav-link" onclick="location" routerLink='signup'>Registrate</a>
         </li>
 
+      </ul>
+      <ul class="navbar-nav" *ngIf="isLoggedIn()">
+        <button mat-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+
+        <mat-menu #userMenu>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon> Cerrar sesión
+          </button>
+        </mat-menu>
       </ul>
 
     </div>

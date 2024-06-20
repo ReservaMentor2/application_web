@@ -1,10 +1,10 @@
-<div class="container">
+<div class="container" [formGroup]="searchForm">
   <header class="busqueda">
-    <input type="text" placeholder="Buscar tópico (ej. RPA)" [(ngModel)]="searchTopic" class="search-bar">
-    <input type="date" [(ngModel)]="startDate" class="startdate date-picker">
-    <input type="date" [(ngModel)]="endDate" class="enddate date-picker">
-    <input type="time" [(ngModel)]="startTime" class="starttime time-picker">
-    <input type="time" [(ngModel)]="endTime" class="endtime time-picker">
+    <input type="text" placeholder="Buscar tópico (ej. RPA)" formControlName="searchTopic" class="search-bar">
+    <input type="date" formControlName="startDate" class="startdate date-picker">
+    <input type="date" formControlName="endDate" class="enddate date-picker">
+    <input type="time" formControlName="startTime" class="starttime time-picker">
+    <input type="time" formControlName="endTime" class="endtime time-picker">
     <button (click)="onSearch()" class="search-button">Buscar</button>
   </header>
 
@@ -13,8 +13,8 @@
     <hr>
     <div class="filter-section">
       <h3>Categoría</h3>
-      <input type="text" placeholder="Buscar categorías" [(ngModel)]="searchCategory" (input)="filterCategories()">
-      <ul *ngIf="searchCategory">
+      <input type="text" placeholder="Buscar categorías" formControlName="searchCategory" (input)="filterCategories()">
+      <ul *ngIf="searchForm.value.searchCategory">
         <li *ngFor="let category of filteredCategories">
           <label>
             <input type="checkbox" (change)="toggleCategory(category)"
@@ -45,7 +45,7 @@
     <hr>
     <div class="filter-section">
       <h3>Precio Máximo</h3>
-      <input type="number" [(ngModel)]="maxPrice" (change)="onMaxPriceChange($event)" placeholder="Máximo precio">
+      <input type="number" formControlName="maxPrice" (change)="onMaxPriceChange($event)" placeholder="Máximo precio">
     </div>
     <hr>
     <div class="filter-section">
@@ -59,7 +59,7 @@
     <div class="expert-header">
       <h1>{{ filteredMentores.length }} Expertos Encontrados</h1>
       <div class="sort-container">
-        <select (change)="onSortChange($event)" class="sort-select">
+        <select (change)="onSortChange($event)" formControlName="sortOption" class="sort-select">
           <option class="option" value="">Ordenar por</option>
           <option class="option" value="rating-asc">Calificación Ascendente</option>
           <option class="option" value="rating-desc">Calificación Descendente</option>
