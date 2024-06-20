@@ -3,7 +3,7 @@
   <div class="container-fluid">
 
     <!-- navbar brand (Reserva Mentor)-->
-    <a class="navbar-brand" routerLink="/BusquedaMentores">
+    <a class="navbar-brand" routerLink="busqueda">
       <h1>Reserva <span>Mentor</span></h1>
     </a>
 
@@ -17,17 +17,28 @@
     <!-- Menu del navbar -->
     <div class="collapse navbar-collapse" id="navbarNav">
 
-      <ul class="navbar-nav">
+      <ul class="navbar-nav" *ngIf="!isLoggedIn()">
 
         <!-- El elemento del menu -->
         <li class="nav-item">
-          <a class="nav-link" onclick="location.href='/'">Iniciar Sesion</a>
+          <a class="nav-link" onclick="location" routerLink='/'>Iniciar Sesion</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" onclick="location.href='../register'">Registrate</a>
+          <a class="nav-link" onclick="location" routerLink='signup'>Registrate</a>
         </li>
 
+      </ul>
+      <ul class="navbar-nav" *ngIf="isLoggedIn()">
+        <button mat-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+
+        <mat-menu #userMenu>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon> Cerrar sesión
+          </button>
+        </mat-menu>
       </ul>
 
     </div>

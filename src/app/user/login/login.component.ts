@@ -1,32 +1,62 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+import { LoginRequest } from '../interfaces/login-request.interface';
+import { LoginResponse } from '../interfaces/login-response.interface';
 import { Router } from '@angular/router';
-import { NgForm } from '@angular/forms'
-
-import { AuthRequest } from './../interfaces/auth.interface'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css'],
 })
-
-export class LoginComponent {
-  authRequest: AuthRequest = {};
-
-  private email: string = "test@gmail.com";
+export class LoginComponent implements OnInit {
+  form: FormGroup;
 
   constructor(
-    private router: Router
-  ) { }
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
+  }
 
-  login(form: NgForm) {
-    if (form.invalid) {
+  ngOnInit(): void {}
+
+  login(): void {
+    if (this.form.invalid) {
       return;
     }
-    console.log(this.authRequest);
 
-    if (form.value.email == this.email && form.value.password == "123456") {
-      this.router.navigate(['busqueda']);
-    }
+    const credentials: LoginRequest = this.form.value;
+
+    this.authService.login(credentials).subscribe({
+      next: (response: LoginResponse) => {
+        // this.authService.setLoggedIn(); // Almacenar estado de inicio de sesión en localStorage
+        this.showSnackBar('Inicio de sesión exitoso');
+        this.router.navigate(['/busqueda']); // Redirigir a la página de inicio
+      },
+      error: (error) => {
+        console.error('Error en el inicio de sesión:', error);
+        this.showSnackBar(
+          'Error en el inicio de sesión. Por favor, intenta de nuevo.'
+        );
+      },
+    });
+  }
+
+  controlHasError(control: string, error: string) {
+    return this.form.controls[control].hasError(error);
+  }
+
+  private showSnackBar(message: string): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000,
+    });
   }
 }

@@ -1,20 +1,21 @@
-import { Component, inject } from '@angular/core';
-import {Router} from '@angular/router'
-import {MatToolbarModule} from '@angular/material/toolbar'
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../user/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
-
 export class NavbarComponent {
-
-  private router = inject(Router);
+  constructor(private authService: AuthService, private router: Router) {}
 
   logout(): void {
-    this.router.navigate(['/'])
+    this.authService.logout();
+    this.router.navigate(['busqueda']);
   }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
 }
