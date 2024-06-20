@@ -7,7 +7,6 @@ import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
-import * as math from 'mathjs';
 import { create, all } from 'mathjs';
 @Component({
   selector: 'app-busqueda',
@@ -45,12 +44,12 @@ export class BusquedaComponent implements OnInit {
   constructor(private mentorService: MentorService, private http: HttpClient) {
     this.mentorService = new MentorService(http);
     this.obtenerMentores();
-    this.filterMentores1();
+    this.filterMentores();
     this.paginateMentores();
   }
 
   ngOnInit(): void {
-    this.filterMentores1();
+    this.filterMentores();
     this.paginateMentores();
   }
 
@@ -71,7 +70,7 @@ export class BusquedaComponent implements OnInit {
 
   onSearch(): void {
     this.currentPage = 1;
-    this.filterMentores1();
+    this.filterMentores();
     this.paginateMentores();
   }
 
@@ -149,7 +148,59 @@ export class BusquedaComponent implements OnInit {
         this.inverseDocumentFrequency(term)
     );
   }
+  filterMentores(): void {
+    this.filteredMentores = this.mentores.filter((mentor) => {
+      const matchesCategory =
+        this.selectedCategories.length === 0 ||
+        this.selectedCategories.some((category) =>
+          mentor.categorias.includes(category)
+        );
 
+      const normalizeString = (str: string): string => {
+        return str
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase();
+      };
+
+      // Filtro por Tópico (Buscar tópico)
+      const matchesTopic =
+        !this.searchTopic ||
+        mentor.categorias.some((category) =>
+          normalizeString(category).includes(normalizeString(this.searchTopic))
+        );
+
+      const matchesDate = this.isWithinSelectedDateTimeRange(
+        mentor.horariosDisponibles
+      );
+
+      const matchesSessionType =
+        this.selectedSessionTypes.length === 0 ||
+        this.selectedSessionTypes.some((type) =>
+          mentor.tiposSesiones.includes(type)
+        );
+
+      const matchesRating =
+        this.selectedRatings.length === 0 ||
+        this.selectedRatings.some(
+          (rating) => Math.round(mentor.calificacion) === rating
+        );
+
+      const matchesPrice =
+        this.maxPrice === 0 || mentor.tarifaPorHora <= this.maxPrice;
+
+      return (
+        matchesCategory &&
+        matchesTopic &&
+        matchesDate &&
+        matchesSessionType &&
+        matchesRating &&
+        matchesPrice
+      );
+    });
+
+    this.sortMentores();
+  }
   filterMentores1(): void {
     const query = this.normalizeString(this.searchTopic).trim();
     const queryVector = this.createQueryVector(query);
@@ -298,7 +349,7 @@ export class BusquedaComponent implements OnInit {
     } else {
       this.selectedCategories.push(category);
     }
-    this.filterMentores1();
+    this.filterMentores();
     this.changePage(1);
   }
 
@@ -306,7 +357,7 @@ export class BusquedaComponent implements OnInit {
     this.selectedCategories = this.selectedCategories.filter(
       (cat) => cat !== category
     );
-    this.filterMentores1();
+    this.filterMentores();
     this.paginateMentores();
   }
 
@@ -320,14 +371,14 @@ export class BusquedaComponent implements OnInit {
     this.filteredCategories = this.categories.filter((category) =>
       normalizeString(category).includes(normalizeString(this.searchCategory))
     );
-    this.filterMentores1();
+    this.filterMentores();
     this.paginateMentores();
   }
 
   onMaxPriceChange(event: any): void {
     // Si el campo de entrada está vacío, establece maxPrice en 0, de lo contrario, usa el valor ingresado
     this.maxPrice = event.target.value ? parseFloat(event.target.value) : 0;
-    this.filterMentores1();
+    this.filterMentores();
     this.changePage(1);
     this.paginateMentores();
   }
@@ -340,7 +391,7 @@ export class BusquedaComponent implements OnInit {
     } else {
       this.selectedSessionTypes.push(sessionType);
     }
-    this.filterMentores1();
+    this.filterMentores();
     this.changePage(1);
     this.paginateMentores();
   }
@@ -351,7 +402,7 @@ export class BusquedaComponent implements OnInit {
     } else {
       this.selectedRatings.push(rating);
     }
-    this.filterMentores1();
+    this.filterMentores();
     this.changePage(1);
     this.paginateMentores();
   }
