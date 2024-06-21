@@ -64,8 +64,9 @@ export class BusquedaComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerMentores();
-    this.paginateMentores();
     this.searchForm.valueChanges.subscribe(() => this.onSearch());
+    this.filterMentores();
+    this.paginateMentores();
   }
 
   obtenerMentores(): void {
@@ -77,6 +78,7 @@ export class BusquedaComponent implements OnInit {
           new Set(data.flatMap((mentor) => mentor.categorias))
         );
         console.log(this.mentores);
+        console.log(this.filteredMentores);
       },
       (error) => {
         console.error('Error al obtener mentores:', error);
@@ -166,6 +168,31 @@ export class BusquedaComponent implements OnInit {
   }
   filterMentores(): void {
     const formValues = this.searchForm.value;
+    console.log(formValues);
+    const query = this.normalizeString(formValues.searchTopic).trim();
+    const queryVector = this.createQueryVector(query);
+    console.log('Query Vector:', queryVector);
+
+    this.filteredMentores = this.mentores
+      .map((mentor) => {
+        const similarity = this.calculateCosineSimilarity(queryVector, mentor);
+        console.log(`Similitud con ${mentor.nombre}: ${similarity}`);
+        return {
+          mentor,
+          similarity,
+        };
+      })
+      .filter(({ similarity }) => similarity >= 0.1)
+      .sort((a, b) => b.similarity - a.similarity)
+      .map(({ mentor }) => mentor);
+
+    this.filterByAdditionalCriteria();
+    this.sortMentores(formValues.sortOption);
+    this.paginateMentores();
+  }
+
+  filterByAdditionalCriteria(): void {
+    const formValues = this.searchForm.value;
     this.filteredMentores = this.mentores.filter((mentor) => {
       const matchesCategory =
         this.selectedCategories.length === 0 ||
@@ -225,75 +252,6 @@ export class BusquedaComponent implements OnInit {
 
     this.sortMentores(formValues.sortOption);
   }
-  filterMentores1(): void {
-    const formValues = this.searchForm.value;
-
-    const query = this.normalizeString(this.searchTopic).trim();
-    const queryVector = this.createQueryVector(query);
-    console.log('Query Vector:', queryVector);
-
-    this.filteredMentores = this.mentores
-      .map((mentor) => {
-        const similarity = this.calculateCosineSimilarity(queryVector, mentor);
-        console.log(`Similitud con ${mentor.nombre}: ${similarity}`);
-        return {
-          mentor,
-          similarity,
-        };
-      })
-      .filter(({ similarity }) => similarity >= 0.1)
-      .sort((a, b) => b.similarity - a.similarity)
-      .map(({ mentor }) => mentor);
-
-    this.filterByAdditionalCriteria();
-    this.sortMentores(formValues.sortOption);
-    this.paginateMentores();
-  }
-
-  filterByAdditionalCriteria(): void {
-    const formValues = this.searchForm.value;
-
-    this.filteredMentores = this.filteredMentores.filter((mentor) => {
-      const matchesCategory =
-        this.selectedCategories.length === 0 ||
-        this.selectedCategories.some((category) =>
-          mentor.categorias.includes(category)
-        );
-
-      const matchesDate = this.isWithinSelectedDateTimeRange(
-        mentor.horariosDisponibles,
-        formValues.startDate,
-        formValues.endDate,
-        formValues.startTime,
-        formValues.endTime
-      );
-
-      const matchesSessionType =
-        this.selectedSessionTypes.length === 0 ||
-        this.selectedSessionTypes.some((type) =>
-          mentor.tiposSesiones.includes(type)
-        );
-
-      const matchesRating =
-        this.selectedRatings.length === 0 ||
-        this.selectedRatings.some(
-          (rating) => Math.round(mentor.calificacion) === rating
-        );
-
-      const matchesPrice =
-        !formValues.maxPrice || mentor.tarifaPorHora <= formValues.maxPrice;
-
-      return (
-        matchesCategory &&
-        matchesDate &&
-        matchesSessionType &&
-        matchesRating &&
-        matchesPrice
-      );
-    });
-
-    this.sortMentores(formValues.sortOption);
-  }
 
   roundCalificacion(calificacion: number): number {
     return Math.round(calificacion);
@@ -318,6 +276,7 @@ export class BusquedaComponent implements OnInit {
       startIndex + this.pageSize,
       this.filteredMentores.length
     );
+    console.log('hola esto existe', this.filteredMentores);
 
     if (this.filteredMentores.length > 0) {
       this.filteredMentoresSlice = this.filteredMentores.slice(
