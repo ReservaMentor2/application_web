@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MentorService } from '../../services/mentor.service';
+import { Router } from '@angular/router';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule, NgForOf, NgIf } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { FooterComponent } from '../../shared/footer/footer.component';
-import * as mathjs from 'mathjs';
+import { create, all } from 'mathjs';
 @Component({
   selector: 'app-busqueda',
-  standalone: true,
-  imports: [NavbarComponent, FooterComponent, NgIf, NgForOf, FormsModule],
-  providers: [CommonModule, BrowserModule],
   templateUrl: './busqueda.component.html',
   styleUrls: ['./busqueda.component.css'],
 })
@@ -34,22 +28,44 @@ export class BusquedaComponent implements OnInit {
   endTime: string = '';
   selectedSessionTypes: string[] = [];
   maxPrice: number = 0;
+  private math = create(all);
 
-  // Estado para la paginación
+  // Estado para la paginacion
   currentPage: number = 1;
   pageSize: number = 5;
   totalPages: number = 0;
 
-  constructor(private mentorService: MentorService, private http: HttpClient) {
+  // Formulario Reactivo
+  searchForm: FormGroup;
+
+  constructor(
+    private mentorService: MentorService,
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private router: Router
+  ) {
     this.mentorService = new MentorService(http);
-    this.obtenerMentores();
-    this.filterMentores();
-    this.paginateMentores();
+    this.searchForm = this.fb.group({
+      searchTopic: [''],
+      startDate: [''],
+      endDate: [''],
+      startTime: [''],
+      endTime: [''],
+      searchCategory: [''],
+      maxPrice: [0],
+      sortOption: [''],
+    });
+  }
+
+  navigateToRoute(indexMentor: number) {
+    this.router.navigate(['/realizar-reserva', indexMentor - 1]);
+    console.log(indexMentor);
   }
 
   ngOnInit(): void {
-    this.filterMentores();
+    this.obtenerMentores();
     this.paginateMentores();
+    this.searchForm.valueChanges.subscribe(() => this.onSearch());
   }
 
   obtenerMentores(): void {
@@ -60,19 +76,96 @@ export class BusquedaComponent implements OnInit {
         this.categories = Array.from(
           new Set(data.flatMap((mentor) => mentor.categorias))
         );
+        console.log(this.mentores);
       },
       (error) => {
         console.error('Error al obtener mentores:', error);
       }
     );
   }
+
   onSearch(): void {
     this.currentPage = 1;
     this.filterMentores();
     this.paginateMentores();
   }
 
+  normalizeString = (str: string): string => {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  };
+
+  // Crea el vector del query normalizando y tokenizando
+  createQueryVector(query: string): number[] {
+    const allTerms = this.getAllTerms();
+    return allTerms.map(
+      (term) =>
+        this.termFrequency(term, query) * this.inverseDocumentFrequency(term)
+    );
+  }
+
+  // Obtiene todos los términos únicos de los nombres y descripciones de los mentores
+  getAllTerms(): string[] {
+    const terms = new Set<string>();
+    this.mentores.forEach((mentor) => {
+      this.tokenize(mentor.nombre).forEach((term) => terms.add(term));
+      this.tokenize(mentor.descripcion).forEach((term) => terms.add(term));
+    });
+    return Array.from(terms);
+  }
+
+  // Tokeniza el texto en un arreglo de palabras normalizadas
+  tokenize(text: string): string[] {
+    return this.normalizeString(text)
+      .split(/\W+/)
+      .filter((term) => term.length > 0);
+  }
+
+  // Calcula la frecuencia de un término en un texto
+  termFrequency(term: string, text: string): number {
+    const tokens = this.tokenize(text);
+    const count = tokens.filter((t) => t === term).length;
+    return count / tokens.length;
+  }
+
+  // Calcula la frecuencia inversa de documentos
+  inverseDocumentFrequency(term: string): number {
+    const numDocumentsWithTerm = this.mentores.filter((mentor) =>
+      this.tokenize(mentor.nombre + ' ' + mentor.descripcion).includes(term)
+    ).length;
+    return 1 + Math.log(this.mentores.length / (numDocumentsWithTerm + 1));
+  }
+
+  // Calcula la similitud del coseno entre el query y el mentor
+  calculateCosineSimilarity(queryVector: number[], mentor: Mentor): number {
+    const docVector = this.createDocumentVector(mentor);
+    const dotProduct = queryVector.reduce(
+      (sum, qVal, i) => sum + qVal * docVector[i],
+      0
+    );
+    const normQuery = Math.sqrt(
+      queryVector.reduce((sum, qVal) => sum + qVal * qVal, 0)
+    );
+    const normDoc = Math.sqrt(
+      docVector.reduce((sum, dVal) => sum + dVal * dVal, 0)
+    );
+    return dotProduct / (normQuery * normDoc);
+  }
+
+  // Crea el vector del mentor normalizando y tokenizando
+  createDocumentVector(mentor: Mentor): number[] {
+    const allTerms = this.getAllTerms();
+    const combinedText = mentor.nombre + ' ' + mentor.descripcion;
+    return allTerms.map(
+      (term) =>
+        this.termFrequency(term, combinedText) *
+        this.inverseDocumentFrequency(term)
+    );
+  }
   filterMentores(): void {
+    const formValues = this.searchForm.value;
     this.filteredMentores = this.mentores.filter((mentor) => {
       const matchesCategory =
         this.selectedCategories.length === 0 ||
@@ -88,14 +181,21 @@ export class BusquedaComponent implements OnInit {
       };
 
       // Filtro por Tópico (Buscar tópico)
+      console.log(normalizeString(formValues.searchTopic));
       const matchesTopic =
-        !this.searchTopic ||
+        !formValues.searchTopic ||
         mentor.categorias.some((category) =>
-          normalizeString(category).includes(normalizeString(this.searchTopic))
+          normalizeString(category).includes(
+            normalizeString(formValues.searchTopic)
+          )
         );
 
       const matchesDate = this.isWithinSelectedDateTimeRange(
-        mentor.horariosDisponibles
+        mentor.horariosDisponibles,
+        formValues.startDate,
+        formValues.endDate,
+        formValues.startTime,
+        formValues.endTime
       );
 
       const matchesSessionType =
@@ -111,7 +211,7 @@ export class BusquedaComponent implements OnInit {
         );
 
       const matchesPrice =
-        this.maxPrice === 0 || mentor.tarifaPorHora <= this.maxPrice;
+        !formValues.maxPrice || mentor.tarifaPorHora <= formValues.maxPrice;
 
       return (
         matchesCategory &&
@@ -123,11 +223,82 @@ export class BusquedaComponent implements OnInit {
       );
     });
 
-    this.sortMentores();
+    this.sortMentores(formValues.sortOption);
   }
+  filterMentores1(): void {
+    const formValues = this.searchForm.value;
+
+    const query = this.normalizeString(this.searchTopic).trim();
+    const queryVector = this.createQueryVector(query);
+    console.log('Query Vector:', queryVector);
+
+    this.filteredMentores = this.mentores
+      .map((mentor) => {
+        const similarity = this.calculateCosineSimilarity(queryVector, mentor);
+        console.log(`Similitud con ${mentor.nombre}: ${similarity}`);
+        return {
+          mentor,
+          similarity,
+        };
+      })
+      .filter(({ similarity }) => similarity >= 0.1)
+      .sort((a, b) => b.similarity - a.similarity)
+      .map(({ mentor }) => mentor);
+
+    this.filterByAdditionalCriteria();
+    this.sortMentores(formValues.sortOption);
+    this.paginateMentores();
+  }
+
+  filterByAdditionalCriteria(): void {
+    const formValues = this.searchForm.value;
+
+    this.filteredMentores = this.filteredMentores.filter((mentor) => {
+      const matchesCategory =
+        this.selectedCategories.length === 0 ||
+        this.selectedCategories.some((category) =>
+          mentor.categorias.includes(category)
+        );
+
+      const matchesDate = this.isWithinSelectedDateTimeRange(
+        mentor.horariosDisponibles,
+        formValues.startDate,
+        formValues.endDate,
+        formValues.startTime,
+        formValues.endTime
+      );
+
+      const matchesSessionType =
+        this.selectedSessionTypes.length === 0 ||
+        this.selectedSessionTypes.some((type) =>
+          mentor.tiposSesiones.includes(type)
+        );
+
+      const matchesRating =
+        this.selectedRatings.length === 0 ||
+        this.selectedRatings.some(
+          (rating) => Math.round(mentor.calificacion) === rating
+        );
+
+      const matchesPrice =
+        !formValues.maxPrice || mentor.tarifaPorHora <= formValues.maxPrice;
+
+      return (
+        matchesCategory &&
+        matchesDate &&
+        matchesSessionType &&
+        matchesRating &&
+        matchesPrice
+      );
+    });
+
+    this.sortMentores(formValues.sortOption);
+  }
+
   roundCalificacion(calificacion: number): number {
-    return mathjs.round(calificacion);
+    return Math.round(calificacion);
   }
+
   formatHorario(horario: {
     fecha: string;
     inicio: string;
@@ -168,14 +339,18 @@ export class BusquedaComponent implements OnInit {
   }
 
   isWithinSelectedDateTimeRange(
-    horariosDisponibles: HorarioDisponible[]
+    horariosDisponibles: HorarioDisponible[],
+    startDate: string,
+    endDate: string,
+    startTime: string,
+    endTime: string
   ): boolean {
-    if (!this.startDate || !this.endDate || !this.startTime || !this.endTime) {
+    if (!startDate || !endDate || !startTime || !endTime) {
       return true;
     }
 
-    const startDateTime = new Date(`${this.startDate}T${this.startTime}`);
-    const endDateTime = new Date(`${this.endDate}T${this.endTime}`);
+    const startDateTime = new Date(`${startDate}T${startTime}`);
+    const endDateTime = new Date(`${endDate}T${endTime}`);
 
     return horariosDisponibles.some((horario) => {
       const horarioStart = new Date(`${horario.fecha}T${horario.inicio}`);
@@ -230,13 +405,16 @@ export class BusquedaComponent implements OnInit {
         .toLowerCase();
 
     this.filteredCategories = this.categories.filter((category) =>
-      normalizeString(category).includes(normalizeString(this.searchCategory))
+      normalizeString(category).includes(
+        normalizeString(this.searchForm.value.searchCategory)
+      )
     );
     this.filterMentores();
     this.paginateMentores();
   }
 
   onMaxPriceChange(event: any): void {
+    // event: any parameter
     // Si el campo de entrada está vacío, establece maxPrice en 0, de lo contrario, usa el valor ingresado
     this.maxPrice = event.target.value ? parseFloat(event.target.value) : 0;
     this.filterMentores();
@@ -268,8 +446,20 @@ export class BusquedaComponent implements OnInit {
     this.paginateMentores();
   }
 
-  sortMentores(): void {
-    switch (this.sortOption) {
+  isSelectedCategory(category: string): boolean {
+    return this.selectedCategories.includes(category);
+  }
+
+  isSelectedSessionType(sessionType: string): boolean {
+    return this.selectedSessionTypes.includes(sessionType);
+  }
+
+  isSelectedRating(rating: number): boolean {
+    return this.selectedRatings.includes(rating);
+  }
+
+  sortMentores(sortOption: string): void {
+    switch (sortOption) {
       case 'rating-asc':
         this.filteredMentores.sort((a, b) => a.calificacion - b.calificacion);
         break;
@@ -299,7 +489,7 @@ export class BusquedaComponent implements OnInit {
 
   onSortChange(event: any): void {
     this.sortOption = event.target.value;
-    this.sortMentores();
+    this.sortMentores(this.sortOption);
     this.paginateMentores();
   }
 }
