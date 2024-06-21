@@ -19,6 +19,7 @@ import {
 } from '@angular/common/http';
 import { UserModule } from './user/user.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CounselingModule } from './counseling/counseling.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RouterOutlet,
     FormsModule,
     UserModule,
+    CounselingModule,
   ],
   providers: [
     provideAnimationsAsync(),

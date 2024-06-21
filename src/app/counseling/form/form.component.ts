@@ -13,5 +13,10 @@ export class FormComponent {
 
   onSubmit() {
     console.log('Submitted form data:', this.formData);
+
+    this.formData = {
+      title: '',
+      concern: '',
+    };
   }
 }

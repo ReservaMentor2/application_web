@@ -1,1 +1,25 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  height: 50%;
+}
 
+.form-container {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.text-container {
+  flex: 1;
+}
+
+h1,
+label {
+  font-family: "Playfair Display";
+}
+
+button,
+input {
+  margin-top: 15px;
+}
