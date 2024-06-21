@@ -1,0 +1,81 @@
+{
+  "accounts": [
+    {
+      "id": 1,
+      "accountNumber": "12345678",
+      "balance": 15000
+    },
+    {
+      "id": 2,
+      "accountNumber": "13345678",
+      "balance": 25000
+    },
+    {
+      "id": 3,
+      "accountNumber": "56565656565",
+      "balance": 15000
+    },
+    {
+      "id": 4,
+      "accountNumber": "57865656565",
+      "balance": 25000
+    },
+    {
+      "id": 5,
+      "accountNumber": "4444444444",
+      "balance": "1239494"
+    },
+    {
+      "id": 6,
+      "accountNumber": "qqweqweqweqeqeqwewqeqwe",
+      "balance": "-1"
+    },
+    {
+      "id": 7,
+      "accountNumber": "1111111111",
+      "balance": "1233"
+    }
+  ],
+  "customers": [
+    {
+      "id": 1,
+      "name": "Henry Antonio Mendoza Puerta",
+      "email": "hmendo81@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Jane Doe",
+      "email": "jane@example.com"
+    },
+    {
+      "firstName": "ibrahim imanol jordi",
+      "lastName": "arquinigo jacinto",
+      "email": "imanolaij@gmail.com",
+      "password": "password123456@",
+      "id": 3
+    },
+    {
+      "firstName": "ibrahim imanol jordi",
+      "lastName": "arquinigo jacinto",
+      "email": "imanolaij@gmail.com",
+      "password": "password123456@",
+      "id": 4
+    },
+    {
+      "firstName": "pablo",
+      "lastName": "leandro campos",
+      "email": "pablo@gmail.com",
+      "password": "password123456@",
+      "id": 5
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "accountId": 1,
+      "customerId": 1,
+      "amount": 500,
+      "description": "Compra en tienda X"
+    }
+  ]
+}
