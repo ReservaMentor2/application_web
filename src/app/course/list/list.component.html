@@ -1,0 +1,10 @@
+<p>list works!</p>
+<div class="container list">
+  @for (item of items; track $index) {
+  <div class="item">
+    <h2>{{ item.title }}</h2>
+    <p>{{ item.duration }} — {{ item.author }}</p>
+    <button (click)="send(item)">Ver detalle</button>
+  </div>
+  }
+</div>

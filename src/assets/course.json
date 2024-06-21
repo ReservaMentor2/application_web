@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Estrategias y recursos para enseñar y aprender",
+    "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "duration": "4 horas 18 minutos",
+    "author": "ReservaMentor"
+  },
+  {
+    "id": 2,
+    "title": "Cómo fomentar el pensamiento crítico y creativo",
+    "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "duration": "2 horas 30 minutos",
+    "author": "ReservaMentor"
+  },
+  {
+    "id": 3,
+    "title": "Estrategias para enseñar vocabulario y gramática en inglés",
+    "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "duration": "6 horas 11 minutos",
+    "author": "ReservaMentor"
+  }
+]

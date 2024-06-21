@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: 'realizar-reserva/:index', component: RealizarReservaComponent },
   {
     path: '',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    loadChildren: () =>
+      import('./course/course.module').then((m) => m.CourseModule),
   },
 ];
 
