@@ -8,9 +8,13 @@ const routes: Routes = [
   { path: 'busqueda', component: BusquedaComponent },
   { path: 'realizar-reserva/:index', component: RealizarReservaComponent },
   {
-    path: '',
+    path: 'counseling',
     loadChildren: () =>
       import('./counseling/counseling.module').then((m) => m.CounselingModule),
+  },
+  {
+    path: '',
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
   },
 ];
 
