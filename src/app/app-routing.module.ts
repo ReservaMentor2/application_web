@@ -8,6 +8,11 @@ const routes: Routes = [
   { path: 'busqueda', component: BusquedaComponent },
   { path: 'realizar-reserva/:index', component: RealizarReservaComponent },
   {
+    path: 'counseling',
+    loadChildren: () =>
+      import('./counseling/counseling.module').then((m) => m.CounselingModule),
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./course/course.module').then((m) => m.CourseModule),
