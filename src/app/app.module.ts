@@ -39,6 +39,7 @@ import { CounselingModule } from './counseling/counseling.module';
     FormsModule,
     UserModule,
     CounselingModule,
+    CourseModule,
   ],
   providers: [
     provideAnimationsAsync(),
