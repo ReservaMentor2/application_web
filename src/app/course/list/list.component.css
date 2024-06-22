@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 10px;
   margin-bottom: 70px;
+  font-family: "Playfair Display";
 }
 
 .item {
@@ -19,4 +20,8 @@ button {
   color: whitesmoke;
   background-color: #00540d;
   padding: 5px;
+}
+
+h2 {
+  font-family: "Playfair Display";
 }

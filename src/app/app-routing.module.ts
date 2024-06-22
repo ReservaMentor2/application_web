@@ -22,6 +22,10 @@ const routes: Routes = [
     redirectTo: 'course',
     pathMatch: 'full',
   },
+  {
+    path: '',
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+  },
 ];
 
 @NgModule({
