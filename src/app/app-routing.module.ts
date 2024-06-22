@@ -13,9 +13,14 @@ const routes: Routes = [
       import('./counseling/counseling.module').then((m) => m.CounselingModule),
   },
   {
-    path: '',
+    path: 'mentor',
     loadChildren: () =>
       import('./mentor/mentor.module').then((m) => m.MentorModule),
+  },
+  {
+    path: '',
+    redirectTo: 'counseling',
+    pathMatch: 'full',
   },
 ];
 
