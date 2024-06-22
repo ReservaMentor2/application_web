@@ -7,8 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 
 import { ProfileComponent } from './profile/profile.component';
-import { NavbarComponent } from '../shared/navbar/navbar.component';
-import { FooterComponent } from '../shared/footer/footer.component';
 
 @NgModule({
   declarations: [ProfileComponent],
@@ -16,8 +14,6 @@ import { FooterComponent } from '../shared/footer/footer.component';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    NavbarComponent,
-    FooterComponent,
     MaterialModule,
     MentorRoutingModule,
   ],

@@ -20,6 +20,7 @@ import {
 import { UserModule } from './user/user.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CounselingModule } from './counseling/counseling.module';
+import { MentorModule } from './mentor/mentor.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { CounselingModule } from './counseling/counseling.module';
     FormsModule,
     UserModule,
     CounselingModule,
+    MentorModule,
   ],
   providers: [
     provideAnimationsAsync(),
