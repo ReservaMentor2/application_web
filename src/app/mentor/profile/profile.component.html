@@ -1,86 +1,88 @@
-<div class="user-prof">
-  <div class="pfp">
-    <img src="./assets/pfp.jpg" />
-  </div>
-  <div class="buttons">
-    <button>Ver perfil</button>
-    <button>Editar perfil</button>
-  </div>
-</div>
-<div class="config">
-  <div class="user-info">
-    <h2>Informacion de usuario</h2>
-    <p>Nombres y apellidos: XXXXXX</p>
-    <p>Correo: XXXXXX&#64;email.com</p>
-  </div>
-  <div class="notifs">
-    <h2>Notificaciones</h2>
-    <div class="sessions">
-      <h3>Sesiones</h3>
-      <div class="list">
-        <div>
-          <input type="checkbox" id="canceled" />
-          <label for="canceled"
-            >Recibir notificaciones si la sesion se ha cancelado</label
-          >
-        </div>
-        <div>
-          <input type="checkbox" id="reprogram" />
-          <label for="reprogram"
-            >Recibir notificaciones si la sesion se ha reprogramado</label
-          >
-        </div>
-        <div>
-          <input type="checkbox" id="init" />
-          <label for="init"
-            >Recibir notificaciones si la sesion va a iniciar en 15
-            minutos</label
-          >
-        </div>
-      </div>
+<section class="container">
+  <div class="user-prof">
+    <div class="pfp">
+      <img src="./assets/pfp.jpg" />
     </div>
-    <div class="comments">
-      <h3>Comentarios</h3>
-      <div class="list">
-        <div>
-          <input type="checkbox" id="rating" />
-          <label for="rating"
-            >Recibir notificaciones si la calificacion ha cambiado</label
-          >
-        </div>
-        <div>
-          <input type="checkbox" id="new-comment" />
-          <label for="new-comment"
-            >Recibir notificaciones de nuevos comentarios</label
-          >
+    <div class="buttons-prof">
+      <button>Ver perfil</button>
+      <button>Editar perfil</button>
+    </div>
+  </div>
+  <div class="config">
+    <div class="user-info">
+      <h2>Informacion de usuario</h2>
+      <p>Nombres y apellidos: XXXXXX</p>
+      <p>Correo: XXXXXX&#64;email.com</p>
+    </div>
+    <div class="notifs">
+      <h2>Notificaciones</h2>
+      <div class="sessions">
+        <h3>Sesiones</h3>
+        <div class="list">
+          <div>
+            <input type="checkbox" id="canceled" />
+            <label for="canceled"
+              >Recibir notificaciones si la sesion se ha cancelado</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" id="reprogram" />
+            <label for="reprogram"
+              >Recibir notificaciones si la sesion se ha reprogramado</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" id="init" />
+            <label for="init"
+              >Recibir notificaciones si la sesion va a iniciar en 15
+              minutos</label
+            >
+          </div>
         </div>
       </div>
+      <div class="comments">
+        <h3>Comentarios</h3>
+        <div class="list">
+          <div>
+            <input type="checkbox" id="rating" />
+            <label for="rating"
+              >Recibir notificaciones si la calificacion ha cambiado</label
+            >
+          </div>
+          <div>
+            <input type="checkbox" id="new-comment" />
+            <label for="new-comment"
+              >Recibir notificaciones de nuevos comentarios</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="other">
+        <h3>Otros</h3>
+        <input type="checkbox" id="seminar" />
+        <label for="seminar"
+          >Recibir notificaciones de conferencias y seminarios</label
+        >
+      </div>
     </div>
-    <div class="other">
-      <h3>Otros</h3>
-      <input type="checkbox" id="seminar" />
-      <label for="seminar"
-        >Recibir notificaciones de conferencias y seminarios</label
-      >
+    <div class="account">
+      <div class="password">
+        <h3>Contraseña</h3>
+        <button>Cambiar contraseña</button>
+      </div>
+      <div class="log-out">
+        <h3>Sesion</h3>
+        <button>Cerrar sesion</button>
+      </div>
     </div>
   </div>
-  <div class="account">
-    <div class="password">
-      <h3>Contraseña</h3>
-      <button>Cambiar contraseña</button>
-    </div>
-    <div class="log-out">
-      <h3>Sesion</h3>
-      <button>Cerrar sesion</button>
+  <div class="counseling">
+    <h2>Asesoramiento</h2>
+    <div class="buttons">
+      <button class="get-counseling" (click)="showCounseling()">
+        Recibir asesoramiento
+      </button>
+      <button class="courses">Cursos disponibles</button>
     </div>
   </div>
-</div>
-<div class="counseling">
-  <h2>Asesoramiento</h2>
-  <div class="buttons">
-    <button class="get-counseling" (click)="showCounseling()">
-      Recibir asesoramiento
-    </button>
-    <button class="courses">Cursos disponibles</button>
-  </div>
-</div>
+</section>
