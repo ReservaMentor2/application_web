@@ -12,7 +12,7 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BusquedaComponent } from './components/busqueda/busqueda.component';
 import { MatListModule } from '@angular/material/list';
-
+import { CourseModule } from './course/course.module';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
@@ -20,6 +20,12 @@ import {
 import { UserModule } from './user/user.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CounselingModule } from './counseling/counseling.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faStar as solidStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
+import { MentorModule } from './mentor/mentor.module';
+
+library.add(solidStar, regularStar);
 
 @NgModule({
   declarations: [
@@ -29,6 +35,7 @@ import { CounselingModule } from './counseling/counseling.module';
     BusquedaComponent,
   ],
   imports: [
+    FontAwesomeModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -39,6 +46,7 @@ import { CounselingModule } from './counseling/counseling.module';
     FormsModule,
     UserModule,
     CounselingModule,
+    CourseModule,
   ],
   providers: [
     provideAnimationsAsync(),

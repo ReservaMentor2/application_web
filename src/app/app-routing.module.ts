@@ -13,13 +13,34 @@ const routes: Routes = [
       import('./counseling/counseling.module').then((m) => m.CounselingModule),
   },
   {
+
     path: 'download',
     loadChildren: () =>
       import('./downloads/downloads.module').then((m) => m.DownloadsModule),
+
+    path: 'course',
+    loadChildren: () =>
+      import('./course/course.module').then((m) => m.CourseModule),
+  },
+  {
+    path: 'mentor',
+    loadChildren: () =>
+      import('./mentor/mentor.module').then((m) => m.MentorModule),
+
   },
   {
     path: '',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: '',
+    redirectTo: 'course',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
+    redirectTo: 'counseling',
+    pathMatch: 'full',
   },
 ];
 
