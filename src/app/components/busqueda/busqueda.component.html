@@ -77,6 +77,9 @@
           <option class="option" value="students-desc">
             Estudiantes Ayudados Descendente
           </option>
+          <option class="option" value="students-fav">
+            Favoritos
+          </option>
           <option class="option" value="price-asc">Precio Ascendente</option>
           <option class="option" value="price-desc">Precio Descendente</option>
         </select>
@@ -92,6 +95,12 @@
           <p class="mentor-calificacion">
             {{ "★".repeat(roundCalificacion(mentor.calificacion)) }}
           </p>
+          <fa-icon
+            [icon]="mentor.isFavorite ? solidStar : regularStar"
+            (click)="toggleFavorite(mentor)"
+            [class.favorite-icon]="true"
+            [class.favorite-icon-filled]="mentor.isFavorite"
+          ></fa-icon>
           <h2 class="mentor-nombre">{{ mentor.nombre }}</h2>
           <p class="mentor-descripcion">{{ mentor.descripcion }}</p>
           <p class="mentor-estAyudados">

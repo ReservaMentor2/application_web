@@ -31,3 +31,7 @@ export interface Resenia {
   comentario: string;
   fecha: string;
 }
+
+export interface Mentor {
+  isFavorite?: boolean;
+}

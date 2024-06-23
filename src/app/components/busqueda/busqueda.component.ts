@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { HttpClient } from '@angular/common/http';
 import { create, all } from 'mathjs';
+import { faStar as solidStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-busqueda',
   templateUrl: './busqueda.component.html',
@@ -29,6 +31,8 @@ export class BusquedaComponent implements OnInit {
   selectedSessionTypes: string[] = [];
   maxPrice: number = 0;
   private math = create(all);
+  solidStar = solidStar;
+  regularStar = regularStar;
 
   // Estado para la paginacion
   currentPage: number = 1;
@@ -84,6 +88,11 @@ export class BusquedaComponent implements OnInit {
         console.error('Error al obtener mentores:', error);
       }
     );
+  }
+
+  toggleFavorite(mentor: Mentor): void {
+    mentor.isFavorite = !mentor.isFavorite;
+    this.sortMentores(this.searchForm.value.sortOption);
   }
 
   onSearch(): void {
@@ -440,6 +449,17 @@ export class BusquedaComponent implements OnInit {
         break;
       case 'price-desc':
         this.filteredMentores.sort((a, b) => b.tarifaPorHora - a.tarifaPorHora);
+        break;
+      case 'students-fav':
+        this.filteredMentores.sort((a, b) => {
+          if (a.isFavorite && !b.isFavorite) {
+            return -1;
+          }
+          if (!a.isFavorite && b.isFavorite) {
+            return 1;
+          }
+          return 0;
+        });
         break;
       default:
         break;
