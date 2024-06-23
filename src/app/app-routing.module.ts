@@ -18,13 +18,23 @@ const routes: Routes = [
       import('./course/course.module').then((m) => m.CourseModule),
   },
   {
+    path: 'mentor',
+    loadChildren: () =>
+      import('./mentor/mentor.module').then((m) => m.MentorModule),
+  },
+  {
+    path: '',
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+  },
+  {
     path: '',
     redirectTo: 'course',
     pathMatch: 'full',
   },
   {
     path: '',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    redirectTo: 'counseling',
+    pathMatch: 'full',
   },
 ];
 
