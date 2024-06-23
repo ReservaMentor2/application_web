@@ -12,4 +12,8 @@ export class ProfileComponent {
   showCounseling() {
     this.router.navigate(['/counseling']);
   }
+
+  showCourse() {
+    this.router.navigate(['/course']);
+  }
 }
