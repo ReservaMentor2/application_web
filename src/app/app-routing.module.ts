@@ -15,11 +15,11 @@ const routes: Routes = [
   },
   { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
   {
-
     path: 'download',
     loadChildren: () =>
       import('./downloads/downloads.module').then((m) => m.DownloadsModule),
-
+  },
+  {
     path: 'course',
     loadChildren: () =>
       import('./course/course.module').then((m) => m.CourseModule),
