@@ -10,7 +10,8 @@
     <p>Calificación: {{ mentores[index].calificacion }}</p>
     <p>Estudiantes ayudados: {{ mentores[index].estudiantesAyudados }}</p>
     <h4>Horarios disponibles:</h4>
-    <select (change)="onHorarioChange($event)">
+    <select [(ngModel)]="horarioSeleccionado">
+      <option value="">Selecciona un horario</option>
       <option
         *ngFor="let horario of mentores[index].horariosDisponibles"
         [value]="horario.fecha + ' ' + horario.inicio + ' ' + horario.fin"
@@ -21,11 +22,8 @@
 
     <div *ngIf="horarioSeleccionado">
       <h5>Horario seleccionado:</h5>
-      <p>
-        {{ horarioSeleccionado.fecha }}: {{ horarioSeleccionado.inicio }} -
-        {{ horarioSeleccionado.fin }}
-      </p>
+      <p>{{ horarioSeleccionado }}</p>
     </div>
-    <button>Reservar Mentoria</button>
+    <button (click)="reservarMentoria()">Reservar Mentoria</button>
   </div>
 </div>

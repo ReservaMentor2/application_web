@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BusquedaComponent } from './components/busqueda/busqueda.component';
 import { authGuard } from './user/helpers/admin.guard';
 import { RealizarReservaComponent } from './components/realizar-reserva/realizar-reserva.component';
+import { DetallesMentoriaComponent } from './components/detalles-mentoria/detalles-mentoria.component'
 
 const routes: Routes = [
   { path: 'busqueda', component: BusquedaComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./counseling/counseling.module').then((m) => m.CounselingModule),
   },
+  { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
   {
 
     path: 'download',
