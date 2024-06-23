@@ -1,22 +1,32 @@
-.view{
-    display: flex;
+*{
+    font-family: "Playfair Display";
 }
 
-.boxSesion{
-    border: 1px solid #00540D;
-    display: flex;
-    flex-direction: column;
-    margin-right: 5px;
-    margin-left: 5px;
+.view {
+  display: flex;
 }
 
-.opciones{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.boxSesion {
+  border: 1px solid #00540d;
+  display: flex;
+  flex-direction: column;
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-bottom: 10px;
 }
 
-button{
-    all: unset; 
+.informacionSesion{
+    margin: 10px 5px 10px 5px;
+}
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  all: unset;
+  color: #00540d;
 }
