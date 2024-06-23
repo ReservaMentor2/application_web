@@ -8,10 +8,24 @@
     </div>
     <div class="opciones">
       <button>Ingresar a la sesion</button>
-      <button>Reprogramar sesion</button>
+      <button (click)="iniciarReprogramacion(i)">Reprogramar sesion</button>
       <button>Participantes</button>
       <button (click)="confirmarEliminacion(i)">Cancelar sesion</button>
       <button>Archivos de la sesion</button>
+    </div>
+    <div *ngIf="sesionAReprogramar === i" class="reprogramacion">
+      <h4>Reprogramar sesión</h4>
+      <select [(ngModel)]="horarioSeleccionado">
+        <option value="">Selecciona un nuevo horario</option>
+        <option
+          *ngFor="let horario of obtenerHorariosDisponibles(sesion.mentor)"
+          [value]="horario.fecha + ' ' + horario.inicio + ' ' + horario.fin"
+        >
+          {{ horario.fecha }}: {{ horario.inicio }} - {{ horario.fin }}
+        </option>
+      </select>
+      <button (click)="confirmarReprogramacion()">Confirmar</button>
+      <button (click)="cancelarReprogramacion()">Cancelar</button>
     </div>
   </div>
 </div>

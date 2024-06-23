@@ -1,5 +1,5 @@
-*{
-    font-family: "Playfair Display";
+* {
+  font-family: "Playfair Display";
 }
 
 .view {
@@ -15,8 +15,8 @@
   margin-bottom: 10px;
 }
 
-.informacionSesion{
-    margin: 10px 5px 10px 5px;
+.informacionSesion {
+  margin: 10px 5px 10px 5px;
 }
 
 .opciones {
@@ -28,5 +28,6 @@
 
 button {
   all: unset;
+  cursor: pointer;
   color: #00540d;
 }
