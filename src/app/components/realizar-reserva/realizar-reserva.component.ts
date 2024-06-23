@@ -3,7 +3,6 @@ import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import * as mentorData from '../../../assets/mentores-list.json';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-realizar-reserva',

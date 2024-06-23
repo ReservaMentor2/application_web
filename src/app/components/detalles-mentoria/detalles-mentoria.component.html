@@ -1,0 +1,17 @@
+<div class="view">
+  <div *ngFor="let sesion of sesiones" class="boxSesion">
+    <div class="informacionSesion">
+      <strong>Sesion:</strong> {{ sesion.sesion }} <br />
+      <strong>Mentor: </strong>{{ sesion.mentor }}<br />
+      <strong>Dia:</strong> {{ sesion.dia }}<br />
+      <strong>Horario: </strong>{{ sesion.horario }}<br />
+    </div>
+    <div class="opciones">
+      <button>Ingresar a la sesion</button>
+      <button>Reprogramar sesion</button>
+      <button>Participantes</button>
+      <button>Cancelar sesion</button>
+      <button>Archivos de la sesion</button>
+    </div>
+  </div>
+</div>
