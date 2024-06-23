@@ -12,7 +12,7 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BusquedaComponent } from './components/busqueda/busqueda.component';
 import { MatListModule } from '@angular/material/list';
-
+import { CourseModule } from './course/course.module';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
@@ -40,7 +40,7 @@ import { MentorModule } from './mentor/mentor.module';
     FormsModule,
     UserModule,
     CounselingModule,
-    MentorModule,
+    CourseModule,
   ],
   providers: [
     provideAnimationsAsync(),

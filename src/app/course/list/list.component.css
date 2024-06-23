@@ -1,0 +1,27 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 70px;
+  font-family: "Playfair Display";
+}
+
+.item {
+  display: block;
+  border: 2px solid #00540d;
+  padding: 10px;
+  border-radius: 20px;
+  margin-bottom: 45px;
+}
+
+button {
+  border-radius: 10px;
+  border: none;
+  color: whitesmoke;
+  background-color: #00540d;
+  padding: 5px;
+}
+
+h2 {
+  font-family: "Playfair Display";
+}
