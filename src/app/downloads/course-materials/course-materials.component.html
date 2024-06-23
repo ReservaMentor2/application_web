@@ -1,0 +1,38 @@
+<div class="course-materials">
+  <h1>{{ title }}</h1>
+  <p>{{ description }}</p>
+
+  <table mat-table [dataSource]="materials" class="mat-elevation-z8">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let material"> {{material.name}} </td>
+    </ng-container>
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let material"> {{material.type}} </td>
+    </ng-container>
+
+    <!-- Size Column -->
+    <ng-container matColumnDef="size">
+      <th mat-header-cell *matHeaderCellDef> Size </th>
+      <td mat-cell *matCellDef="let material"> {{material.size}} </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let material">
+        <button mat-button>Preview</button>
+        <button mat-button>Report</button>
+        <button mat-button>Download</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

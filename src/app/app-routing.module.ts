@@ -13,6 +13,11 @@ const routes: Routes = [
       import('./counseling/counseling.module').then((m) => m.CounselingModule),
   },
   {
+
+    path: 'download',
+    loadChildren: () =>
+      import('./downloads/downloads.module').then((m) => m.DownloadsModule),
+
     path: 'course',
     loadChildren: () =>
       import('./course/course.module').then((m) => m.CourseModule),
@@ -21,6 +26,7 @@ const routes: Routes = [
     path: 'mentor',
     loadChildren: () =>
       import('./mentor/mentor.module').then((m) => m.MentorModule),
+
   },
   {
     path: '',
