@@ -23,6 +23,7 @@ import { CounselingModule } from './counseling/counseling.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faStar as solidStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
+import { MentorModule } from './mentor/mentor.module';
 
 library.add(solidStar, regularStar);
 
