@@ -6,7 +6,6 @@ import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { HttpClient } from '@angular/common/http';
 import { create, all } from 'mathjs';
 import { faStar as solidStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
-
 @Component({
   selector: 'app-busqueda',
   templateUrl: './busqueda.component.html',
@@ -31,6 +30,7 @@ export class BusquedaComponent implements OnInit {
   selectedSessionTypes: string[] = [];
   maxPrice: number = 0;
   private math = create(all);
+
   solidStar = solidStar;
   regularStar = regularStar;
 
@@ -73,6 +73,10 @@ export class BusquedaComponent implements OnInit {
     this.paginateMentores();
   }
 
+  navigateToValoraciones(mentorId: number) {
+    this.router.navigate(['/valoraciones', mentorId]);
+  }
+
   obtenerMentores(): void {
     this.mentorService.getData().subscribe(
       (data: Mentor[]) => {
@@ -89,7 +93,7 @@ export class BusquedaComponent implements OnInit {
       }
     );
   }
-
+  
   toggleFavorite(mentor: Mentor): void {
     mentor.isFavorite = !mentor.isFavorite;
     this.sortMentores(this.searchForm.value.sortOption);
@@ -460,7 +464,7 @@ export class BusquedaComponent implements OnInit {
           }
           return 0;
         });
-        break;
+      break;
       default:
         break;
     }
