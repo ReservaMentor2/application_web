@@ -4,6 +4,7 @@ import { NavBarComponent } from '../navbar/navbar.component';
 import { MentorService } from '../../services/mentor.service';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { HttpClient } from '@angular/common/http';
+<<<<<<< Updated upstream
 import { CommonModule, NgForOf, NgIf } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +12,14 @@ import { FooterComponent } from '../footer/footer.component';
 import { create, all } from 'mathjs';
 
 
+=======
+import * as math from 'mathjs';
+import { create, all } from 'mathjs';
+import {
+  faStar as solidStar,
+  faStar as regularStar,
+} from '@fortawesome/free-solid-svg-icons';
+>>>>>>> Stashed changes
 @Component({
   selector: 'app-busqueda',
   standalone: true,
@@ -79,6 +88,14 @@ export class BusquedaComponent implements OnInit {
       }
     );
   }
+<<<<<<< Updated upstream
+=======
+
+  toggleFavorite(mentor: Mentor): void {
+    mentor.isFavorite = !mentor.isFavorite;
+    this.sortMentores(this.searchForm.value.sortOption);
+  }
+>>>>>>> Stashed changes
 
   onSearch(): void {
     this.currentPage = 1;
@@ -121,15 +138,19 @@ export class BusquedaComponent implements OnInit {
 
   // Calcula la frecuencia de un término en un texto
   termFrequency(term: string, text: string): number {
-    const tokens = this.tokenize(text);
-    const count = tokens.filter((t) => t === term).length;
+    const tokens = this.tokenize(this.normalizeString(text));
+    const count = tokens.filter((t) => t === this.normalizeString(term)).length;
     return count / tokens.length;
   }
 
   // Calcula la frecuencia inversa de documentos
   inverseDocumentFrequency(term: string): number {
     const numDocumentsWithTerm = this.mentores.filter((mentor) =>
-      this.tokenize(mentor.nombre + ' ' + mentor.descripcion).includes(term)
+      this.tokenize(
+        this.normalizeString(mentor.nombre) +
+          ' ' +
+          this.normalizeString(mentor.descripcion)
+      ).includes(this.normalizeString(term))
     ).length;
     return 1 + Math.log(this.mentores.length / (numDocumentsWithTerm + 1));
   }
@@ -156,11 +177,12 @@ export class BusquedaComponent implements OnInit {
     const combinedText = mentor.nombre + ' ' + mentor.descripcion;
     return allTerms.map(
       (term) =>
-        this.termFrequency(term, combinedText) *
+        this.termFrequency(term, this.normalizeString(combinedText)) *
         this.inverseDocumentFrequency(term)
     );
   }
   filterMentores(): void {
+<<<<<<< Updated upstream
     this.filteredMentores = this.mentores.filter((mentor) => {
       const matchesCategory =
         this.selectedCategories.length === 0 ||
@@ -215,8 +237,12 @@ export class BusquedaComponent implements OnInit {
   }
   filterMentores1(): void {
     const query = this.normalizeString(this.searchTopic).trim();
+=======
+    const formValues = this.searchForm.value;
+    const query = this.normalizeString(formValues.searchTopic).trim();
+>>>>>>> Stashed changes
     const queryVector = this.createQueryVector(query);
-    console.log('Query Vector:', queryVector);
+    // console.log('Query Vector:', queryVector);
 
     this.filteredMentores = this.mentores
       .map((mentor) => {
@@ -443,6 +469,20 @@ export class BusquedaComponent implements OnInit {
       case 'price-desc':
         this.filteredMentores.sort((a, b) => b.tarifaPorHora - a.tarifaPorHora);
         break;
+<<<<<<< Updated upstream
+=======
+      case 'students-fav':
+        this.filteredMentores.sort((a, b) => {
+          if (a.isFavorite && !b.isFavorite) {
+            return -1;
+          }
+          if (!a.isFavorite && b.isFavorite) {
+            return 1;
+          }
+          return 0;
+        });
+        break;
+>>>>>>> Stashed changes
       default:
         break;
     }
