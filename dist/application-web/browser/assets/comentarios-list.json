@@ -1,0 +1,92 @@
+[
+  {
+    "nombre": "Carlos Rodríguez",
+    "comentario": "Excelente mentor, muy paciente y explica conceptos complejos de manera sencilla.",
+    "estrellas": 5,
+    "mentorId": 0
+  },
+  {
+    "nombre": "Ana Martínez",
+    "comentario": "Buena experiencia en general, aunque a veces iba un poco rápido con los temas avanzados.",
+    "estrellas": 4,
+    "mentorId": 0
+  },
+  {
+    "nombre": "Luis Gómez",
+    "comentario": "Muy recomendado para temas de programación avanzada. Su conocimiento es impresionante.",
+    "estrellas": 5,
+    "mentorId": 1
+  },
+  {
+    "nombre": "María Sánchez",
+    "comentario": "Las sesiones fueron muy productivas. Me ayudó mucho con mi proyecto final.",
+    "estrellas": 5,
+    "mentorId": 1
+  },
+  {
+    "nombre": "Javier López",
+    "comentario": "Buen mentor, pero a veces tardaba en responder mis dudas fuera de las sesiones.",
+    "estrellas": 3,
+    "mentorId": 2
+  },
+  {
+    "nombre": "Sofía Hernández",
+    "comentario": "Increíble experiencia. Me ayudó a conseguir mi primer trabajo como desarrolladora.",
+    "estrellas": 5,
+    "mentorId": 2
+  },
+  {
+    "nombre": "Diego Álvarez",
+    "comentario": "Muy profesional y con amplio conocimiento en tecnologías web modernas.",
+    "estrellas": 4,
+    "mentorId": 3
+  },
+  {
+    "nombre": "Laura Fernández",
+    "comentario": "Las sesiones fueron útiles, pero me hubiera gustado más práctica y menos teoría.",
+    "estrellas": 3,
+    "mentorId": 3
+  },
+  {
+    "nombre": "Pablo Ruiz",
+    "comentario": "Excelente mentor. Me ayudó a mejorar significativamente mis habilidades de desarrollo.",
+    "estrellas": 5,
+    "mentorId": 4
+  },
+  {
+    "nombre": "Elena Torres",
+    "comentario": "Muy paciente y dedicado. Resolvió todas mis dudas sobre algoritmos y estructuras de datos.",
+    "estrellas": 5,
+    "mentorId": 4
+  },
+  {
+    "nombre": "Andrés Navarro",
+    "comentario": "Buen mentor, aunque a veces las explicaciones eran un poco confusas.",
+    "estrellas": 4,
+    "mentorId": 0
+  },
+  {
+    "nombre": "Carmen Vega",
+    "comentario": "Excelente en temas de backend. Me ayudó mucho con Node.js y bases de datos.",
+    "estrellas": 5,
+    "mentorId": 1
+  },
+  {
+    "nombre": "Roberto Medina",
+    "comentario": "Las sesiones fueron muy prácticas. Aprendí mucho sobre desarrollo móvil.",
+    "estrellas": 4,
+    "mentorId": 2
+  },
+  {
+    "nombre": "Isabel Ortega",
+    "comentario": "Muy conocedor en temas de seguridad informática. Las sesiones fueron muy valiosas.",
+    "estrellas": 5,
+    "mentorId": 3
+  },
+  {
+    "nombre": "Miguel Ángel Romero",
+    "comentario": "Excelente para aprender sobre arquitectura de software y patrones de diseño.",
+    "estrellas": 5,
+    "mentorId": 4
+  }
+]
