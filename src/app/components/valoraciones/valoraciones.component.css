@@ -1,0 +1,23 @@
+.valoraciones-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.comentario {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.estrellas {
+  color: gold;
+}
+
+.no-comentarios {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+}
