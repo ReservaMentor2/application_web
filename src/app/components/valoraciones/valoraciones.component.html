@@ -1,0 +1,27 @@
+<div class="valoraciones-container">
+  <h2>Valoraciones para {{ mentor.nombre }}</h2>
+
+  <ng-container *ngIf="comentarios.length > 0; else noComentarios">
+    <div *ngFor="let comentario of comentarios" class="comentario">
+      <h3>{{ comentario.nombre }}</h3>
+      <p>{{ comentario.comentario }}</p>
+      <div class="estrellas">
+        <span *ngFor="let star of [1, 2, 3, 4, 5]">
+          <i
+            class="fa"
+            [ngClass]="{
+              'fa-star': star <= comentario.estrellas,
+              'fa-star-o': star > comentario.estrellas
+            }"
+          ></i>
+        </span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noComentarios>
+    <div class="no-comentarios">
+      <p>Aún no hay valoraciones para este mentor.</p>
+    </div>
+  </ng-template>
+</div>

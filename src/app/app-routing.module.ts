@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BusquedaComponent } from './components/busqueda/busqueda.component';
+import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
 import { authGuard } from './user/helpers/admin.guard';
 import { RealizarReservaComponent } from './components/realizar-reserva/realizar-reserva.component';
 import { DetallesMentoriaComponent } from './components/detalles-mentoria/detalles-mentoria.component'
+import { ValoracionesComponent } from './components/valoraciones/valoraciones.component';
+
 
 const routes: Routes = [
   { path: 'busqueda', component: BusquedaComponent },
   { path: 'realizar-reserva/:index', component: RealizarReservaComponent },
+  //{ path: 'valoraciones/:index', component: ValoracionesComponent },
+  { path: 'configuracion', component: ConfiguracionComponent },
+  { path: 'valoraciones/:index', component: ValoracionesComponent },
   {
     path: 'counseling',
     loadChildren: () =>
