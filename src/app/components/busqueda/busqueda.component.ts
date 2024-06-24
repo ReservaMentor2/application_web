@@ -74,7 +74,7 @@ export class BusquedaComponent implements OnInit {
   }
 
   navigateToValoraciones(mentorId: number) {
-    this.router.navigate(['/valoraciones', mentorId]);
+    this.router.navigate(['/valoraciones', mentorId-1]);
   }
 
   obtenerMentores(): void {
