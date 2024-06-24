@@ -1,23 +1,25 @@
 <div class="container" [formGroup]="searchForm">
   <header class="busqueda">
-    <input
-      type="text"
-      placeholder="Buscar tópico (ej. RPA)"
-      formControlName="searchTopic"
-      class="search-bar"
-    />
-    <input
-      type="date"
-      formControlName="startDate"
-      class="startdate date-picker"
-    />
-    <input type="date" formControlName="endDate" class="enddate date-picker" />
-    <input
-      type="time"
-      formControlName="startTime"
-      class="starttime time-picker"
-    />
-    <input type="time" formControlName="endTime" class="endtime time-picker" />
+    <div class="busqueda-litte-section">
+      <p>Busca a tu Experto: </p>
+      <input type="text" placeholder="Buscar tópico (ej. RPA)" formControlName="searchTopic" class="search-bar" />
+    </div>
+    <div class="busqueda-litte-section">
+      <p>Fecha de Inicio: </p>
+      <input type="date" formControlName="startDate" class="startdate date-picker" />
+    </div>
+    <div class="busqueda-litte-section">
+      <p>Fecha de Fin: </p>
+      <input type="date" formControlName="endDate" class="enddate date-picker" />
+    </div>
+    <div class="busqueda-litte-section">
+      <p>Hora de Inicio: </p>
+      <input type="time" formControlName="startTime" class="starttime time-picker" />
+    </div>
+    <div class="busqueda-litte-section">
+      <p>Hora de Fin: </p>
+      <input type="time" formControlName="endTime" class="endtime time-picker" />
+    </div>
     <button (click)="onSearch()" class="search-button">Buscar</button>
   </header>
 
@@ -26,26 +28,19 @@
     <hr />
     <div class="filter-section">
       <h3>Categoría</h3>
-      <input
-        type="text"
-        placeholder="Buscar categorías"
-        formControlName="searchCategory"
-        (input)="filterCategories()"
-      />
+      <input type="text" placeholder="Buscar categorías" formControlName="searchCategory"
+        (input)="filterCategories()" />
       <ul *ngIf="searchForm.value.searchCategory">
         <li *ngFor="let category of filteredCategories">
           <label>
-            <input
-              type="checkbox"
-              (change)="toggleCategory(category)"
-              [checked]="selectedCategories.includes(category)"
-            />
+            <input type="checkbox" (change)="toggleCategory(category)"
+              [checked]="selectedCategories.includes(category)" />
             {{ category }}
           </label>
         </li>
       </ul>
       <div *ngIf="selectedCategories.length > 0">
-        <h4>Categorías seleccionadas:</h4>
+        <h3>Categorías seleccionadas:</h3>
         <ul>
           <li *ngFor="let category of selectedCategories">
             {{ category }} <button (click)="removeCategory(category)">x</button>
@@ -68,24 +63,15 @@
     <hr />
     <div class="filter-section">
       <h3>Precio Máximo</h3>
-      <input
-        type="number"
-        formControlName="maxPrice"
-        (change)="onMaxPriceChange($event)"
-        placeholder="Máximo precio"
-      />
+      <input type="number" formControlName="maxPrice" (change)="onMaxPriceChange($event)" placeholder="Máximo precio" />
     </div>
     <hr />
     <div class="filter-section">
       <h3>Tipo de Sesión</h3>
-      <label
-        ><input type="checkbox" (change)="toggleSessionType('individual')" />
-        Individual</label
-      ><br />
-      <label
-        ><input type="checkbox" (change)="toggleSessionType('grupal')" />
-        Grupal</label
-      >
+      <label><input type="checkbox" (change)="toggleSessionType('individual')" />
+        Individual</label><br />
+      <label><input type="checkbox" (change)="toggleSessionType('grupal')" />
+        Grupal</label>
     </div>
   </aside>
 
@@ -93,11 +79,7 @@
     <div class="expert-header">
       <h1>{{ filteredMentores.length }} Expertos Encontrados</h1>
       <div class="sort-container">
-        <select
-          (change)="onSortChange($event)"
-          formControlName="sortOption"
-          class="sort-select"
-        >
+        <select (change)="onSortChange($event)" formControlName="sortOption" class="sort-select">
           <option class="option" value="">Ordenar por</option>
           <option class="option" value="rating-asc">
             Calificación Ascendente
@@ -123,22 +105,14 @@
     <div class="expert-list" *ngIf="filteredMentores.length > 0">
       <div *ngFor="let mentor of filteredMentoresSlice" class="expert-card">
         <div class="img-section">
-          <img
-            class="mentor-foto"
-            [src]="mentor.fotoPerfil"
-            [alt]="mentor.nombre"
-          />
+          <img class="mentor-foto" [src]="mentor.fotoPerfil" [alt]="mentor.nombre" />
         </div>
         <div class="expert-details">
           <p class="mentor-calificacion">
             {{ "★".repeat(roundCalificacion(mentor.calificacion)) }}
           </p>
-          <fa-icon
-            [icon]="mentor.isFavorite ? solidStar : regularStar"
-            (click)="toggleFavorite(mentor)"
-            [class.favorite-icon]="true"
-            [class.favorite-icon-filled]="mentor.isFavorite"
-          ></fa-icon>
+          <fa-icon [icon]="mentor.isFavorite ? solidStar : regularStar" (click)="toggleFavorite(mentor)"
+            [class.favorite-icon]="true" [class.favorite-icon-filled]="mentor.isFavorite"></fa-icon>
           <h2 class="mentor-nombre">{{ mentor.nombre }}</h2>
           <p class="mentor-descripcion">{{ mentor.descripcion }}</p>
           <p class="mentor-estAyudados">
@@ -163,16 +137,10 @@
           </p>
           <p class="mentor-precio">S/. {{ mentor.tarifaPorHora }} por Hora</p>
           <div class="button-container">
-            <button
-              class="view-more-button"
-              (click)="navigateToValoraciones(mentor.id)"
-            >
+            <button class="view-more-button" (click)="navigateToValoraciones(mentor.id)">
               Valoraciones
             </button>
-            <button
-              class="view-more-button"
-              (click)="navigateToRoute(mentor.id)"
-            >
+            <button class="view-more-button" (click)="navigateToRoute(mentor.id)">
               Realizar reserva
             </button>
           </div>
@@ -180,17 +148,11 @@
       </div>
     </div>
     <div class="pagination-controls" *ngIf="totalPages > 0">
-      <button
-        (click)="changePage(currentPage - 1)"
-        [disabled]="currentPage === 1"
-      >
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
         Anterior
       </button>
       <span>Página {{ currentPage }} de {{ totalPages }}</span>
-      <button
-        (click)="changePage(currentPage + 1)"
-        [disabled]="currentPage === totalPages"
-      >
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
         Siguiente
       </button>
     </div>
