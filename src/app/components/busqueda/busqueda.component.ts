@@ -4,8 +4,12 @@ import { MentorService } from '../../services/mentor.service';
 import { Router } from '@angular/router';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
 import { HttpClient } from '@angular/common/http';
+import * as math from 'mathjs';
 import { create, all } from 'mathjs';
-import { faStar as solidStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
+import {
+  faStar as solidStar,
+  faStar as regularStar,
+} from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-busqueda',
   templateUrl: './busqueda.component.html',
@@ -93,7 +97,7 @@ export class BusquedaComponent implements OnInit {
       }
     );
   }
-  
+
   toggleFavorite(mentor: Mentor): void {
     mentor.isFavorite = !mentor.isFavorite;
     this.sortMentores(this.searchForm.value.sortOption);
@@ -140,15 +144,19 @@ export class BusquedaComponent implements OnInit {
 
   // Calcula la frecuencia de un término en un texto
   termFrequency(term: string, text: string): number {
-    const tokens = this.tokenize(text);
-    const count = tokens.filter((t) => t === term).length;
+    const tokens = this.tokenize(this.normalizeString(text));
+    const count = tokens.filter((t) => t === this.normalizeString(term)).length;
     return count / tokens.length;
   }
 
   // Calcula la frecuencia inversa de documentos
   inverseDocumentFrequency(term: string): number {
     const numDocumentsWithTerm = this.mentores.filter((mentor) =>
-      this.tokenize(mentor.nombre + ' ' + mentor.descripcion).includes(term)
+      this.tokenize(
+        this.normalizeString(mentor.nombre) +
+          ' ' +
+          this.normalizeString(mentor.descripcion)
+      ).includes(this.normalizeString(term))
     ).length;
     return 1 + Math.log(this.mentores.length / (numDocumentsWithTerm + 1));
   }
@@ -175,29 +183,35 @@ export class BusquedaComponent implements OnInit {
     const combinedText = mentor.nombre + ' ' + mentor.descripcion;
     return allTerms.map(
       (term) =>
-        this.termFrequency(term, combinedText) *
+        this.termFrequency(term, this.normalizeString(combinedText)) *
         this.inverseDocumentFrequency(term)
     );
   }
   filterMentores(): void {
     const formValues = this.searchForm.value;
-    console.log(formValues);
-    const query = this.normalizeString(formValues.searchTopic).trim();
-    const queryVector = this.createQueryVector(query);
-    console.log('Query Vector:', queryVector);
+    if (!formValues.searchTopic) {
+      this.filteredMentores = this.mentores;
+    } else {
+      const query = this.normalizeString(formValues.searchTopic).trim();
+      const queryVector = this.createQueryVector(query);
+      // console.log('Query Vector:', queryVector);
 
-    this.filteredMentores = this.mentores
-      .map((mentor) => {
-        const similarity = this.calculateCosineSimilarity(queryVector, mentor);
-        console.log(`Similitud con ${mentor.nombre}: ${similarity}`);
-        return {
-          mentor,
-          similarity,
-        };
-      })
-      .filter(({ similarity }) => similarity >= 0.1)
-      .sort((a, b) => b.similarity - a.similarity)
-      .map(({ mentor }) => mentor);
+      this.filteredMentores = this.mentores
+        .map((mentor) => {
+          const similarity = this.calculateCosineSimilarity(
+            queryVector,
+            mentor
+          );
+          console.log(`Similitud con ${mentor.nombre}: ${similarity}`);
+          return {
+            mentor,
+            similarity,
+          };
+        })
+        .filter(({ similarity }) => similarity >= 0.1)
+        .sort((a, b) => b.similarity - a.similarity)
+        .map(({ mentor }) => mentor);
+    }
 
     this.filterByAdditionalCriteria();
     this.sortMentores(formValues.sortOption);
@@ -206,7 +220,8 @@ export class BusquedaComponent implements OnInit {
 
   filterByAdditionalCriteria(): void {
     const formValues = this.searchForm.value;
-    this.filteredMentores = this.mentores.filter((mentor) => {
+
+    this.filteredMentores = this.filteredMentores.filter((mentor) => {
       const matchesCategory =
         this.selectedCategories.length === 0 ||
         this.selectedCategories.some((category) =>
@@ -219,16 +234,6 @@ export class BusquedaComponent implements OnInit {
           .replace(/[\u0300-\u036f]/g, '')
           .toLowerCase();
       };
-
-      // Filtro por Tópico (Buscar tópico)
-      console.log(normalizeString(formValues.searchTopic));
-      const matchesTopic =
-        !formValues.searchTopic ||
-        mentor.categorias.some((category) =>
-          normalizeString(category).includes(
-            normalizeString(formValues.searchTopic)
-          )
-        );
 
       const matchesDate = this.isWithinSelectedDateTimeRange(
         mentor.horariosDisponibles,
@@ -255,7 +260,6 @@ export class BusquedaComponent implements OnInit {
 
       return (
         matchesCategory &&
-        matchesTopic &&
         matchesDate &&
         matchesSessionType &&
         matchesRating &&
@@ -464,7 +468,7 @@ export class BusquedaComponent implements OnInit {
           }
           return 0;
         });
-      break;
+        break;
       default:
         break;
     }
