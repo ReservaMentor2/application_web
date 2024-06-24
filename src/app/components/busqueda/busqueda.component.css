@@ -1,271 +1,577 @@
-  body {
-    font-family: "Playfair Display";
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f7f7f7;
-    --verdeoscuro: #00540d;
-  }
+body {
+  font-family: "Playfair Display";
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f7f7f7;
+  --verdeoscuro: #00540d;
+}
 
-  .favorite-icon {
-    cursor: pointer;
-    border-radius: 2px;
-    padding: 2%;
-    align-self: flex-end;
-    flex-direction: column;
-    color: grey; 
-  }
-  
-  .favorite-icon-filled {
-    color: gold; 
-  }
-  
+.favorite-icon {
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 2%;
+  align-self: flex-end;
+  flex-direction: column;
+  color: grey;
+}
 
+.favorite-icon-filled {
+  color: gold;
+}
 
+.container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-gap: 20px;
+  width: 80%;
+  margin-top: 20px;
+}
+
+header {
+  grid-column: span 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.busqueda {
+  font-family: "Adhaya Libre";
+  align-content: center;
+  background-color: #4caf50;
+  padding: 2%;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+}
+
+.search-bar,
+.date-picker,
+.time-picker,
+.search-button {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+.busqueda-litte-section p {
+  font-size: larger;
+  margin-left: 20px;
+  font-weight: 500;
+}
+
+.search-bar {
+  flex-grow: 1;
+}
+
+.search-button {
+  background-color: #00540d;
+  color: white;
+  border-radius: 20px;
+  border-color: unset;
+  cursor: pointer;
+  padding: 1% 3%;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  font-size: large;
+  margin-top: 40px;
+}
+
+.search-button:hover {
+  transform: scale(1.08);
+  -webkit-transform: scale(1.08);
+  -moz-transform: scale(1.08);
+  -ms-transform: scale(1.08);
+  -o-transform: scale(1.08);
+}
+
+.filters {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  font-weight: 900;
+  font-family: "Playfair Display";
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.filters h2,
+.filters h3 {
+  margin-top: 0;
+}
+
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.filter-section label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.f-calificacion .f-c-estrellas {
+  padding-left: 3%;
+  display: inline;
+  color: green;
+  font-size: 24px;
+}
+
+main {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.expert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sort-container,
+.sort-select {
+  background-color: #00540d;
+  color: white;
+  border-radius: 20px;
+  padding: 10px;
+  cursor: pointer;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  align-self: flex-end;
+}
+
+.sort-select .option:hover {
+  background-color: #00540d !important;
+  color: #00540d;
+}
+
+.sort-select {
+  outline: none;
+  border: none;
+  color: unset;
+}
+
+.sort-select option:hover {
+  background-color: #dcaa88 !important;
+  /* Fondo al pasar el ratón */
+  color: white;
+  /* Color del texto al pasar el ratón */
+}
+
+.expert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.expert-card {
+  display: flex;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 45, 5, 0.1);
+}
+
+.img-section {
+  background-color: black;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+}
+
+.expert-card img {
+  height: 300px;
+  width: 300px;
+  border-radius: 20px;
+  object-fit: contain;
+  justify-self: center;
+  align-self: center;
+  justify-items: center;
+  border-color: black;
+  background-color: black;
+}
+
+.expert-details {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Playfair Display";
+}
+
+.expert-details h2 {
+  margin-top: 0;
+}
+
+.expert-details .mentor-calificacion {
+  color: green;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.expert-details .mentor-nombre {
+  margin-top: -20px;
+  font-weight: 800;
+}
+
+.expert-details .mentor-descripcion {
+  font-weight: 700;
+}
+
+.expert-details .mentor-categorias,
+.mentor-horarios {
+  font-weight: 500;
+}
+
+.mentor-precio {
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: end;
+  color: #00540d;
+  padding-right: 2%;
+}
+
+.view-more-button {
+  background-color: #00540d;
+  color: white;
+  border-radius: 20px;
+  padding: 1.5% 5%;
+  cursor: pointer;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+
+.view-more-button:hover {
+  background-color: green;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-controls button {
+  margin: 0 5px;
+  padding: 5px 10px;
+}
+
+/* Responsividad */
+@media (max-width: 1200px) {
   .container {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    grid-gap: 20px;
-    width: 80%;
-    margin-top: 20px;
+    width: 90%;
   }
 
-  header {
-    grid-column: span 2;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
-  .busqueda {
-    font-family: "Adhaya Libre";
-    background-color: #4caf50;
-    padding: 2%;
-    border-radius: 30px;
-    -webkit-border-radius: 30px;
-    -moz-border-radius: 30px;
-    -ms-border-radius: 30px;
-    -o-border-radius: 30px;
-  }
-
-  .search-bar,
-  .date-picker,
-  .number-picker,
-  .search-button {
-    padding: 10px;
-    margin: 5px;
-  }
-
-  .search-bar {
-    flex-grow: 1;
-  }
-
-  .search-button {
-    background-color: #00540d;
-    color: white;
-    border-radius: 20px;
-    border-color: unset;
-    cursor: pointer;
-    padding: 1% 3%;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
-    font-size: large;
-  }
-
-  .search-button:hover {
-    transform: scale(1.08);
-    -webkit-transform: scale(1.08);
-    -moz-transform: scale(1.08);
-    -ms-transform: scale(1.08);
-    -o-transform: scale(1.08);
-  }
-
-  .filters {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    font-weight: 900;
-    font-family: "Playfair Display";
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .filters h2,
-  .filters h3 {
-    margin-top: 0;
-  }
-
-  .filter-section {
-    margin-bottom: 20px;
-  }
-
-  .filter-section label {
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .f-calificacion .f-c-estrellas {
-    padding-left: 3%;
-    display: inline;
-    color: green;
-    font-size: 24px;
-  }
-
+  .filters,
   main {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
   }
 
-  .expert-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .expert-card img {
+    height: 150px; /* Ajustado para pantallas medianas */
   }
 
   .sort-container,
   .sort-select {
-    background-color: #00540d;
-    color: white;
-    border-radius: 20px;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .search-button {
+    font-size: medium;
+    padding: 2% 4%;
+  }
+  .search-bar,
+  .date-picker,
+  .time-picker,
+  .search-button {
     padding: 10px;
-    cursor: pointer;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
-    align-self: flex-end;
+    margin: 0px;
   }
-
-  .sort-select .option:hover {
-    background-color: #00540d !important;
-    color: #00540d;
+  .busqueda-litte-section p {
+    font-size: medium;
+    margin-left: 10px;
+    font-weight: 600;
   }
+}
 
-  .sort-select {
-    outline: none;
-    border: none;
-    color: unset;
-  }
-
-  .sort-select option:hover {
-    background-color: #dcaa88 !important;
-    /* Fondo al pasar el ratón */
-    color: white;
-    /* Color del texto al pasar el ratón */
-  }
-
-  .expert-list {
+@media (max-width: 999px) {
+  .container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-top: 20px;
+    width: 100%;
   }
-
+  .filters h2 {
+    font-size: larger;
+    font-weight: 800;
+  }
+  .filter-section h3 {
+    font-size: larger;
+    font-weight: 500;
+  }
+  .filter-section label {
+    font-size: small;
+  }
+  .expert-header h1 {
+    font-size: 25px;
+    font-weight: 600;
+  }
+  .sort-container {
+    align-self: center;
+  }
+  .sort-container .sort-select {
+    font-size: 16px;
+    font-weight: 800;
+  }
   .expert-card {
-    display: flex;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 45, 5, 0.1);
+    flex-direction: column;
   }
-
-  .img-section {
-    background-color: black;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
+  .expert-card .mentor-nombre {
+    margin-top: -56px;
   }
 
   .expert-card img {
-    height: 300px;
-    width: 300px;
-    border-radius: 20px;
-    object-fit: contain;
-    justify-self: center;
-    align-self: center;
-    justify-items: center;
-    border-color: black;
-    background-color: black;
+    height: auto;
+    width: 30%;
+  }
+
+  .filters,
+  main {
+    width: 100%;
+    margin-top: 10px;
   }
 
   .expert-details {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-family: "Playfair Display";
+    padding: 10px;
   }
 
-  .expert-details h2 {
-    margin-top: 0;
+  .sort-container,
+  .sort-select {
+    font-size: 12px;
+    padding: 6px;
   }
 
-  .expert-details .mentor-calificacion {
-    color: green;
-    font-size: 24px;
+  .search-button {
+    font-size: small;
+    padding: 2% 3%;
+  }
+  .container {
+    width: 100%;
+  }
+
+  .filters,
+  main {
+    padding: 10px;
+  }
+
+  .expert-card img {
+    height: 150px; /* Ajustado para pantallas medianas */
+  }
+
+  .sort-container,
+  .sort-select {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .search-button {
+    font-size: medium;
+  }
+  .search-bar,
+  .date-picker,
+  .time-picker,
+  .search-button {
+    padding: 5px;
+    margin: 0px;
+  }
+  .busqueda-litte-section p {
+    font-size: medium;
     font-weight: 600;
   }
+  .busqueda {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 50%;
+    align-self: center;
+    justify-content: center;
+  }
+  .busqueda-litte-section {
+    display: flex;
+    align-items: baseline;
+  }
+  .busqueda-litte-section p {
+    padding: 5px;
+    justify-items: flex-start;
+  }
+}
 
-  .expert-details .mentor-nombre {
-    margin-top: -20px;
+@media (max-width: 845px) {
+  .filters {
+    width: 100%;
+  }
+  .container {
+    width: 100%;
+  }
+  .busqueda {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+  }
+  .filters h2 {
+    font-size: larger;
     font-weight: 800;
   }
-
-  .expert-details .mentor-descripcion {
-    font-weight: 700;
-  }
-
-  .expert-details .mentor-categorias,
-  .mentor-horarios {
+  .filter-section h3 {
+    font-size: larger;
     font-weight: 500;
   }
-
-  .mentor-precio {
+  .filter-section label {
+    font-size: small;
+  }
+  .expert-header h1 {
+    font-size: 25px;
+    font-weight: 600;
+  }
+  .sort-container {
+    align-self: center;
+  }
+  .sort-container .sort-select {
+    font-size: 16px;
     font-weight: 800;
+  }
+  .expert-card {
+    flex-direction: column;
+  }
+  .expert-card .mentor-nombre {
+    margin-top: -56px;
+    font-size: 30px;
+  }
+  fa-icon {
+    font-size: 25px;
+  }
+
+  .expert-card img {
+    height: auto;
+    width: 30%;
+  }
+
+  .filters,
+  main {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .expert-details {
+    padding: 10px;
+  }
+
+  .sort-container,
+  .sort-select {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .search-button {
+    font-size: small;
+    padding: 2% 3%;
+  }
+}
+
+@media (max-width: 550px) {
+  .container {
     display: flex;
     flex-direction: column;
-    justify-content: end;
-    align-items: end;
-    color: #00540d;
-    padding-right: 2%;
+    width: 95%;
   }
-
-  .view-more-button {
-    background-color: #00540d;
-    color: white;
-    border-radius: 20px;
-    padding: 1.5% 5%;
-    cursor: pointer;
-    align-self: flex-end;
-    display: flex;
+  .filters h2 {
+    font-size: larger;
+    font-weight: 800;
+  }
+  .filter-section h3 {
+    font-size: larger;
+    font-weight: 500;
+  }
+  .filter-section label {
+    font-size: small;
+  }
+  .expert-header h1 {
+    font-size: 25px;
+    font-weight: 600;
+  }
+  .sort-container {
+    align-self: center;
+  }
+  .sort-container .sort-select {
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .expert-card {
     flex-direction: column;
-    justify-content: end;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
+  }
+  .expert-card .mentor-nombre {
+    margin-top: -56px;
+    font-size: 30px;
+  }
+  fa-icon {
+    font-size: 25px;
   }
 
-  .view-more-button:hover {
-    background-color: green;
+  .expert-card img {
+    height: auto;
+    width: 30%;
   }
 
-  .pagination-controls {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+  .filters,
+  main {
+    width: 100%;
+    margin-top: 10px;
   }
 
-  .pagination-controls button {
-    margin: 0 5px;
-    padding: 5px 10px;
+  .expert-details {
+    padding: 10px;
   }
+
+  .sort-container,
+  .sort-select {
+    font-size: 8px;
+    padding: 6px;
+  }
+  .sort-select {
+    width: 180px;
+  }
+  .search-button {
+    font-size: small;
+    padding: 2% 3%;
+  }
+}

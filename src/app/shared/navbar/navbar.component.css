@@ -178,7 +178,7 @@ mat-menu button[mat-menu-item] {
   }
 }
 
-@media (max-width: 660px) {
+@media (max-width: 901px) {
   .navbar-toggler img {
     height: 25px;
     justify-self: center;
@@ -196,7 +196,7 @@ mat-menu button[mat-menu-item] {
 
 /* aqui abajo se cambia el aspecto del menu al boton toggler*/
 
-@media (min-width: 655px) {
+@media (min-width: 901px) {
   .navbar-expand-lg .navbar-toggler {
     display: none;
   }
@@ -217,7 +217,7 @@ mat-menu button[mat-menu-item] {
   }
 }
 
-@media (max-width: 655px) {
+@media (max-width: 901px) {
   .navbar-collapse {
     grid-column: span 12;
     margin: 0;
@@ -234,6 +234,12 @@ mat-menu button[mat-menu-item] {
   }
   .nav-link {
     margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  #EncuentraExpertoRecuadro .titulo {
+    font-size: 30px;
   }
 }
 
