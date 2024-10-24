@@ -12,7 +12,8 @@ import { LoginResponse } from '../interfaces/login-response.interface';
 export class AuthService {
 
   private baseUrl = environment.apiUrl;
-  private storageKey = 'isLoggedIn'; // Clave para almacenar en localStorage
+  private storageKey = 'isLoggedIn'; // Clave para almacenar el estado de inicio de sesión
+  private tokenKey = 'authToken'; // Clave para almacenar el token
   private responseKey = 'loginResponse'; // Clave para almacenar el objeto LoginResponse
   private expirationKey = 'loginResponseExpiration'; // Clave para almacenar la fecha de expiración
 
@@ -30,9 +31,10 @@ export class AuthService {
           const expiration = new Date();
           expiration.setHours(expiration.getHours() + 1); // Expira en 1 hora
 
-          // Guardar el estado de inicio de sesión, el objeto LoginResponse y la fecha de expiración en localStorage
+          // Guardar el estado de inicio de sesión, el token y el objeto LoginResponse en localStorage
           localStorage.setItem(this.storageKey, 'true');
-          localStorage.setItem(this.responseKey, JSON.stringify(response));
+          localStorage.setItem(this.tokenKey, response.token); // Guardar el token
+          localStorage.setItem(this.responseKey, JSON.stringify(response.user)); // Guardar solo los datos del usuario
           localStorage.setItem(this.expirationKey, expiration.getTime().toString()); // Almacena el timestamp de expiración
 
           this.initExpirationTimer(); // Reiniciar el temporizador de expiración al iniciar sesión
@@ -60,9 +62,15 @@ export class AuthService {
     return null;
   }
 
+  // Método para obtener el token almacenado
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
   // Método para cerrar sesión (eliminar los valores almacenados)
   logout(): void {
     localStorage.removeItem(this.storageKey);
+    localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.responseKey);
     localStorage.removeItem(this.expirationKey);
     this.clearExpirationTimer(); // Limpiar el temporizador de expiración al cerrar sesión
