@@ -1,7 +1,10 @@
 export interface SignUpRequest {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }
-  
+  nombre: string;
+  apellido: string;
+  correo: string;
+  contrasenia: string;
+  nacionalidad:string;
+  telefono: string;
+  biografia?: string;
+  tarifaHora?: number;
+}

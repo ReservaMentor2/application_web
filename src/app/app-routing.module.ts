@@ -4,22 +4,24 @@ import { BusquedaComponent } from './components/busqueda/busqueda.component';
 import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
 import { authGuard } from './user/helpers/admin.guard';
 import { RealizarReservaComponent } from './components/realizar-reserva/realizar-reserva.component';
-import { DetallesMentoriaComponent } from './components/detalles-mentoria/detalles-mentoria.component'
+import { DetallesMentoriaComponent } from './components/detalles-mentoria/detalles-mentoria.component';
 import { ValoracionesComponent } from './components/valoraciones/valoraciones.component';
-
+import { LoginComponent } from './user/login/login.component';
+import { SignupComponent } from './user/signup/signup.component';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'busqueda', component: BusquedaComponent },
   { path: 'realizar-reserva/:index', component: RealizarReservaComponent },
-  //{ path: 'valoraciones/:index', component: ValoracionesComponent },
-  { path: 'configuracion', component: ConfiguracionComponent },
   { path: 'valoraciones/:index', component: ValoracionesComponent },
+  { path: 'configuracion', component: ConfiguracionComponent },
+  { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
   {
     path: 'counseling',
     loadChildren: () =>
       import('./counseling/counseling.module').then((m) => m.CounselingModule),
   },
-  { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
   {
     path: 'download',
     loadChildren: () =>
@@ -34,20 +36,10 @@ const routes: Routes = [
     path: 'mentor',
     loadChildren: () =>
       import('./mentor/mentor.module').then((m) => m.MentorModule),
-
   },
   {
     path: '',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
-  },
-  {
-    path: '',
-    redirectTo: 'course',
-    pathMatch: 'full',
-  },
-  {
-    path: '',
-    redirectTo: 'counseling',
+    redirectTo: 'login', // Ruta predeterminada a login
     pathMatch: 'full',
   },
 ];
