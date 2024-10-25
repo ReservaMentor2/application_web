@@ -5,6 +5,7 @@ import { LoginRequest } from '../interfaces/login-request.interface'; // Interfa
 import { LoginResponse } from '../interfaces/login-response.interface'; // Interfaz de respuesta de login
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -18,12 +19,13 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private loginService: LoginService
   ) {
     // Definir los campos del formulario
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], // Email debe ser válido
-      password: ['', Validators.required], // Contraseña requerida
+      email: ['', [Validators.required, Validators.email]], // Change from 'correo' to 'email'
+      password: ['', Validators.required], // Change from 'contrasenia' to 'password'
     });
   }
 
@@ -32,25 +34,50 @@ export class LoginComponent implements OnInit {
   // Método de inicio de sesión
   login(): void {
     if (this.form.invalid) {
-        return;
+      return;
     }
 
-    const credentials: LoginRequest = this.form.value;
+    const loginData: LoginRequest = {
+      correo: this.form.value.email, // Use 'email' instead of 'correo'
+      contrasenia: this.form.value.password, // Use 'password' instead of 'contrasenia'
+    };
 
-    this.authService.login(credentials).subscribe({
-        next: (response: LoginResponse) => {
-            this.showSnackBar('Inicio de sesión exitoso');
-            this.router.navigate(['/busqueda']); // Redirigir a la página de inicio
-        },
-        error: (error) => {
-            console.error('Error en el inicio de sesión:', error);
-            if (error.status === 401) {
-                this.showSnackBar('Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
-            } else {
-                this.showSnackBar('Error en el inicio de sesión. Por favor, intenta de nuevo.');
-            }
-        },
+    const request = this.loginService.login(loginData);
+    console.log('Login data being sent:', loginData);
+
+    request.subscribe({
+      next: (response: LoginResponse) => {
+        this.showSnackBar('Inicio de sesión exitoso');
+        this.router.navigate(['/busqueda']); // Redirigir a la página de inicio
+      },
+      error: (error) => {
+        console.error('Error en el inicio de sesión:', error);
+        if (error.status === 401) {
+          this.showSnackBar(
+            'Credenciales incorrectas. Por favor, verifica tu email y contraseña.'
+          );
+        } else {
+          this.showSnackBar(
+            'Error en el inicio de sesión. Por favor, intenta de nuevo.'
+          );
+        }
+      },
     });
+
+    //this.authService.login(credentials).subscribe({
+    //    next: (response: LoginResponse) => {
+    //        this.showSnackBar('Inicio de sesión exitoso');
+    //        this.router.navigate(['/busqueda']); // Redirigir a la página de inicio
+    //    },
+    //    error: (error) => {
+    //        console.error('Error en el inicio de sesión:', error);
+    //        if (error.status === 401) {
+    //            this.showSnackBar('Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
+    //        } else {
+    //            this.showSnackBar('Error en el inicio de sesión. Por favor, intenta de nuevo.');
+    //        }
+    //    },
+    //});
   }
 
   // Método para validar si un control del formulario tiene errores
