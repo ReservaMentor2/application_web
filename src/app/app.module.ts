@@ -22,6 +22,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { BusquedaComponent } from './components/busqueda/busqueda.component';
+import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component';
 
 // Otros módulos
 import { UserModule } from './user/user.module';
@@ -41,6 +42,7 @@ library.add(solidStar, regularStar);
     NavbarComponent,
     FooterComponent,
     BusquedaComponent,
+    RecuperarContrasenaComponent  // Asegúrate de incluir el componente aquí
   ],
   imports: [
     BrowserModule,
@@ -56,12 +58,12 @@ library.add(solidStar, regularStar);
     MatSnackBarModule,
     MatListModule,
     FontAwesomeModule,
-    MatMenuModule,
+    MatMenuModule
   ],
   providers: [
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptorsFromDi())
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

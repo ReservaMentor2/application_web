@@ -8,6 +8,7 @@ import { DetallesMentoriaComponent } from './components/detalles-mentoria/detall
 import { ValoracionesComponent } from './components/valoraciones/valoraciones.component';
 import { LoginComponent } from './user/login/login.component';
 import { SignupComponent } from './user/signup/signup.component';
+import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'valoraciones/:index', component: ValoracionesComponent },
   { path: 'configuracion', component: ConfiguracionComponent },
   { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
+  { path: 'recuperar-contrasena', component: RecuperarContrasenaComponent },
   {
     path: 'counseling',
     loadChildren: () =>
