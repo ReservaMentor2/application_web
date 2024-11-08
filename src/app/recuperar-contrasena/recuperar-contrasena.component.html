@@ -1,0 +1,24 @@
+<div class="container py-5">
+  <h1 class="fw-bold text-center">Recuperación de contraseña</h1>
+
+  <div class="row justify-content-center my-5">
+
+    <form [formGroup]="form" (ngSubmit)="recuperarContrasena()">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Ingresa tu email" />
+        <mat-error *ngIf="controlHasError('email', 'required')">
+          El correo electrónico es requerido.
+        </mat-error>
+        <mat-error *ngIf="controlHasError('email', 'email')">
+          El correo electrónico no es válido.
+        </mat-error>
+      </mat-form-field>
+      
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        Recuperar Contraseña
+      </button>
+    </form>
+    
+  </div>
+</div>
