@@ -5,7 +5,10 @@
     </div>
     <div class="buttons-prof">
       <button>Ver perfil</button>
-      <button>Editar perfil</button>
+      <input type="file" (change)="onFileSelected($event)" />
+      <button (click)="updateProfilePicture()">
+        Actualizar imagen de perfil
+      </button>
     </div>
   </div>
   <div class="config">
