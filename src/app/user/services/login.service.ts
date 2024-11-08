@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LoginRequest } from '../interfaces/login-request.interface';
 import { LoginResponse } from '../interfaces/login-response.interface';
@@ -19,7 +19,7 @@ export class LoginService {
       .set('Accept', 'application/json');
   }
 
-  login(data: LoginRequest): Observable<string> {
+  login(data: LoginRequest): Observable<LoginResponse> {
     const headers = this.getHeaders();
     const requestBody = {
       correo: data.correo,
@@ -31,7 +31,6 @@ export class LoginService {
         headers,
       })
       .pipe(
-        map((response: LoginResponse) => response.token),
         catchError((error) => {
           console.log('Error completo:', error);
           if (error.error instanceof ErrorEvent) {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
 
 @Component({
   selector: 'app-profile',
@@ -10,15 +11,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class ProfileComponent implements OnInit {
   profileImageUrl: string = ''; // Inicializar la propiedad
 
-  constructor(private http: HttpClient, private router: Router) {} // Inyectar Router en el constructor
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {} // Inyectar AuthService
 
   ngOnInit(): void {
     this.getProfileImage();
   }
 
   getProfileImage(): void {
+    const token = this.authService.getToken(); // Obtener el token de AuthService
+    console.log('Token:', token);
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
     const headers = new HttpHeaders({
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHVkZW50QHN0cmluZy5jb20iLCJyb2xlIjoiUk9MRV9FU1RVRElBTlRFIiwiZXhwIjoxNzMzNjE1OTE0fQ.aCg3X3puzcD7eJO-eYbCURV6JiDSrS0Opf5MBxOkj9jPV5MQNekYCaLFhQbGdJhwsSMR0PFQ1jqKERNbdeyblg'
+      'Authorization': `Bearer ${token}`
     });
 
     this.http.get('https://reservamentor-api-latest.onrender.com/api/v1/profile/image', 
@@ -28,6 +35,10 @@ export class ProfileComponent implements OnInit {
           this.profileImageUrl = reader.result as string;
         };
         reader.readAsDataURL(response);
+      }, error => {
+        console.error('Error al obtener la imagen de perfil:', error);
+        console.error('Detalles del error:', error.message);
+        console.error('Cuerpo del error:', error.error);
       });
   }
 

@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
     };
 
     this.authService.login(loginData).subscribe({
-      next: (response) => {
-        console.log('Token recibido:', response.token);
+      next: (token: string) => {
+        console.log('Token recibido:', token);
         this.showSnackBar('Inicio de sesión exitoso');
         this.router.navigate(['/busqueda']); // Redirigir a la página de inicio
       },

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LoginRequest } from '../interfaces/login-request.interface';
 import { LoginResponse } from '../interfaces/login-response.interface';
@@ -23,8 +23,8 @@ export class AuthService {
     this.initExpirationTimer(); // Iniciar el temporizador de expiración al cargar el servicio
   }
 
-  login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, credentials)
+  login(credentials: LoginRequest): Observable<string> {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, credentials)
       .pipe(
         tap((response: LoginResponse) => {
           // Calcular la fecha de expiración (1 hora desde ahora)
@@ -38,7 +38,8 @@ export class AuthService {
           localStorage.setItem(this.expirationKey, expiration.getTime().toString()); // Almacena el timestamp de expiración
 
           this.initExpirationTimer(); // Reiniciar el temporizador de expiración al iniciar sesión
-        })
+        }),
+        map((response: LoginResponse) => response.token) // Devolver solo el token
       );
   }
 
