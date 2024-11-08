@@ -1,20 +1,25 @@
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 10%;
-  width: auto;
+  width: 100%;
   height: 100%;
+  margin-bottom: 0%;
+}
+
+.pfp{
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid black;
+
 }
 
 .user-prof {
   display: flex;
   flex-direction: column;
-  max-width: fit-content;
+  width: 30%;
+  height: 60%;
   margin-right: 40px;
-}
-
-.pfp {
-  border: 1px solid black;
 }
 
 .buttons-prof {
@@ -36,7 +41,7 @@
 }
 
 .config {
-  width: fit-content;
+  width: 40%;
   margin-right: 40px;
 }
 
@@ -53,6 +58,7 @@
 .account {
   display: flex;
   flex-direction: row;
+  width: 10%;
 }
 
 .password {
@@ -97,4 +103,10 @@ h3,
 p,
 label {
   font-family: "Playfair Display";
+}
+
+img {
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
 }
