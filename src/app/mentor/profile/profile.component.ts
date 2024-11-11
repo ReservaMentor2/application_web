@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
+import { PerfilUsuarioDTO } from '../../models/usuario'; // Importar PerfilUsuarioDTO
 
 @Component({
   selector: 'app-profile',
@@ -11,6 +12,7 @@ import { AuthService } from '../../user/services/auth.service'; // Importar Auth
 export class ProfileComponent implements OnInit {
   profileImageUrl: string = ''; // Inicializar la propiedad
   selectedFile: File | null = null; // Propiedad para almacenar el archivo seleccionado
+  perfilUsuario: PerfilUsuarioDTO | null = null;
 
   constructor(
     private http: HttpClient,
@@ -20,10 +22,39 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProfileImage();
+    this.getProfile();
+  }
+
+  getProfile(): void {
+    const token = this.authService.getToken();
+    console.log('Token:', token);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    this.http
+      .get<PerfilUsuarioDTO>(
+        'https://reservamentor-api-latest.onrender.com/api/v1/profile/',
+        {
+          headers,
+        }
+      )
+      .subscribe({
+        next: (response) => {
+          console.log('Perfil del usuario:', response);
+          this.perfilUsuario = response;
+        },
+        error: (err) => {
+          console.error('Error al obtener el perfil:', err);
+          if (err.status === 404) {
+            console.error('Perfil no encontrado');
+          }
+        },
+      });
   }
 
   getProfileImage(): void {
-    const token = this.authService.getToken(); // Obtener el token de AuthService
+    const token = this.authService.getToken();
     console.log('Token:', token);
     if (!token) {
       console.error('No token found');
@@ -51,7 +82,6 @@ export class ProfileComponent implements OnInit {
           console.error('Detalles del error:', error.message);
           console.error('Cuerpo del error:', error.error);
 
-          // Intentar leer el cuerpo del error como JSON
           if (
             error.error instanceof Blob &&
             error.error.type === 'application/json'
