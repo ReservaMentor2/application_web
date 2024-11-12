@@ -1,14 +1,12 @@
 <div class="getMentoriaBox">
   <div class="mentorInfo">
     <img
-      [src]="mentores[index].fotoPerfil"
+      [src]="mentores[index].imagePath"
       alt="{{ mentores[index].nombre }}"
       class="mentor-foto"
     />
     <h3>{{ mentores[index].nombre }}</h3>
-    <p>{{ mentores[index].descripcion }}</p>
-    <p>Calificación: {{ mentores[index].calificacion }}</p>
-    <p>Estudiantes ayudados: {{ mentores[index].estudiantesAyudados }}</p>
+    <p>Calificación: {{ mentores[index].valoracion }}</p>
     <h4>Horarios disponibles:</h4>
     <select [(ngModel)]="horarioSeleccionado">
       <option value="">Selecciona un horario</option>
