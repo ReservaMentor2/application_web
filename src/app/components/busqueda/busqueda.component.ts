@@ -133,6 +133,7 @@ export class BusquedaComponent implements OnInit {
     const terms = new Set<string>();
     this.mentores.forEach((mentor) => {
       this.tokenize(mentor.nombre).forEach((term) => terms.add(term));
+      this.tokenize(mentor.biografia).forEach((term) => terms.add(term));
     });
     return Array.from(terms);
   }
@@ -154,12 +155,15 @@ export class BusquedaComponent implements OnInit {
   // Calcula la frecuencia inversa de documentos
   inverseDocumentFrequency(term: string): number {
     const numDocumentsWithTerm = this.mentores.filter((mentor) =>
-      this.tokenize(this.normalizeString(mentor.nombre)).includes(
-        this.normalizeString(term)
-      )
+      this.tokenize(
+        this.normalizeString(mentor.nombre) +
+          ' ' +
+          this.normalizeString(mentor.biografia)
+      ).includes(this.normalizeString(term))
     ).length;
     return 1 + Math.log(this.mentores.length / (numDocumentsWithTerm + 1));
   }
+
 
   // Calcula la similitud del coseno entre el query y el mentor
   calculateCosineSimilarity(queryVector: number[], mentor: Mentor): number {
@@ -180,7 +184,7 @@ export class BusquedaComponent implements OnInit {
   // Crea el vector del mentor normalizando y tokenizando
   createDocumentVector(mentor: Mentor): number[] {
     const allTerms = this.getAllTerms();
-    const combinedText = mentor.nombre;
+    const combinedText = mentor.nombre + ' ' + mentor.biografia;
     return allTerms.map(
       (term) =>
         this.termFrequency(term, this.normalizeString(combinedText)) *
