@@ -1,17 +1,13 @@
 // models/mentor.ts
 export interface Mentor {
-  id: number;
+  idMentor: number;
   nombre: string;
-  fotoPerfil: string;
-  descripcion: string;
-  calificacion: number;
-  tarifaPorHora: number;
-  estudiantesAyudados: number;
-  categorias: string[];
+  apellido: string;
+  tarifahora: number;
+  biografia: string;
+  valoracion: number;
   horariosDisponibles: HorarioDisponible[];
-  tiposSesiones: string[];
-  resenias: Resenia[];
-  desactivado: boolean;
+  imagePath: string;
 }
 
 export interface HorarioDisponible {
