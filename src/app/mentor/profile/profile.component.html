@@ -14,8 +14,11 @@
   <div class="config">
     <div class="user-info">
       <h2>Informacion de usuario</h2>
-      <p>Nombres y apellidos: XXXXXX</p>
-      <p>Correo: XXXXXX&#64;email.com</p>
+      <p>
+        Nombres y apellidos: {{ perfilUsuario?.nombre
+        }}{{ perfilUsuario?.apellido }}
+      </p>
+      <p>Correo: {{ perfilUsuario?.correo }}</p>
     </div>
     <div class="notifs">
       <h2>Notificaciones</h2>
