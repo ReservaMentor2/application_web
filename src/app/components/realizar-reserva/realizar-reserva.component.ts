@@ -6,6 +6,8 @@ import * as sesionesData from '../../../assets/sesiones-list.json';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sesion } from '../../models/sesion';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-realizar-reserva',
@@ -15,18 +17,43 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './realizar-reserva.component.css',
 })
 export class RealizarReservaComponent implements OnInit {
-  @Input() index!: number;
+  mentor!: Mentor;
   mentores: Mentor[] = [];
   horarioSeleccionado: string = '';
   sesiones: Sesion[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient,
+
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.mentores = (mentorData as any).default;
-    this.index = Number(this.route.snapshot.paramMap.get('index'));
-    console.dir(this.mentores);
-    this.cargarSesiones();
+    this.obtenerMentores();
+  }
+
+  obtenerMentores(): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    this.http
+      .get<Mentor[]>('http://localhost:8080/api/v1/mentor', { headers })
+      .subscribe(
+        (response) => {
+          this.mentores.push(...response);
+          let mentorId = Number(this.route.snapshot.paramMap.get('mentorId'));
+          this.mentor = this.mentores.find(
+            (mentor) => mentor.idMentor === mentorId
+          )!;
+          this.cargarSesiones();
+        },
+        (error) => {
+          console.error('Error al obtener los mentores:', error);
+        }
+      );
   }
 
   cargarSesiones() {
@@ -42,15 +69,13 @@ export class RealizarReservaComponent implements OnInit {
     if (this.horarioSeleccionado) {
       const [fecha, inicio, fin] = this.horarioSeleccionado.split(' ');
       const nuevaSesion: Sesion = {
-        sesion: `Sesión con ${this.mentores[this.index].nombre}`,
-        mentor: this.mentores[this.index].nombre,
+        sesion: `Sesión con ${this.mentor.nombre}`,
+        mentor: this.mentor.nombre,
         dia: fecha,
         horario: `${inicio} - ${fin}`,
       };
-
       this.sesiones.push(nuevaSesion);
       localStorage.setItem('sesiones', JSON.stringify(this.sesiones));
-
       alert('La mentoría ha sido agendada exitosamente.');
       this.router.navigate(['/busqueda']);
     } else {

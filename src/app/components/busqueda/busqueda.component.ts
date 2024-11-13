@@ -67,14 +67,12 @@ export class BusquedaComponent implements OnInit {
     });
   }
 
-  navigateToRoute(indexMentor: number) {
-    this.router.navigate(['/realizar-reserva', indexMentor - 1]);
-    console.log(indexMentor);
+  navigateToRoute(idMentor: number) {
+    this.router.navigate(['/realizar-reserva', idMentor]);
   }
 
   ngOnInit(): void {
     this.obtenerMentores();
-    this.searchForm.valueChanges.subscribe(() => this.onSearch());
     this.filterMentores();
     this.paginateMentores();
   }
@@ -163,7 +161,6 @@ export class BusquedaComponent implements OnInit {
     ).length;
     return 1 + Math.log(this.mentores.length / (numDocumentsWithTerm + 1));
   }
-
 
   // Calcula la similitud del coseno entre el query y el mentor
   calculateCosineSimilarity(queryVector: number[], mentor: Mentor): number {
