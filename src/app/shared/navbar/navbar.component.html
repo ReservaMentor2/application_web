@@ -44,6 +44,9 @@
         </button>
 
         <mat-menu #userMenu>
+          <button mat-menu-item routerLink="perfil">
+            <mat-icon>person</mat-icon> Perfil
+          </button>
           <button mat-menu-item (click)="logout()">
             <mat-icon>logout</mat-icon> Cerrar sesión
           </button>
