@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'busqueda', component: BusquedaComponent },
   { path: 'realizar-reserva/:index', component: RealizarReservaComponent },
   { path: 'valoraciones/:index', component: ValoracionesComponent },
-  { path: 'configuracion', component: ConfiguracionComponent },
+  { path: 'notificaciones', component: ConfiguracionComponent },
   { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
   { path: 'recuperar-contrasena', component: RecuperarContrasenaComponent },
   {
@@ -35,7 +35,7 @@ const routes: Routes = [
       import('./course/course.module').then((m) => m.CourseModule),
   },
   {
-    path: 'mentor',
+    path: 'perfil',
     loadChildren: () =>
       import('./mentor/mentor.module').then((m) => m.MentorModule),
   },
