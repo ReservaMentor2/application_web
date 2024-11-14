@@ -1,44 +1,21 @@
-<div class="container py-5">
-    <h1 class="fw-bold text-center">Renovar Contraseña</h1>
-  
-    <div class="row justify-content-center my-5">
-  
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="fill">
-          <mat-label>Correo electrónico</mat-label>
-          <input matInput formControlName="email" placeholder="Ingresa tu correo electrónico" />
-          <mat-error *ngIf="form.get('email')?.hasError('required')">
-            El correo electrónico es obligatorio.
-          </mat-error>
-          <mat-error *ngIf="form.get('email')?.hasError('email')">
-            El correo electrónico no es válido.
-          </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field appearance="fill">
-          <mat-label>Nueva contraseña</mat-label>
-          <input matInput type="password" formControlName="newPassword" placeholder="Introduce tu nueva contraseña" />
-          <mat-error *ngIf="form.get('newPassword')?.hasError('required')">
-            La nueva contraseña es obligatoria.
-          </mat-error>
-        </mat-form-field>
-  
-        <mat-form-field appearance="fill">
-          <mat-label>Confirmar nueva contraseña</mat-label>
-          <input matInput type="password" formControlName="confirmPassword" placeholder="Confirma tu nueva contraseña" />
-          <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
-            La confirmación de la contraseña es obligatoria.
-          </mat-error>
-          <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
-            Las contraseñas no coinciden.
-          </mat-error>
-        </mat-form-field>
-        
-        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-          Renovar Contraseña
-        </button>
-      </form>
-      
-    </div>
-  </div>
-  
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Nueva Contraseña</mat-label>
+    <input matInput type="password" formControlName="newPassword" />
+    <mat-error *ngIf="form.get('newPassword')?.hasError('required')">
+      La contraseña es obligatoria
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Confirmar Contraseña</mat-label>
+    <input matInput type="password" formControlName="confirmPassword" />
+    <mat-error *ngIf="form.hasError('passwordMismatch')">
+      Las contraseñas no coinciden
+    </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+    Renovar Contraseña
+  </button>
+</form>
