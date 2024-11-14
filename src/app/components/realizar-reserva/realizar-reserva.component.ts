@@ -8,6 +8,7 @@ import { Sesion } from '../../models/sesion';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-realizar-reserva',
@@ -21,6 +22,7 @@ export class RealizarReservaComponent implements OnInit {
   mentores: Mentor[] = [];
   horarioSeleccionado: string = '';
   sesiones: Sesion[] = [];
+  private baseUrl = environment.apiUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,7 +42,7 @@ export class RealizarReservaComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
     this.http
-      .get<Mentor[]>('http://localhost:8080/api/v1/mentor', { headers })
+      .get<Mentor[]>(`${this.baseUrl}/mentor`, { headers })
       .subscribe(
         (response) => {
           this.mentores.push(...response);

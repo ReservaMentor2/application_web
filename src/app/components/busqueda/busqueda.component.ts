@@ -7,6 +7,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
 import * as math from 'mathjs';
 import { create, all } from 'mathjs';
+import { environment } from '../../../environments/environment';
+
 import {
   faStar as solidStar,
   faStar as regularStar,
@@ -17,6 +19,8 @@ import {
   styleUrls: ['./busqueda.component.css'],
 })
 export class BusquedaComponent implements OnInit {
+  private baseUrl = environment.apiUrl;
+
   mentores: Mentor[] = [];
   filteredMentores: Mentor[] = [];
   filteredMentoresSlice: Mentor[] = [];
@@ -87,7 +91,7 @@ export class BusquedaComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
     this.http
-      .get<Mentor[]>('http://localhost:8080/api/v1/mentor', { headers })
+      .get<Mentor[]>(`${this.baseUrl}/mentor`, { headers })
       .subscribe(
         (response) => {
           this.mentores.push(...response);

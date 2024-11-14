@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
 import { PerfilUsuarioDTO } from '../../models/usuario'; // Importar PerfilUsuarioDTO
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -13,6 +14,7 @@ export class ProfileComponent implements OnInit {
   profileImageUrl: string = ''; // Inicializar la propiedad
   selectedFile: File | null = null; // Propiedad para almacenar el archivo seleccionado
   perfilUsuario: PerfilUsuarioDTO | null = null;
+  private baseUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
@@ -33,12 +35,9 @@ export class ProfileComponent implements OnInit {
     });
 
     this.http
-      .get<PerfilUsuarioDTO>(
-        'https://reservamentor-api-latest.onrender.com/api/v1/profile/',
-        {
-          headers,
-        }
-      )
+      .get<PerfilUsuarioDTO>(`${this.baseUrl}/profile/`, {
+        headers,
+      })
       .subscribe({
         next: (response) => {
           console.log('Perfil del usuario:', response);
@@ -65,10 +64,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.http
-      .get(
-        'https://reservamentor-api-latest.onrender.com/api/v1/profile/image',
-        { headers, responseType: 'blob' }
-      )
+      .get(`${this.baseUrl}/profile/image`, { headers, responseType: 'blob' })
       .subscribe(
         (response) => {
           const reader = new FileReader();
@@ -119,11 +115,7 @@ export class ProfileComponent implements OnInit {
     formData.append('file', this.selectedFile);
 
     this.http
-      .put(
-        'https://reservamentor-api-latest.onrender.com/api/v1/profile/image',
-        formData,
-        { headers }
-      )
+      .put(`${this.baseUrl}/profile/image`, formData, { headers })
       .subscribe(
         (response) => {
           console.log('Respuesta de actualización de imagen:', response);
