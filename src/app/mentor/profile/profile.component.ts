@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
 import { PerfilUsuarioDTO } from '../../models/usuario'; // Importar PerfilUsuarioDTO
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -13,14 +14,11 @@ export class ProfileComponent implements OnInit {
   profileImageUrl: string = ''; // Inicializar la propiedad
   selectedFile: File | null = null; // Propiedad para almacenar el archivo seleccionado
   perfilUsuario: PerfilUsuarioDTO | null = null;
-<<<<<<< Updated upstream
-=======
   private baseUrl = environment.apiUrl;
   showScheduleForm: boolean = false;
   scheduleDate: string = '';
   startTime: string = '';
   endTime: string = '';
->>>>>>> Stashed changes
 
   constructor(
     private http: HttpClient,
