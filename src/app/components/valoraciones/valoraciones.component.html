@@ -1,5 +1,5 @@
 <div class="valoraciones-container">
-  <h2>Valoraciones para {{ mentor.nombre }}</h2>
+  <h2>Valoraciones para {{ mentor?.nombre }}</h2>
 
   <ng-container *ngIf="comentarios.length > 0; else noComentarios">
     <div *ngFor="let comentario of comentarios" class="comentario">
@@ -24,4 +24,22 @@
       <p>Aún no hay valoraciones para este mentor.</p>
     </div>
   </ng-template>
+
+  <div class="seccionValoracion">
+    <form (ngSubmit)="submitComentario()">
+      <div>
+        <label for="comentario">Comentario:</label>
+        <textarea id="comentario" name="comentario" required></textarea>
+      </div>
+      <div>
+        <label for="estrellas">Estrellas:</label>
+        <select id="estrellas" name="estrellas" required>
+          <option *ngFor="let star of [1, 2, 3, 4, 5]" [value]="star">
+            {{ star }}
+          </option>
+        </select>
+      </div>
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
 </div>

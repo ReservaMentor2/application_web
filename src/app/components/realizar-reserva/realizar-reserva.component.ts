@@ -28,12 +28,23 @@ export class RealizarReservaComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-
     private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.obtenerMentores();
+  }
+
+
+  reservarMentoria(){
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    const mentorId = this.mentor.idMentor;
+    this.http.get('${this.baseUrl}/mentor/${mentorId}/reservar', { headers }).subscribe(
+      
+    )
   }
 
   obtenerMentores(): void {
@@ -67,21 +78,4 @@ export class RealizarReservaComponent implements OnInit {
     }
   }
 
-  reservarMentoria() {
-    if (this.horarioSeleccionado) {
-      const [fecha, inicio, fin] = this.horarioSeleccionado.split(' ');
-      const nuevaSesion: Sesion = {
-        sesion: `Sesión con ${this.mentor.nombre}`,
-        mentor: this.mentor.nombre,
-        dia: fecha,
-        horario: `${inicio} - ${fin}`,
-      };
-      this.sesiones.push(nuevaSesion);
-      localStorage.setItem('sesiones', JSON.stringify(this.sesiones));
-      alert('La mentoría ha sido agendada exitosamente.');
-      this.router.navigate(['/busqueda']);
-    } else {
-      alert('Por favor, selecciona un horario antes de reservar.');
-    }
-  }
 }
