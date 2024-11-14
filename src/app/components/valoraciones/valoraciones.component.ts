@@ -27,6 +27,7 @@ export class ValoracionesComponent implements OnInit {
   mentores: Mentor[] = [];
   index!: number;
   comentarios: Comentario[] = [];
+  dejarComentario = false;
   private baseUrl = environment.apiUrl;
 
   constructor(
@@ -37,6 +38,15 @@ export class ValoracionesComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerMentores();
+  }
+
+
+  submitComentario(){
+    
+  }
+
+  toggleComentario() {
+    this.dejarComentario = !this.dejarComentario;
   }
 
   obtenerMentores(): void {
@@ -58,6 +68,7 @@ export class ValoracionesComponent implements OnInit {
       }
     );
   }
+
   cargarComentarios() {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
@@ -80,8 +91,4 @@ export class ValoracionesComponent implements OnInit {
       );
   }
 
-  cargarMentor() {
-    const mentores = (mentorData as any).default;
-    this.mentor = mentores[this.index];
-  }
 }
