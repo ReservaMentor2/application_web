@@ -107,6 +107,6 @@ export class AuthService {
 
   // Método para renovar la contraseña
   renovarContrasena(token: string, newPassword: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/password-reset/reset`, { token, newPassword });
+    return this.http.post<any>(`${this.baseUrl}/mail/reset/${token}`, { newPassword });
   }
 }
