@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'busqueda', component: BusquedaComponent },
   { path: 'realizar-reserva/:mentorId', component: RealizarReservaComponent },
-  { path: 'valoraciones/:index', component: ValoracionesComponent },
+  { path: 'valoraciones/:mentorId', component: ValoracionesComponent },
   { path: 'notificaciones', component: ConfiguracionComponent },
   { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
   { path: 'recuperar-contrasena', component: RecuperarContrasenaComponent },

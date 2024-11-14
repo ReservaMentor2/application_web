@@ -81,8 +81,8 @@ export class BusquedaComponent implements OnInit {
     this.paginateMentores();
   }
 
-  navigateToValoraciones(mentorId: number) {
-    this.router.navigate(['/valoraciones', mentorId - 1]);
+  navigateToValoraciones(idMentor: number) {
+    this.router.navigate(['/valoraciones', idMentor]);
   }
 
   obtenerMentores(): void {

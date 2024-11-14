@@ -1,5 +1,5 @@
 <div class="valoraciones-container">
-  <h2>Valoraciones para {{ mentor.nombre }}</h2>
+  <h2>Valoraciones para {{ mentor?.nombre }}</h2>
 
   <ng-container *ngIf="comentarios.length > 0; else noComentarios">
     <div *ngFor="let comentario of comentarios" class="comentario">

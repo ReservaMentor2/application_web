@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import * as mentorData from '../../../assets/mentores-list.json';
 import * as comentariosData from '../../../assets/comentarios-list.json';
 import { Mentor } from '../../models/mentor';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
 
 interface Comentario {
   nombre: string;
@@ -20,27 +23,65 @@ interface Comentario {
   styleUrls: ['./valoraciones.component.css'],
 })
 export class ValoracionesComponent implements OnInit {
-  index!: number;
   mentor!: Mentor;
+  mentores: Mentor[] = [];
+  index!: number;
   comentarios: Comentario[] = [];
+  private baseUrl = environment.apiUrl;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.index = Number(this.route.snapshot.paramMap.get('index'));
-    this.cargarMentor();
-    this.cargarComentarios();
+    this.obtenerMentores();
+  }
+
+  obtenerMentores(): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    this.http.get<Mentor[]>(`${this.baseUrl}/mentor`, { headers }).subscribe(
+      (response) => {
+        this.mentores.push(...response);
+        let mentorId = Number(this.route.snapshot.paramMap.get('mentorId'));
+        this.mentor = this.mentores.find(
+          (mentor) => mentor.idMentor === mentorId
+        )!;
+        this.cargarComentarios();
+      },
+      (error) => {
+        console.error('Error al obtener los mentores:', error);
+      }
+    );
+  }
+  cargarComentarios() {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    this.http
+      .get<Comentario[]>(
+        `${this.baseUrl}/reviews/comments/${this.mentor.idMentor}`,
+        { headers }
+      )
+      .subscribe(
+        (response) => {
+          this.comentarios.push(...response);
+          console.log(this.comentarios);
+        },
+        (error) => {
+          console.error('Error al obtener los comentarios:', error);
+        }
+      );
   }
 
   cargarMentor() {
     const mentores = (mentorData as any).default;
     this.mentor = mentores[this.index];
-  }
-
-  cargarComentarios() {
-    const todosComentarios: Comentario[] = (comentariosData as any).default;
-    this.comentarios = todosComentarios.filter(
-      (c) => c.mentorId === this.index
-    );
   }
 }
