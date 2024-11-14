@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
 import { PerfilUsuarioDTO } from '../../models/usuario'; // Importar PerfilUsuarioDTO
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -13,6 +14,11 @@ export class ProfileComponent implements OnInit {
   profileImageUrl: string = ''; // Inicializar la propiedad
   selectedFile: File | null = null; // Propiedad para almacenar el archivo seleccionado
   perfilUsuario: PerfilUsuarioDTO | null = null;
+  private baseUrl = environment.apiUrl;
+  showScheduleForm: boolean = false;
+  scheduleDate: string = '';
+  startTime: string = '';
+  endTime: string = '';
 
   constructor(
     private http: HttpClient,
@@ -23,11 +29,45 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.getProfileImage();
     this.getProfile();
+    this.toggleScheduleForm();
+  }
+  toggleScheduleForm(): void {
+    this.showScheduleForm = !this.showScheduleForm;
+  }
+
+  saveSchedule(): void {
+    if (!this.scheduleDate) {
+      console.error('No se ha seleccionado una fecha');
+      return;
+    }
+
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    const scheduleData = {
+      date: this.scheduleDate,
+      startTime: this.startTime,
+      endTime: this.endTime,
+    };
+
+    this.http
+      .post(`${this.baseUrl}/disponibilidad`, scheduleData, { headers })
+      .subscribe({
+        next: (response) => {
+          console.log('Horario guardado:', response);
+        },
+        error: (err) => {
+          console.error('Error al guardar el horario:', err);
+          console.error('Detalles del error:', err.message);
+          console.error('Cuerpo del error:', err.error);
+        },
+      });
   }
 
   getProfile(): void {
     const token = this.authService.getToken();
-    console.log('Token:', token);
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
@@ -55,7 +95,6 @@ export class ProfileComponent implements OnInit {
 
   getProfileImage(): void {
     const token = this.authService.getToken();
-    console.log('Token:', token);
     if (!token) {
       console.error('No token found');
       return;
