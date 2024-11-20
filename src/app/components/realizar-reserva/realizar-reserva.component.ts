@@ -5,6 +5,9 @@ import * as mentorData from '../../../assets/mentores-list.json';
 import * as sesionesData from '../../../assets/sesiones-list.json';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sesion } from '../../models/sesion';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../../user/services/auth.service';
+import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -16,17 +19,72 @@ import { FormsModule } from '@angular/forms';
 })
 export class RealizarReservaComponent implements OnInit {
   @Input() index!: number;
+  mentor!: Mentor;
   mentores: Mentor[] = [];
   horarioSeleccionado: string = '';
   sesiones: Sesion[] = [];
+  private baseUrl = environment.apiUrl;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: AuthService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit() {
     this.mentores = (mentorData as any).default;
     this.index = Number(this.route.snapshot.paramMap.get('index'));
     console.dir(this.mentores);
     this.cargarSesiones();
+    this.obtenerMentores();
+  }
+
+  reservarMentoria() {
+    const token = this.authService.getToken();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    //const informacionmentoria = {
+    //  idMentor = this.mentor.idMentor,
+    //  titulodelCurso = null,
+    //  horaInicio = null,
+    //  horaFin = null,
+    //  dia = null
+    //};
+
+    this.http
+      .post(`${this.baseUrl}/sesionMentoria/crear`, { headers })
+      .subscribe(
+        (response) => {
+          console.log('Mentoria reservada:', response);
+        },
+        (error) => {
+          console.log('Error al reservar la mentoria:', error);
+        }
+      );
+  }
+
+  obtenerMentores(): void {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    this.http.get<Mentor[]>(`${this.baseUrl}/mentor`, { headers }).subscribe(
+      (response) => {
+        this.mentores.push(...response);
+        let mentorId = Number(this.route.snapshot.paramMap.get('mentorId'));
+        this.mentor = this.mentores.find(
+          (mentor) => mentor.idMentor === mentorId
+        )!;
+        this.cargarSesiones();
+      },
+      (error) => {
+        console.error('Error al obtener los mentores:', error);
+      }
+    );
   }
 
   cargarSesiones() {
@@ -35,26 +93,6 @@ export class RealizarReservaComponent implements OnInit {
       this.sesiones = JSON.parse(sesionesGuardadas);
     } else {
       this.sesiones = (sesionesData as any).default.sesiones;
-    }
-  }
-
-  reservarMentoria() {
-    if (this.horarioSeleccionado) {
-      const [fecha, inicio, fin] = this.horarioSeleccionado.split(' ');
-      const nuevaSesion: Sesion = {
-        sesion: `Sesión con ${this.mentores[this.index].nombre}`,
-        mentor: this.mentores[this.index].nombre,
-        dia: fecha,
-        horario: `${inicio} - ${fin}`,
-      };
-
-      this.sesiones.push(nuevaSesion);
-      localStorage.setItem('sesiones', JSON.stringify(this.sesiones));
-
-      alert('La mentoría ha sido agendada exitosamente.');
-      this.router.navigate(['/busqueda']);
-    } else {
-      alert('Por favor, selecciona un horario antes de reservar.');
     }
   }
 }
