@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   perfilUsuario: PerfilUsuarioDTO | null = null;
   private baseUrl = environment.apiUrl;
   showScheduleForm: boolean = false;
-  scheduleDate: string = '';
+  day: string = '';
   startTime: string = '';
   endTime: string = '';
 
@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
   }
 
   saveSchedule(): void {
-    if (!this.scheduleDate) {
+    if (!this.day) {
       console.error('No se ha seleccionado una fecha');
       return;
     }
@@ -48,10 +48,12 @@ export class ProfileComponent implements OnInit {
     });
 
     const scheduleData = {
-      date: this.scheduleDate,
-      startTime: this.startTime,
-      endTime: this.endTime,
+      dia: this.day,
+      horainicio: this.startTime + ':00',
+      horafin: this.endTime + ':00',
     };
+
+    console.log('Datos del horario:', scheduleData);
 
     this.http
       .post(`${this.baseUrl}/disponibilidad`, scheduleData, { headers })
