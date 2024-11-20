@@ -9,16 +9,18 @@ import { ValoracionesComponent } from './components/valoraciones/valoraciones.co
 import { LoginComponent } from './user/login/login.component';
 import { SignupComponent } from './user/signup/signup.component';
 import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component';
+import { RenovarContrasenaComponent } from './renovar-contrasena/renovar-contrasena.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'busqueda', component: BusquedaComponent },
-  { path: 'realizar-reserva/:index', component: RealizarReservaComponent },
-  { path: 'valoraciones/:index', component: ValoracionesComponent },
+  { path: 'realizar-reserva/:mentorId', component: RealizarReservaComponent },
+  { path: 'valoraciones/:mentorId', component: ValoracionesComponent },
   { path: 'notificaciones', component: ConfiguracionComponent },
   { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
   { path: 'recuperar-contrasena', component: RecuperarContrasenaComponent },
+  { path: 'forgot/:token', component: RenovarContrasenaComponent },
   {
     path: 'counseling',
     loadChildren: () =>

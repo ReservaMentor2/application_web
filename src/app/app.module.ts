@@ -33,6 +33,7 @@ import { CourseModule } from './course/course.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faStar as solidStar, faStar as regularStar } from '@fortawesome/free-solid-svg-icons';
+import { RenovarContrasenaComponent } from './renovar-contrasena/renovar-contrasena.component';
 
 library.add(solidStar, regularStar);
 
@@ -42,7 +43,8 @@ library.add(solidStar, regularStar);
     NavbarComponent,
     FooterComponent,
     BusquedaComponent,
-    RecuperarContrasenaComponent  // Asegúrate de incluir el componente aquí
+    RecuperarContrasenaComponent,
+    RenovarContrasenaComponent
   ],
   imports: [
     BrowserModule,
