@@ -11,9 +11,9 @@ export interface Mentor {
 }
 
 export interface HorarioDisponible {
-  fecha: string; // formato: "YYYY-MM-DD"
-  inicio: string; // formato: "HH:mm"
-  fin: string; // formato: "HH:mm"
+  dia: string;
+  horainicio: string;
+  horafin: string;
 }
 
 export interface Resenia {

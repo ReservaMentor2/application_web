@@ -1,17 +1,21 @@
 <div class="getmentoriaBox">
   <div class="mentorInfo">
-    <img [src]="mentor?.imagePath" alt="mentorFoto" class="mentor-foto" />
-    <h3>{{ mentor?.nombre }}</h3>
-    <p>{{ mentor?.biografia }}</p>
-    <p>Calificación: {{ mentor?.valoracion }}</p>
+    <img
+      [src]="mentor.imagePath"
+      alt="{{ mentor.nombre }}"
+      class="mentor-foto"
+    />
+    <h3>{{ mentor.nombre }}</h3>
+    <p>{{ mentor.biografia }}</p>
+    <p>Calificación: {{ mentor.valoracion }}</p>
     <h4>Horarios disponibles:</h4>
     <select [(ngModel)]="horarioSeleccionado">
       <option value="">Selecciona un horario</option>
       <option
-        *ngFor="let horario of mentor?.horariosDisponibles"
-        [value]="horario.fecha + ' ' + horario.inicio + ' ' + horario.fin"
+        *ngFor="let horario of mentor.horariosDisponibles"
+        [value]="horario.dia + ' ' + horario.horainicio + ' ' + horario.horafin"
       >
-        {{ horario.fecha }}: {{ horario.inicio }} - {{ horario.fin }}
+        {{ horario.dia }}: {{ horario.horainicio }} - {{ horario.horafin }}
       </option>
     </select>
 
