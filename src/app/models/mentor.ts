@@ -7,7 +7,13 @@ export interface Mentor {
   biografia: string;
   valoracion: number;
   horariosDisponibles: HorarioDisponible[];
+  listaAsignaturas: ListaAsignaturas[];
   imagePath: string;
+}
+
+export interface ListaAsignaturas {
+  asignaturaId: number;
+  nombre: string;
 }
 
 export interface HorarioDisponible {

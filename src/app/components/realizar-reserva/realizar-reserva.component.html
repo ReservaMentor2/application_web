@@ -1,11 +1,31 @@
 <div class="getmentoria-box">
   <div class="mentor-info">
     <div class="mentor-header">
-      <img [src]="mentor?.imagePath" alt="Foto del mentor" class="mentor-foto" />
+      <img
+        [src]="mentor?.imagePath"
+        alt="Foto del mentor"
+        class="mentor-foto"
+      />
       <div class="mentor-details">
         <h3 class="mentor-nombre">{{ mentor?.nombre }}</h3>
         <p class="mentor-bio">{{ mentor?.biografia }}</p>
         <p class="mentor-rating">⭐ Calificación: {{ mentor?.valoracion }}</p>
+      </div>
+    </div>
+    <div class="mentor-cursos">
+      <h4>Cursos disponibles:</h4>
+      <select [(ngModel)]="cursoSeleccionado" class="mentor-select">
+        <option value="">Selecciona un curso</option>
+        <option
+          *ngFor="let curso of mentor?.listaAsignaturas"
+          [value]="curso.nombre"
+        >
+          {{ curso.nombre }}
+        </option>
+      </select>
+      <div *ngIf="horarioSeleccionado" class="horario-seleccionado">
+        <h5>Horario seleccionado:</h5>
+        <p>{{ horarioSeleccionado }}</p>
       </div>
     </div>
     <div class="mentor-schedule">
@@ -14,16 +34,21 @@
         <option value="">Selecciona un horario</option>
         <option
           *ngFor="let horario of mentor?.horariosDisponibles"
-          [value]="horario.fecha + ' ' + horario.inicio + ' ' + horario.fin"
+          [ngValue]="horario"
         >
-          {{ horario.fecha }}: {{ horario.inicio }} - {{ horario.fin }}
+          {{ horario.dia }}: {{ horario.horainicio }} - {{ horario.horafin }}
         </option>
       </select>
       <div *ngIf="horarioSeleccionado" class="horario-seleccionado">
         <h5>Horario seleccionado:</h5>
-        <p>{{ horarioSeleccionado }}</p>
+        <p>
+          {{ horarioSeleccionado?.dia }}:
+          {{ horarioSeleccionado?.horainicio }} -
+          {{ horarioSeleccionado?.horafin }}
+        </p>
       </div>
     </div>
+
     <button (click)="reservarMentoria()" class="btn-reservar">
       Reservar mentoría
     </button>
