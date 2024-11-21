@@ -1,24 +1,31 @@
-<div class="getmentoriaBox">
-  <div class="mentorInfo">
-    <img [src]="mentor?.imagePath" alt="mentorFoto" class="mentor-foto" />
-    <h3>{{ mentor?.nombre }}</h3>
-    <p>{{ mentor?.biografia }}</p>
-    <p>Calificación: {{ mentor?.valoracion }}</p>
-    <h4>Horarios disponibles:</h4>
-    <select [(ngModel)]="horarioSeleccionado">
-      <option value="">Selecciona un horario</option>
-      <option
-        *ngFor="let horario of mentor?.horariosDisponibles"
-        [value]="horario.fecha + ' ' + horario.inicio + ' ' + horario.fin"
-      >
-        {{ horario.fecha }}: {{ horario.inicio }} - {{ horario.fin }}
-      </option>
-    </select>
-
-    <div *ngIf="horarioSeleccionado">
-      <h5>Horario seleccionado:</h5>
-      <p>{{ horarioSeleccionado }}</p>
+<div class="getmentoria-box">
+  <div class="mentor-info">
+    <div class="mentor-header">
+      <img [src]="mentor?.imagePath" alt="Foto del mentor" class="mentor-foto" />
+      <div class="mentor-details">
+        <h3 class="mentor-nombre">{{ mentor?.nombre }}</h3>
+        <p class="mentor-bio">{{ mentor?.biografia }}</p>
+        <p class="mentor-rating">⭐ Calificación: {{ mentor?.valoracion }}</p>
+      </div>
     </div>
-    <button (click)="reservarMentoria()">Reservar mentoria</button>
+    <div class="mentor-schedule">
+      <h4>Horarios disponibles:</h4>
+      <select [(ngModel)]="horarioSeleccionado" class="mentor-select">
+        <option value="">Selecciona un horario</option>
+        <option
+          *ngFor="let horario of mentor?.horariosDisponibles"
+          [value]="horario.fecha + ' ' + horario.inicio + ' ' + horario.fin"
+        >
+          {{ horario.fecha }}: {{ horario.inicio }} - {{ horario.fin }}
+        </option>
+      </select>
+      <div *ngIf="horarioSeleccionado" class="horario-seleccionado">
+        <h5>Horario seleccionado:</h5>
+        <p>{{ horarioSeleccionado }}</p>
+      </div>
+    </div>
+    <button (click)="reservarMentoria()" class="btn-reservar">
+      Reservar mentoría
+    </button>
   </div>
 </div>
