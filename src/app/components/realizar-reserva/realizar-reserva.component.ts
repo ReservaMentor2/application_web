@@ -6,9 +6,9 @@ import * as sesionesData from '../../../assets/sesiones-list.json';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sesion } from '../../models/sesion';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
+import { AuthService } from '../../user/services/auth.service';
 import { environment } from '../../../environments/environment';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-realizar-reserva',
@@ -78,10 +78,20 @@ export class RealizarReservaComponent implements OnInit {
         this.mentor = this.mentores.find(
           (mentor) => mentor.idMentor === mentorId
         )!;
+        this.cargarSesiones();
       },
       (error) => {
         console.error('Error al obtener los mentores:', error);
       }
     );
+  }
+
+  cargarSesiones() {
+    const sesionesGuardadas = localStorage.getItem('sesiones');
+    if (sesionesGuardadas) {
+      this.sesiones = JSON.parse(sesionesGuardadas);
+    } else {
+      this.sesiones = (sesionesData as any).default.sesiones;
+    }
   }
 }
