@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RenovarContrasenaService {
-  private apiUrl = 'http://localhost:8080/api/v1/mail/reset/';
+  private apiUrl = '${this.baseURL}/mail/reset/';
   constructor(private http: HttpClient) {}
 
   // Método para renovar la contraseña

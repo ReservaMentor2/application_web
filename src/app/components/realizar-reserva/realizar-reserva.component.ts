@@ -5,7 +5,7 @@ import * as mentorData from '../../../assets/mentores-list.json';
 import * as sesionesData from '../../../assets/sesiones-list.json';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sesion } from '../../models/sesion';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AuthService } from '../../user/services/auth.service';
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
@@ -38,6 +38,12 @@ export class RealizarReservaComponent implements OnInit {
     private http: HttpClient
   ) {}
 
+    token = this.authService.getToken();
+
+    headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+
   ngOnInit() {
     this.mentores = (mentorData as any).default;
     this.index = Number(this.route.snapshot.paramMap.get('index'));
@@ -46,12 +52,6 @@ export class RealizarReservaComponent implements OnInit {
   }
 
   reservarMentoria() {
-    const token = this.authService.getToken();
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
     const informacionmentoria = {
       idMentor: this.mentor.idMentor,
       tituloDelCurso: this.cursoSeleccionado,
@@ -61,14 +61,29 @@ export class RealizarReservaComponent implements OnInit {
       dia: this.horarioSeleccionado.dia,
     };
 
+    interface MentoriaResponse {
+      id: number;
+      dia: string;
+      horainicio: string;
+      horafinal: string;
+      weblink: string;
+    }
+
+
     console.log('Informacion de la mentoria:', informacionmentoria);
     this.http
-      .post(`${this.baseUrl}/sesionMentoria/crear`, informacionmentoria, {
-        headers,
-      })
+      .post<MentoriaResponse>(`${this.baseUrl}/sesionMentoria/crear`, informacionmentoria, 
+        {
+        headers: this.headers,
+      }
+    )
       .subscribe(
+        //Valido: Manda a la pagina de paypal.
+        //Erroneo: Manda error.
+
         (response) => {
           console.log('Mentoria reservada:', response);
+          this.realizarPurchaseID(response.id)
         },
         (error) => {
           console.log('Error al reservar la mentoria:', error);
@@ -76,12 +91,64 @@ export class RealizarReservaComponent implements OnInit {
       );
   }
 
+  realizarPurchaseID(SessionMentoriaId: number): void {
+
+
+    console.log(this.token);
+
+    this.http
+      .post<Number>(`${this.baseUrl}/checkout/createID/22`, null, 
+        {
+        headers: this.headers
+      }
+    )
+        .subscribe(
+        //Valido: Manda a la pagina de paypal.
+        //Erroneo: Manda error.
+
+        (response) => {
+          console.log('PurchaseID Creado: ', response);
+          this.crearPurchase(response)
+        },
+        (error) => {
+          console.log('Error al crear el PurchaseID:', error);
+        }
+      );
+    }
+
+  crearPurchase(PurchaseID: Number): void {
+      const token = this.authService.getToken();
+
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+  });
+
+  // Send 'purchaseId', 'returnUrl', and 'cancelUrl' as query parameters
+  const queryParams = new HttpParams()
+    .set('purchaseId', PurchaseID.toString())
+    .set('returnUrl', 'https://reservamentor.netlify.app/')
+    .set('cancelUrl', 'https://reservamentor.netlify.app/');
+
+  this.http
+    .post<any>(`${this.baseUrl}/checkout/create`, null, {
+      headers: headers,
+      params: queryParams, // Passing query parameters here
+    })
+
+    .subscribe(
+      (response: any) => {
+        console.log('Compra creada:', response);
+        console.log(response.paypalUrl);
+        window.location.href = response.paypalUrl;
+      },
+      (error) => {
+        console.error('Error al crear la compra en PayPal:', error);
+      }
+    );
+  }
+
   obtenerMentores(): void {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    this.http.get<Mentor[]>(`${this.baseUrl}/mentor`, { headers }).subscribe(
+    this.http.get<Mentor[]>(`${this.baseUrl}/mentor`, { headers: this.headers }).subscribe(
       (response) => {
         this.mentores.push(...response);
         let mentorId = Number(this.route.snapshot.paramMap.get('mentorId'));
