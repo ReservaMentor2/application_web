@@ -21,7 +21,13 @@ export class RealizarReservaComponent implements OnInit {
   @Input() index!: number;
   mentor!: Mentor;
   mentores: Mentor[] = [];
-  horarioSeleccionado: string = '';
+  horarioSeleccionado: {
+    dia: string;
+    horainicio: string;
+    horafin: string;
+  } = { dia: '', horainicio: '', horafin: '' };
+
+  cursoSeleccionado: string = '';
   sesiones: Sesion[] = [];
   private baseUrl = environment.apiUrl;
 
@@ -36,7 +42,6 @@ export class RealizarReservaComponent implements OnInit {
     this.mentores = (mentorData as any).default;
     this.index = Number(this.route.snapshot.paramMap.get('index'));
     console.dir(this.mentores);
-    this.cargarSesiones();
     this.obtenerMentores();
   }
 
@@ -47,16 +52,20 @@ export class RealizarReservaComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
 
-    //const informacionmentoria = {
-    //  idMentor = this.mentor.idMentor,
-    //  titulodelCurso = null,
-    //  horaInicio = null,
-    //  horaFin = null,
-    //  dia = null
-    //};
+    const informacionmentoria = {
+      idMentor: this.mentor.idMentor,
+      tituloDelCurso: this.cursoSeleccionado,
+      tituloDeSesionMentoria: this.cursoSeleccionado,
+      horaInicio: this.horarioSeleccionado.horainicio,
+      horaFin: this.horarioSeleccionado.horafin,
+      dia: this.horarioSeleccionado.dia,
+    };
 
+    console.log('Informacion de la mentoria:', informacionmentoria);
     this.http
-      .post(`${this.baseUrl}/sesionMentoria/crear`, { headers })
+      .post(`${this.baseUrl}/sesionMentoria/crear`, informacionmentoria, {
+        headers,
+      })
       .subscribe(
         (response) => {
           console.log('Mentoria reservada:', response);
@@ -79,20 +88,10 @@ export class RealizarReservaComponent implements OnInit {
         this.mentor = this.mentores.find(
           (mentor) => mentor.idMentor === mentorId
         )!;
-        this.cargarSesiones();
       },
       (error) => {
         console.error('Error al obtener los mentores:', error);
       }
     );
-  }
-
-  cargarSesiones() {
-    const sesionesGuardadas = localStorage.getItem('sesiones');
-    if (sesionesGuardadas) {
-      this.sesiones = JSON.parse(sesionesGuardadas);
-    } else {
-      this.sesiones = (sesionesData as any).default.sesiones;
-    }
   }
 }

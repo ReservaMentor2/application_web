@@ -263,17 +263,17 @@ export class BusquedaComponent implements OnInit {
   }
 
   formatHorario(horario: {
-    fecha: string;
-    inicio: string;
-    fin: string;
+    dia: string;
+    horainicio: string;
+    horafin: string;
   }): string {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     };
-    const fecha = new Date(horario.fecha).toLocaleDateString('es-ES', options);
-    return `${fecha}, ${horario.inicio} - ${horario.fin}`;
+    const fecha = new Date(horario.dia).toLocaleDateString('es-ES', options);
+    return `${fecha}, ${horario.horainicio} - ${horario.horafin}`;
   }
   paginateMentores(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
@@ -316,8 +316,8 @@ export class BusquedaComponent implements OnInit {
     const endDateTime = new Date(`${endDate}T${endTime}`);
 
     return horariosDisponibles.some((horario) => {
-      const horarioStart = new Date(`${horario.fecha}T${horario.inicio}`);
-      const horarioEnd = new Date(`${horario.fecha}T${horario.fin}`);
+      const horarioStart = new Date(`${horario.dia}T${horario.horainicio}`);
+      const horarioEnd = new Date(`${horario.dia}T${horario.horafin}`);
       return (
         (horarioStart >= startDateTime && horarioStart <= endDateTime) ||
         (horarioEnd >= startDateTime && horarioEnd <= endDateTime) ||
@@ -335,7 +335,7 @@ export class BusquedaComponent implements OnInit {
     const end = new Date(this.endDate);
 
     return horariosDisponibles.some((horario) => {
-      const date = new Date(horario.fecha);
+      const date = new Date(horario.dia);
       return date >= start && date <= end;
     });
   }
