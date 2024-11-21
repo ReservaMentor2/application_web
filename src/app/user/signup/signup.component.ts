@@ -31,7 +31,8 @@ export class SignupComponent {
       telefono: ['956767345'],
       isMentor: [false],
       biografia: [''],
-      tarifaHora: [null]
+      tarifaHora: [null],
+      acceptTerms: [false, Validators.requiredTrue]
     });
 
     this.form.get('isMentor')?.valueChanges.subscribe(isMentor => {

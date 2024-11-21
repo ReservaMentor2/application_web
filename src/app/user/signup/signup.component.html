@@ -50,6 +50,13 @@
           </mat-form-field>
         </div>
 
+        <div class="mb-3">
+          <mat-checkbox formControlName="acceptTerms">
+            Acepto los <a href="/terminos-y-condiciones" target="_blank">términos y condiciones</a>
+          </mat-checkbox>
+          <mat-error *ngIf="controlHasError('acceptTerms', 'required')">Debes aceptar los términos y condiciones</mat-error>
+        </div>
+
         <div class="text-end">
           <button class="w-100" mat-raised-button color="primary" [disabled]="!form.valid">Registrarme</button>
 
