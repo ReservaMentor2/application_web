@@ -1,7 +1,84 @@
-.getMentoriaBox {
-  margin: 10px;
-  display: flex;
-  border: 2px solid #00540d;
+.getmentoria-box {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
   border-radius: 10px;
-  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.mentor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mentor-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.mentor-foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.mentor-details {
+  flex-grow: 1;
+}
+
+.mentor-nombre {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.mentor-bio {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.mentor-rating {
+  font-size: 0.9rem;
+  color: #ff9800;
+}
+
+.mentor-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mentor-select {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.horario-seleccionado h5 {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.btn-reservar {
+  padding: 10px 15px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-reservar:hover {
+  background-color: #218838;
 }
