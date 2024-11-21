@@ -38,6 +38,12 @@ export class RealizarReservaComponent implements OnInit {
     private http: HttpClient
   ) {}
 
+    token = this.authService.getToken();
+
+    headers = new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
+    });
+
   ngOnInit() {
     this.mentores = (mentorData as any).default;
     this.index = Number(this.route.snapshot.paramMap.get('index'));
@@ -46,12 +52,6 @@ export class RealizarReservaComponent implements OnInit {
   }
 
   reservarMentoria() {
-    const token = this.authService.getToken();
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-
     const informacionmentoria = {
       idMentor: this.mentor.idMentor,
       tituloDelCurso: this.cursoSeleccionado,
@@ -61,14 +61,29 @@ export class RealizarReservaComponent implements OnInit {
       dia: this.horarioSeleccionado.dia,
     };
 
+    interface MentoriaResponse {
+      id: number;
+      dia: string;
+      horainicio: string;
+      horafinal: string;
+      weblink: string;
+    }
+
+
     console.log('Informacion de la mentoria:', informacionmentoria);
     this.http
-      .post(`${this.baseUrl}/sesionMentoria/crear`, informacionmentoria, {
-        headers,
-      })
+      .post<MentoriaResponse>(`${this.baseUrl}/sesionMentoria/crear`, informacionmentoria, 
+        {
+        headers: this.headers,
+      }
+    )
       .subscribe(
+        //Valido: Manda a la pagina de paypal.
+        //Erroneo: Manda error.
+
         (response) => {
           console.log('Mentoria reservada:', response);
+          this.realizarPurchaseID(response.id)
         },
         (error) => {
           console.log('Error al reservar la mentoria:', error);
@@ -76,12 +91,63 @@ export class RealizarReservaComponent implements OnInit {
       );
   }
 
-  obtenerMentores(): void {
+  realizarPurchaseID(SessionMentoriaId: number): void {
     const token = this.authService.getToken();
+    
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    this.http.get<Mentor[]>(`${this.baseUrl}/mentor`, { headers }).subscribe(
+
+    console.log(headers);
+    console.log(this.token);
+
+    this.http
+      .post<Number>(`${this.baseUrl}/checkout/createID/${SessionMentoriaId}`, 
+        {
+        headers,
+      }
+    )
+        .subscribe(
+        //Valido: Manda a la pagina de paypal.
+        //Erroneo: Manda error.
+
+        (response) => {
+          console.log('PurchaseID Creado: ', response);
+
+        },
+        (error) => {
+          console.log('Error al crear el PurchaseID:', error);
+        }
+      );
+    }
+
+  crearPurchase(PurchaseID: number): void {
+    const params = { purchaseId: PurchaseID, returnUrl: `https://reservamentor.netlify.app/busqueda`, cancelUrl: `https://reservamentor.netlify.app/busqueda` };
+
+    this.http
+    .post(`${this.baseUrl}/checkout/create`, params, {
+      headers: this.headers,
+    })
+    .subscribe(
+      (response: any) => {
+        console.log('Compra creada:', response);
+
+        if (response && response.paypalLink) {
+          console.log(response)
+
+          //window.location.href = response.paypalUrl;
+        } else {
+          console.error('No se recibió un enlace de PayPal en la respuesta.');
+        }
+      },
+      (error) => {
+        console.error('Error al crear la compra en PayPal:', error);
+      }
+    );
+  }
+
+  obtenerMentores(): void {
+    this.http.get<Mentor[]>(`${this.baseUrl}/mentor`, { headers: this.headers }).subscribe(
       (response) => {
         this.mentores.push(...response);
         let mentorId = Number(this.route.snapshot.paramMap.get('mentorId'));
