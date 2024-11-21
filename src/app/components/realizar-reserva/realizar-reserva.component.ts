@@ -9,9 +9,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../../user/services/auth.service';
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-realizar-reserva',
@@ -88,46 +85,6 @@ export class RealizarReservaComponent implements OnInit {
         console.error('Error al obtener los mentores:', error);
       }
     );
-    private http: HttpClient,
-    private authService: AuthService
-  ) {}
-
-  ngOnInit() {
-    this.obtenerMentores();
-  }
-
-
-  reservarMentoria(){
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    const mentorId = this.mentor.idMentor;
-    this.http.get('${this.baseUrl}/mentor/${mentorId}/reservar', { headers }).subscribe(
-      
-    )
-  }
-
-  obtenerMentores(): void {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    this.http
-      .get<Mentor[]>(`${this.baseUrl}/mentor`, { headers })
-      .subscribe(
-        (response) => {
-          this.mentores.push(...response);
-          let mentorId = Number(this.route.snapshot.paramMap.get('mentorId'));
-          this.mentor = this.mentores.find(
-            (mentor) => mentor.idMentor === mentorId
-          )!;
-          this.cargarSesiones();
-        },
-        (error) => {
-          console.error('Error al obtener los mentores:', error);
-        }
-      );
   }
 
   cargarSesiones() {
