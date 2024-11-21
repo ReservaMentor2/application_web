@@ -77,6 +77,7 @@ export class BusquedaComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerMentores();
+    this.searchForm.valueChanges.subscribe(() => this.onSearch());
     this.filterMentores();
     this.paginateMentores();
   }
