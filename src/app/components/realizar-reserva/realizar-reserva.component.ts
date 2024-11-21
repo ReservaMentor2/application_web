@@ -5,7 +5,7 @@ import * as mentorData from '../../../assets/mentores-list.json';
 import * as sesionesData from '../../../assets/sesiones-list.json';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sesion } from '../../models/sesion';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { AuthService } from '../../user/services/auth.service';
 import { environment } from '../../../environments/environment';
 import { FormsModule } from '@angular/forms';
@@ -92,19 +92,14 @@ export class RealizarReservaComponent implements OnInit {
   }
 
   realizarPurchaseID(SessionMentoriaId: number): void {
-    const token = this.authService.getToken();
-    
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
 
-    console.log(headers);
+
     console.log(this.token);
 
     this.http
-      .post<Number>(`${this.baseUrl}/checkout/createID/${SessionMentoriaId}`, 
+      .post<Number>(`${this.baseUrl}/checkout/createID/22`, null, 
         {
-        headers,
+        headers: this.headers
       }
     )
         .subscribe(
@@ -113,7 +108,7 @@ export class RealizarReservaComponent implements OnInit {
 
         (response) => {
           console.log('PurchaseID Creado: ', response);
-
+          this.crearPurchase(response)
         },
         (error) => {
           console.log('Error al crear el PurchaseID:', error);
@@ -121,24 +116,30 @@ export class RealizarReservaComponent implements OnInit {
       );
     }
 
-  crearPurchase(PurchaseID: number): void {
-    const params = { purchaseId: PurchaseID, returnUrl: `https://reservamentor.netlify.app/busqueda`, cancelUrl: `https://reservamentor.netlify.app/busqueda` };
+  crearPurchase(PurchaseID: Number): void {
+      const token = this.authService.getToken();
 
-    this.http
-    .post(`${this.baseUrl}/checkout/create`, params, {
-      headers: this.headers,
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+  });
+
+  // Send 'purchaseId', 'returnUrl', and 'cancelUrl' as query parameters
+  const queryParams = new HttpParams()
+    .set('purchaseId', PurchaseID.toString())
+    .set('returnUrl', 'https://reservamentor.netlify.app/')
+    .set('cancelUrl', 'https://reservamentor.netlify.app/');
+
+  this.http
+    .post<any>(`${this.baseUrl}/checkout/create`, null, {
+      headers: headers,
+      params: queryParams, // Passing query parameters here
     })
+
     .subscribe(
       (response: any) => {
         console.log('Compra creada:', response);
-
-        if (response && response.paypalLink) {
-          console.log(response)
-
-          //window.location.href = response.paypalUrl;
-        } else {
-          console.error('No se recibió un enlace de PayPal en la respuesta.');
-        }
+        console.log(response.paypalUrl);
+        window.location.href = response.paypalUrl;
       },
       (error) => {
         console.error('Error al crear la compra en PayPal:', error);
