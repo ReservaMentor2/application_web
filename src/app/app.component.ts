@@ -10,7 +10,4 @@ export class AppComponent {
   title = 'applicationWeb';
   constructor(private router: Router) {}
 
-  navigateToMentoriaPagina() {
-    this.router.navigate(['/mentoria-pagina']);
-  }
 }

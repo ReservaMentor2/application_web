@@ -1,12 +1,11 @@
 <nav class="navbar navbar-expand-lg" id="navbar">
-  <!-- ALL NAVBAR-->
   <div class="container-fluid">
-    <!-- navbar brand (Reserva Mentor)-->
+    <!-- Logo del Navbar -->
     <a class="navbar-brand" routerLink="busqueda">
       <h1>Reserva <span>Mentor</span></h1>
     </a>
 
-    <!-- button Toggler (para hacer aparecer el menu en movil)-->
+    <!-- Botón Toggler (Versión Móvil) -->
     <button
       class="navbar-toggler"
       type="button"
@@ -16,44 +15,36 @@
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <img src="/assets/bars.png" alt="bars" />
+      <img src="/assets/bars.png" alt="Toggle Menu" />
     </button>
-    <!-- Menu del navbar -->
+
+    <!-- Menú del Navbar -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav" *ngIf="!isLoggedIn()">
-        <!-- El elemento del menu -->
         <li class="nav-item">
-          <a class="nav-link" onclick="location" routerLink="/"
-            >Iniciar Sesion</a
-          >
+          <a class="nav-link" routerLink="/">Iniciar Sesión</a>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link" onclick="location" routerLink="signup"
-            >Registrate</a
-          >
+          <a class="nav-link" routerLink="signup">Regístrate</a>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link" onclick="location" routerLink="/mentor">Perfil</a>
+          <a class="nav-link" routerLink="/mentor">Perfil</a>
         </li>
       </ul>
+
       <ul class="navbar-nav" *ngIf="isLoggedIn()">
         <button mat-button [matMenuTriggerFor]="userMenu">
           <mat-icon>account_circle</mat-icon>
         </button>
-
         <mat-menu #userMenu>
+          <button mat-menu-item routerLink="perfil">
+            <mat-icon>person</mat-icon> Perfil
+          </button>
           <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon> Cerrar sesión
+            <mat-icon>logout</mat-icon> Cerrar Sesión
           </button>
         </mat-menu>
       </ul>
     </div>
   </div>
 </nav>
-
-<div id="EncuentraExpertoRecuadro">
-  <h2 class="titulo">Encuentra a Tu Experto</h2>
-  <p>Busca expertos a precios comodos para lograr tus metas</p>
-</div>

@@ -5,14 +5,20 @@
     </div>
     <div class="buttons-prof">
       <button>Ver perfil</button>
-      <button>Editar perfil</button>
+      <input type="file" (change)="onFileSelected($event)" />
+      <button (click)="updateProfilePicture()">
+        Actualizar imagen de perfil
+      </button>
     </div>
   </div>
   <div class="config">
     <div class="user-info">
       <h2>Informacion de usuario</h2>
-      <p>Nombres y apellidos: XXXXXX</p>
-      <p>Correo: XXXXXX&#64;email.com</p>
+      <p>
+        Nombres y apellidos: {{ perfilUsuario?.nombre
+        }}{{ perfilUsuario?.apellido }}
+      </p>
+      <p>Correo: {{ perfilUsuario?.correo }}</p>
     </div>
     <div class="notifs">
       <h2>Notificaciones</h2>
@@ -83,6 +89,20 @@
         Recibir asesoramiento
       </button>
       <button class="courses" (click)="showCourse()">Cursos disponibles</button>
+    </div>
+    <div *ngIf="showScheduleForm" class="schedule-form">
+      <h3>Generar nuevo horario de trabajo</h3>
+      <label for="scheduleDate">Fecha:</label>
+      <input type="date" id="day" [(ngModel)]="day" /> <br />
+
+      <label for="startTime">Hora de inicio:</label>
+      <input type="time" id="startTime" [(ngModel)]="startTime" /><br />
+
+      <label for="endTime">Hora de fin:</label>
+      <input type="time" id="endTime" [(ngModel)]="endTime" />
+
+      <button (click)="saveSchedule()">Guardar</button>
+      <button (click)="toggleScheduleForm()">Cancelar</button>
     </div>
   </div>
 </section>

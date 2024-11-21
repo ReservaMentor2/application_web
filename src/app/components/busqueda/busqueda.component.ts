@@ -3,9 +3,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MentorService } from '../../services/mentor.service';
 import { Router } from '@angular/router';
 import { HorarioDisponible, Mentor } from '../../models/mentor';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../../user/services/auth.service'; // Importar AuthService
 import * as math from 'mathjs';
 import { create, all } from 'mathjs';
+import { environment } from '../../../environments/environment';
+
 import {
   faStar as solidStar,
   faStar as regularStar,
@@ -16,6 +19,8 @@ import {
   styleUrls: ['./busqueda.component.css'],
 })
 export class BusquedaComponent implements OnInit {
+  private baseUrl = environment.apiUrl;
+
   mentores: Mentor[] = [];
   filteredMentores: Mentor[] = [];
   filteredMentoresSlice: Mentor[] = [];
@@ -50,7 +55,8 @@ export class BusquedaComponent implements OnInit {
     private mentorService: MentorService,
     private http: HttpClient,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.mentorService = new MentorService(http);
     this.searchForm = this.fb.group({
@@ -65,9 +71,8 @@ export class BusquedaComponent implements OnInit {
     });
   }
 
-  navigateToRoute(indexMentor: number) {
-    this.router.navigate(['/realizar-reserva', indexMentor - 1]);
-    console.log(indexMentor);
+  navigateToRoute(idMentor: number) {
+    this.router.navigate(['/realizar-reserva', idMentor]);
   }
 
   ngOnInit(): void {
@@ -77,25 +82,26 @@ export class BusquedaComponent implements OnInit {
     this.paginateMentores();
   }
 
-  navigateToValoraciones(mentorId: number) {
-    this.router.navigate(['/valoraciones', mentorId-1]);
+  navigateToValoraciones(idMentor: number) {
+    this.router.navigate(['/valoraciones', idMentor]);
   }
 
   obtenerMentores(): void {
-    this.mentorService.getData().subscribe(
-      (data: Mentor[]) => {
-        this.mentores = data;
-        this.filteredMentores = data;
-        this.categories = Array.from(
-          new Set(data.flatMap((mentor) => mentor.categorias))
-        );
-        console.log(this.mentores);
-        console.log(this.filteredMentores);
-      },
-      (error) => {
-        console.error('Error al obtener mentores:', error);
-      }
-    );
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    this.http
+      .get<Mentor[]>(`${this.baseUrl}/mentor`, { headers })
+      .subscribe(
+        (response) => {
+          this.mentores.push(...response);
+        },
+        (error) => {
+          console.error('Error al obtener los mentores:', error);
+        }
+      );
+    console.log(this.mentores);
   }
 
   toggleFavorite(mentor: Mentor): void {
@@ -130,7 +136,7 @@ export class BusquedaComponent implements OnInit {
     const terms = new Set<string>();
     this.mentores.forEach((mentor) => {
       this.tokenize(mentor.nombre).forEach((term) => terms.add(term));
-      this.tokenize(mentor.descripcion).forEach((term) => terms.add(term));
+      this.tokenize(mentor.biografia).forEach((term) => terms.add(term));
     });
     return Array.from(terms);
   }
@@ -155,7 +161,7 @@ export class BusquedaComponent implements OnInit {
       this.tokenize(
         this.normalizeString(mentor.nombre) +
           ' ' +
-          this.normalizeString(mentor.descripcion)
+          this.normalizeString(mentor.biografia)
       ).includes(this.normalizeString(term))
     ).length;
     return 1 + Math.log(this.mentores.length / (numDocumentsWithTerm + 1));
@@ -180,7 +186,7 @@ export class BusquedaComponent implements OnInit {
   // Crea el vector del mentor normalizando y tokenizando
   createDocumentVector(mentor: Mentor): number[] {
     const allTerms = this.getAllTerms();
-    const combinedText = mentor.nombre + ' ' + mentor.descripcion;
+    const combinedText = mentor.nombre + ' ' + mentor.biografia;
     return allTerms.map(
       (term) =>
         this.termFrequency(term, this.normalizeString(combinedText)) *
@@ -222,12 +228,6 @@ export class BusquedaComponent implements OnInit {
     const formValues = this.searchForm.value;
 
     this.filteredMentores = this.filteredMentores.filter((mentor) => {
-      const matchesCategory =
-        this.selectedCategories.length === 0 ||
-        this.selectedCategories.some((category) =>
-          mentor.categorias.includes(category)
-        );
-
       const normalizeString = (str: string): string => {
         return str
           .normalize('NFD')
@@ -243,49 +243,37 @@ export class BusquedaComponent implements OnInit {
         formValues.endTime
       );
 
-      const matchesSessionType =
-        this.selectedSessionTypes.length === 0 ||
-        this.selectedSessionTypes.some((type) =>
-          mentor.tiposSesiones.includes(type)
-        );
-
       const matchesRating =
         this.selectedRatings.length === 0 ||
         this.selectedRatings.some(
-          (rating) => Math.round(mentor.calificacion) === rating
+          (rating) => Math.round(mentor.valoracion) === rating
         );
 
       const matchesPrice =
-        !formValues.maxPrice || mentor.tarifaPorHora <= formValues.maxPrice;
+        !formValues.maxPrice || mentor.tarifahora <= formValues.maxPrice;
 
-      return (
-        matchesCategory &&
-        matchesDate &&
-        matchesSessionType &&
-        matchesRating &&
-        matchesPrice
-      );
+      return matchesDate && matchesRating && matchesPrice;
     });
 
     this.sortMentores(formValues.sortOption);
   }
 
-  roundCalificacion(calificacion: number): number {
-    return Math.round(calificacion);
+  roundvaloracion(valoracion: number): number {
+    return Math.round(valoracion);
   }
 
   formatHorario(horario: {
-    fecha: string;
-    inicio: string;
-    fin: string;
+    dia: string;
+    horainicio: string;
+    horafin: string;
   }): string {
     const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     };
-    const fecha = new Date(horario.fecha).toLocaleDateString('es-ES', options);
-    return `${fecha}, ${horario.inicio} - ${horario.fin}`;
+    const fecha = new Date(horario.dia).toLocaleDateString('es-ES', options);
+    return `${fecha}, ${horario.horainicio} - ${horario.horafin}`;
   }
   paginateMentores(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;
@@ -293,7 +281,6 @@ export class BusquedaComponent implements OnInit {
       startIndex + this.pageSize,
       this.filteredMentores.length
     );
-    console.log('hola esto existe', this.filteredMentores);
 
     if (this.filteredMentores.length > 0) {
       this.filteredMentoresSlice = this.filteredMentores.slice(
@@ -329,8 +316,8 @@ export class BusquedaComponent implements OnInit {
     const endDateTime = new Date(`${endDate}T${endTime}`);
 
     return horariosDisponibles.some((horario) => {
-      const horarioStart = new Date(`${horario.fecha}T${horario.inicio}`);
-      const horarioEnd = new Date(`${horario.fecha}T${horario.fin}`);
+      const horarioStart = new Date(`${horario.dia}T${horario.horainicio}`);
+      const horarioEnd = new Date(`${horario.dia}T${horario.horafin}`);
       return (
         (horarioStart >= startDateTime && horarioStart <= endDateTime) ||
         (horarioEnd >= startDateTime && horarioEnd <= endDateTime) ||
@@ -348,7 +335,7 @@ export class BusquedaComponent implements OnInit {
     const end = new Date(this.endDate);
 
     return horariosDisponibles.some((horario) => {
-      const date = new Date(horario.fecha);
+      const date = new Date(horario.dia);
       return date >= start && date <= end;
     });
   }
@@ -437,26 +424,16 @@ export class BusquedaComponent implements OnInit {
   sortMentores(sortOption: string): void {
     switch (sortOption) {
       case 'rating-asc':
-        this.filteredMentores.sort((a, b) => a.calificacion - b.calificacion);
+        this.filteredMentores.sort((a, b) => a.valoracion - b.valoracion);
         break;
       case 'rating-desc':
-        this.filteredMentores.sort((a, b) => b.calificacion - a.calificacion);
-        break;
-      case 'students-asc':
-        this.filteredMentores.sort(
-          (a, b) => a.estudiantesAyudados - b.estudiantesAyudados
-        );
-        break;
-      case 'students-desc':
-        this.filteredMentores.sort(
-          (a, b) => b.estudiantesAyudados - a.estudiantesAyudados
-        );
+        this.filteredMentores.sort((a, b) => b.valoracion - a.valoracion);
         break;
       case 'price-asc':
-        this.filteredMentores.sort((a, b) => a.tarifaPorHora - b.tarifaPorHora);
+        this.filteredMentores.sort((a, b) => a.tarifahora - b.tarifahora);
         break;
       case 'price-desc':
-        this.filteredMentores.sort((a, b) => b.tarifaPorHora - a.tarifaPorHora);
+        this.filteredMentores.sort((a, b) => b.tarifahora - a.tarifahora);
         break;
       case 'students-fav':
         this.filteredMentores.sort((a, b) => {

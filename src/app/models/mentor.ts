@@ -1,23 +1,25 @@
 // models/mentor.ts
 export interface Mentor {
-  id: number;
+  idMentor: number;
   nombre: string;
-  fotoPerfil: string;
-  descripcion: string;
-  calificacion: number;
-  tarifaPorHora: number;
-  estudiantesAyudados: number;
-  categorias: string[];
+  apellido: string;
+  tarifahora: number;
+  biografia: string;
+  valoracion: number;
   horariosDisponibles: HorarioDisponible[];
-  tiposSesiones: string[];
-  resenias: Resenia[];
-  desactivado: boolean;
+  listaAsignaturas: ListaAsignaturas[];
+  imagePath: string;
+}
+
+export interface ListaAsignaturas {
+  asignaturaId: number;
+  nombre: string;
 }
 
 export interface HorarioDisponible {
-  fecha: string; // formato: "YYYY-MM-DD"
-  inicio: string; // formato: "HH:mm"
-  fin: string; // formato: "HH:mm"
+  dia: string;
+  horainicio: string;
+  horafin: string;
 }
 
 export interface Resenia {

@@ -8,17 +8,24 @@ import { DetallesMentoriaComponent } from './components/detalles-mentoria/detall
 import { ValoracionesComponent } from './components/valoraciones/valoraciones.component';
 import { LoginComponent } from './user/login/login.component';
 import { SignupComponent } from './user/signup/signup.component';
+import { TerminosComponent } from './components/terminos/terminos.component';
 import { RecuperarContrasenaComponent } from './recuperar-contrasena/recuperar-contrasena.component';
+import { RenovarContrasenaComponent } from './renovar-contrasena/renovar-contrasena.component';
+import { PrivacidadComponent } from './components/privacidad/privacidad.component';
+import { im } from 'mathjs';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'busqueda', component: BusquedaComponent },
-  { path: 'realizar-reserva/:index', component: RealizarReservaComponent },
-  { path: 'valoraciones/:index', component: ValoracionesComponent },
-  { path: 'configuracion', component: ConfiguracionComponent },
+  { path: 'realizar-reserva/:mentorId', component: RealizarReservaComponent },
+  { path: 'valoraciones/:mentorId', component: ValoracionesComponent },
+  { path: 'notificaciones', component: ConfiguracionComponent },
   { path: 'detalles-mentoria', component: DetallesMentoriaComponent },
   { path: 'recuperar-contrasena', component: RecuperarContrasenaComponent },
+  { path: 'terminos-y-condiciones', component: TerminosComponent},
+  {path: 'politica-de-privacidad', component: PrivacidadComponent},
+  { path: 'forgot/:token', component: RenovarContrasenaComponent },
   {
     path: 'counseling',
     loadChildren: () =>
@@ -35,7 +42,7 @@ const routes: Routes = [
       import('./course/course.module').then((m) => m.CourseModule),
   },
   {
-    path: 'mentor',
+    path: 'perfil',
     loadChildren: () =>
       import('./mentor/mentor.module').then((m) => m.MentorModule),
   },
